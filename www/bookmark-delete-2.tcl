@@ -23,7 +23,7 @@ bm_require_delete_permission $bookmark_id
 
 if [catch {db_exec_plsql bookmark_delete "
     begin
-      bookmark.delete (
+      bookmark.del (
        bookmark_id => :bookmark_id
 	);       
  end;"} errmsg] {

@@ -52,7 +52,7 @@ foreach url_id $deleteable_link {
 
 	if [catch {db_exec_plsql delete_dead_link "
 	begin
-	bookmark.delete (
+	bookmark.del (
 	bookmark_id => :bookmark_id
 	);       
         end;"} errmsg] {
@@ -71,7 +71,7 @@ foreach url_id $deleteable_link {
 	# Delete the url it self
 	if [catch {db_exec_plsql delete_dead_link "
 	begin
-	url.delete (
+	url.del (
 	url_id => :url_id
 	);       
         end;"} errmsg] {

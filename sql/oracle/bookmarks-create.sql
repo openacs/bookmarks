@@ -162,7 +162,7 @@ as
        context_id       in acs_objects.context_id%TYPE default null        
     ) return bm_urls.url_id%TYPE;
 
-    procedure delete (
+    procedure del (
        url_id		in bm_urls.url_id%TYPE
     );
 
@@ -216,13 +216,13 @@ as
        return v_url_id;     
     end new;
 
-    procedure delete (
+    procedure del (
        url_id		in bm_urls.url_id%TYPE
     )
     is
     begin
-       acs_object.delete(url.delete.url_id);
-    end delete;
+       acs_object.del(url.del.url_id);
+    end del;
 
     function insert_or_update (
        url_title	in bm_urls.url_title%TYPE,
@@ -286,7 +286,7 @@ as
        context_id	    in acs_objects.context_id%TYPE default null        
     ) return bm_bookmarks.bookmark_id%TYPE;
 
-    procedure delete (
+    procedure del (
        bookmark_id	    in bm_bookmarks.bookmark_id%TYPE
     );
 
@@ -423,7 +423,7 @@ as
     -- The reason this procedure is so terribly complex is that I wanted to enable
     -- deleting of non empty folders. The problem is that we have to delete the bookmarks
     -- in the right order not to violate any referential constraints.
-    procedure delete (
+    procedure del (
        bookmark_id	    in bm_bookmarks.bookmark_id%TYPE
     )
     is
@@ -436,7 +436,7 @@ as
 	from bm_bookmarks
 	where bookmark_id not in (select bookmark_id from bm_bookmarks
 			          start with bookmark_id = (select parent_id from bm_bookmarks
-							   where bookmark_id = bookmark.delete.bookmark_id)
+							   where bookmark_id = bookmark.del.bookmark_id)
 			          connect by prior parent_id = bookmark_id)
 	start with bookmark_id in (select bookmark_id
 			       from bm_bookmarks bm_outer where not exists
@@ -444,7 +444,7 @@ as
 				 bm_outer.bookmark_id = bm_inner.parent_id)
 				 intersect
 				 select bookmark_id from bm_bookmarks 
-				 start with bookmark_id = bookmark.delete.bookmark_id
+				 start with bookmark_id = bookmark.del.bookmark_id
 				 connect by prior bookmark_id = parent_id 
 		              )
 	connect by prior parent_id = bookmark_id;
@@ -460,7 +460,7 @@ as
 	where parent_id = (select parent_id from bm_bookmarks where bookmark_id = tree_id)
 	and not exists (select 1 from bm_bookmarks where parent_id = bm_outer.bookmark_id)
 	and bm_outer.bookmark_id in (select bookmark_id from bm_bookmarks 
-				    start with bookmark_id = bookmark.delete.bookmark_id
+				    start with bookmark_id = bookmark.del.bookmark_id
 				    connect by prior bookmark_id = parent_id);
 
     begin
@@ -473,11 +473,11 @@ as
 		delete from acs_permissions where object_id = one_level_bookmark_id.bookmark_id;
 		delete from bm_in_closed_p where bookmark_id = one_level_bookmark_id.bookmark_id;
 		delete from bm_bookmarks where bookmark_id = one_level_bookmark_id.bookmark_id;
- 		acs_object.delete(one_level_bookmark_id.bookmark_id);
+ 		acs_object.del(one_level_bookmark_id.bookmark_id);
  	    end loop;
  	end loop;
 
-    end delete;
+    end del;
 
     function name (
        object_id	    in bm_bookmarks.bookmark_id%TYPE

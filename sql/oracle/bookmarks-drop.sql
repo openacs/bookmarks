@@ -22,7 +22,7 @@ declare
     where parent_id not in (select bookmark_id from bm_bookmarks);
 begin	
     for v_bookmark_id in c_bookmark_id loop
-	bookmark.delete(v_bookmark_id.bookmark_id);
+	bookmark.del(v_bookmark_id.bookmark_id);
     end loop;
 end;
 /
@@ -51,7 +51,7 @@ declare
     from bm_urls;
 begin	
     for v_url_id in c_url_id loop
-	url.delete(v_url_id.url_id);
+	url.del(v_url_id.url_id);
     end loop;
 end;
 /

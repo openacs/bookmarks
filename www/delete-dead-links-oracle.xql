@@ -19,7 +19,7 @@
       <querytext>
       
 	begin
-	bookmark.delete (
+	bookmark.del (
 	bookmark_id => :bookmark_id
 	);       
         end;
@@ -31,7 +31,7 @@
       <querytext>
       
 	begin
-	bookmark.delete (
+	bookmark.del (
 	bookmark_id => :bookmark_id
 	);       
         end;
