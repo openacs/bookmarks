@@ -19,7 +19,7 @@ ad_page_contract {
     viewed_user_id:integer
 }
 
-set user_id [ad_verify_and_get_user_id]
+set user_id [ad_conn user_id]
 
 # time
 # we get this time variable only so that certain browsers (internet explorer, for instance)
