@@ -1,6 +1,6 @@
-<master src="bm-master">
-<property name="page_title">@page_title@</property>
-<property name="context_bar_args">@context_bar_args@</property>
+<master>
+<property name="title">@page_title@</property>
+<property name="context">@context@</property>
 
 Clicking on the link below (alternatively you can right click on the link 
 and choose "Save Target As..." or "Save Link As...") will deliver your bookmarks file in a

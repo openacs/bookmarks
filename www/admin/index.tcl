@@ -14,14 +14,14 @@ ad_page_contract {
     @cvs-id $Id:
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
 }
 
 # Do we have to check for admin permissions here?
 
 set page_title "Bookmarks System Administration"
 
-set context_bar_args ""
+set context {}
 
 
 ad_return_template

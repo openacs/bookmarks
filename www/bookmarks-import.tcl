@@ -30,7 +30,7 @@ ad_page_contract {
 } -properties {
 
     page_title:onevalue
-    context_bar_args:onevalue    
+    context:onevalue    
     import_list:onevalue
     return_url:onevalue
 
@@ -66,7 +66,7 @@ where  bookmark_id = :bookmark_id"] != 0 } {
 
 set page_title "Import Statistics"
 
-set context_bar_args [bm_context_bar_args "\[list \"bookmark-add-import?[export_url_vars viewed_user_id return_url]\" \"Add/Import Bookmarks\"\] \"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args "\[list \"bookmark-add-import?[export_url_vars viewed_user_id return_url]\" \"Add/Import Bookmarks\"\] \"$page_title\"" $viewed_user_id]
 
 
 # set flags to be used parsing the input file.

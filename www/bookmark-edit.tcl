@@ -34,7 +34,7 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
     bookmark:onerow
     viewed_user_id:onevalue
     folder_p:onevalue
@@ -61,7 +61,7 @@ set folder_bookmark [ad_decode $folder_p "t" "folder" "bookmark"]
 
 set page_title "Edit [ad_decode $folder_p "t" "Folder" "Bookmark"]"
 
-set context_bar_args [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
 
 set delete_p [bm_delete_permission_p $bookmark_id]
 

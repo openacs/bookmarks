@@ -1,6 +1,6 @@
-<master src="bm-master">
-<property name="page_title">@page_title@</property>
-<property name="context_bar_args">@context_bar_args@</property>
+<master>
+<property name="title">@page_title@</property>
+<property name="context">@context@</property>
 
 <% set img_html "<img border=0 src=pics/ftv2doc.gif align=top>"
 set edit_tag "<font size=-1>Edit</font>"%>

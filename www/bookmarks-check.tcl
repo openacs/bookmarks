@@ -25,7 +25,7 @@ ad_page_contract {
 
 set page_title "Checking Bookmarks"
 
-set context_bar_args [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
 
 set package_id [ad_conn package_id]
 

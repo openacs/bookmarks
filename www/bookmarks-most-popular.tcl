@@ -15,12 +15,12 @@ ad_page_contract {
     @cvs-id $Id:
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
 }
 
 set page_title "Most Popular Bookmarks"
 
-set context_bar_args "\"$page_title\""
+set context [list $page_title]
 
 
 ad_return_template

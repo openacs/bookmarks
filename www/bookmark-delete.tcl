@@ -20,7 +20,7 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
     bookmark_title:onevalue
     contained_bookmarks:multirow
     return_url
@@ -32,7 +32,7 @@ bm_require_delete_permission $bookmark_id
 
 set page_title "Confirm Deletion"
 
-set context_bar_args "\[list bookmark-edit?bookmark_id=$bookmark_id&viewed_user_id=$viewed_user_id \"Edit Bookmark\"\] \"$page_title\""
+set context [list [list bookmark-edit?bookmark_id=$bookmark_id&viewed_user_id=$viewed_user_id "Edit Bookmark"] $page_title]
 
 set bookmark_title [db_string bookmark_title "select local_title from bm_bookmarks
                                               where bookmark_id = :bookmark_id"]

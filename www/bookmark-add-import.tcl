@@ -30,7 +30,7 @@ ad_page_contract {
 } -properties {
 
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
     return_url:onevalue
     viewed_user_id:onevalue
     bookmark_id:onevalue
@@ -49,7 +49,7 @@ if { [empty_string_p $viewed_user_id] } {
 
 set page_title "Add/Import Bookmarks"
 
-set context_bar_args [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
 
 # get the next bookmark_id (used as primary key in bm_bookmarks)
 set bookmark_id [db_nextval acs_object_id_seq]

@@ -16,7 +16,7 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue    
+    context:onevalue    
 
 } 
 
@@ -30,7 +30,7 @@ if { ![string equal $viewed_user_id [ad_conn user_id]] } {
 
 set page_title "Export Bookmarks to Netscape File"
 
-set context_bar_args [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
 
 
 ad_return_template

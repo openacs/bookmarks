@@ -16,13 +16,13 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
 
 }
 
 set page_title "View Bookmark"
 
-set context_bar_args "\"$page_title\""
+set context [list $page_title]
 
 ad_require_permission $bookmark_id read
 

@@ -1,5 +1,5 @@
-<master src="bm-master">
-<property name=page_title>Problem with Your Input</property>
+<master>
+<property name="title">Problem with Your Input</property>
 
 We had
 <if @n_errors@ eq 1>

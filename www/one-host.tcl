@@ -18,14 +18,14 @@ ad_page_contract {
     
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
 
     user_urls:multirow
 }
 
 set page_title "Bookmarks for $host_url"
 
-set context_bar_args "\[list \"most-popular\" \"Most Popular\"\] \"[ad_quotehtml $page_title]\""
+set context [list [list "most-popular" "Most Popular"] [ad_quotehtml $page_title]]
 
 
 set old_name ""

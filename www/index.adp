@@ -1,6 +1,6 @@
-<master src="bm-master">
-<property name="page_title">@page_title@</property>
-<property name="context_bar_args">@context_bar_args@</property>
+<master>
+<property name="title">@page_title@</property>
+<property name="context">@context@</property>
 <property name="head_contents"><script runat=client>function launch_window(file) {window.open(file,'bookmarks','toolbar=no,location=no,directories=no,status=no,scrollbars=auto,resizable=yes,copyhistory=no,width=350,height=480')}</script></property>
 
 <% set folder_bgcolor [ad_parameter FolderBGColor bookmarks "#f3f3f3"]

@@ -17,7 +17,7 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
     old_public_p:onevalue
     viewed_user_id:onevalue
 }
@@ -30,7 +30,7 @@ ad_require_permission $root_folder_id admin
 
 set page_title "Manage Permisssions on all Bookmarks"
 
-set context_bar_args [bm_context_bar_args "\"[ad_quotehtml $page_title]\"" $viewed_user_id]
+set context [bm_context_bar_args "\"[ad_quotehtml $page_title]\"" $viewed_user_id]
 
 
 ad_return_template

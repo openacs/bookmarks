@@ -1,5 +1,5 @@
-<master src="bm-master">
-<property name=page_title>Application Error</property>
+<master>
+<property name="title">Application Error</property>
 
 We had
 <if @n_errors@ eq 1>

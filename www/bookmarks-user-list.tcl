@@ -18,7 +18,7 @@ ad_page_contract {
 
 set page_title "View other users bookmarks"
 
-set context_bar_args "\"$page_title\""
+set context [list $page_title]
 
 set browsing_user_id [ad_conn user_id]
 

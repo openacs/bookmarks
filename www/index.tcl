@@ -25,7 +25,7 @@ ad_page_contract {
 
 } -properties {
     page_title:onevalue
-    context_bar_args:onevalue
+    context:onevalue
     bookmark:multirow
     browsing_user_id:onevalue
     viewed_user_id:onevalue
@@ -44,7 +44,7 @@ set browsing_user_id [ad_conn user_id]
 if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_user_id] } {
     # The user is viewing his own bookmarks
     set viewed_user_id $browsing_user_id
-    set context_bar_args "" 
+    set context {}
 }
 
 set this_url_urlenc [ad_urlencode [ad_conn url]]
@@ -72,7 +72,7 @@ set package_id [ad_conn package_id]
 
 set page_title [db_string bookmark_system_name "select acs_object.name(:package_id) from dual"]
 
-set context_bar_args [bm_context_bar_args "" $viewed_user_id]
+set context [bm_context_bar_args "" $viewed_user_id]
 
 if { ![string equal $viewed_user_id "0"] } {
     set root_folder_id [bm_get_root_folder_id [ad_conn package_id] $viewed_user_id]
