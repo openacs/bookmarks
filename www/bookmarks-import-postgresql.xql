@@ -5,8 +5,8 @@
 
 <fullquery name="folder_insert">      
       <querytext>
-begin
-	perform	   bookmark__new (
+
+	select 	bookmark__new (
 			:bookmark_id,
 			:viewed_user_id,
 			null,
@@ -18,14 +18,14 @@ begin
 			:creation_ip,
 			null
 		);       
-	return '';
-end;
+
       </querytext>
 </fullquery>
 
  
 <fullquery name="new_url">      
       <querytext>
+
 	select url__new (
            		:url_id,
            		:local_title,
@@ -37,13 +37,15 @@ end;
            		:creation_ip,
 			null
 			);
+
       </querytext>
 </fullquery>
 
  
 <fullquery name="bookmark_insert">      
       <querytext>
-select	   bookmark__new (
+
+	select	   bookmark__new (
 			:bookmark_id,
 			:viewed_user_id,
 			:url_id,
@@ -54,6 +56,7 @@ select	   bookmark__new (
 			:user_id,
 			:creation_ip,
 			null);       
+
       </querytext>
 </fullquery>
 

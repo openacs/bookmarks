@@ -262,5 +262,13 @@ foreach line $lines {
     }
 }    
 
+# Test for empty import_list before returning
+if { [info exists import_list] } {
+    # Do nothing..it's ok...
+} else {
+    # For some reason, nothing got inserted
+    lappend import_list "Hmmm...the file seemed ok, but nothing was imported. Sorry!"
+}
+
 
 ad_return_template
