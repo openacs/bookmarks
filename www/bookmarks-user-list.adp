@@ -1,0 +1,24 @@
+<master src="bm-master">
+<property name="page_title">@page_title@</property>
+<property name="context_bar_args">@context_bar_args@</property>
+
+
+<if @user_list:rowcount@ eq 0>
+    No other users have stored bookmarks on which you have read permission. <p>
+</if><else>
+
+Look at the most popular bookmarks:  <a href="bookmarks-most-popular">summarized by URL</a> or choose a user whose bookmarks you would like to view:
+
+<ul>
+
+
+<multiple name="user_list">
+
+<li><a href="index?viewed_user_id=@user_list.viewed_user_id@">@user_list.first_names@ @user_list.last_name@</a> (@user_list.number_of_bookmarks@)
+
+</multiple>
+
+</ul>
+
+</else>
+

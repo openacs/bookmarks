@@ -1,0 +1,27 @@
+<master src="bm-master">
+<property name="page_title">@page_title@</property>
+<property name="context_bar_args">@context_bar_args@</property>
+
+
+<form action=folder-add-2 method=post>
+<input type="hidden" name=bookmark_id value="@bookmark_id@">
+<input type="hidden" name=return_url value="@return_url@">
+<input type="hidden" name=viewed_user_id value="@viewed_user_id@">
+
+<table>
+<tr>
+  <td valign=top align=right>Input Folder Name:</td>
+  <td><input name=local_title></td>
+</tr>
+<tr>
+  <td valign=top align=right>Place in folder:  
+  <img border=0 src=pics/ftv2folderopen align=top></td>
+  <td><include src="folder-selection" bookmark_id="@bookmark_id@" folder_p="t" default_id="" viewed_user_id=@viewed_user_id@></td>
+</tr>
+<tr>
+  <td></td>
+  <td><input type=submit value=Submit></td>
+</form>
+</tr>
+</table>
+

@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>ACS Bookmarks Release 4.1.1b</title>
+</head>
+<body>
+<h2>ACS Bookmarks Release 4.1.1b</h2>
+by <a href="mailto:peter_marklund@arsdigita.com">Peter Marklund</a>
+on the 26:th of February 2001
+<hr>
+
+<h3>Introduction</h3>
+This is a web application that runs on top of the <a href="http://www.arsdigita.com/products/">ArsDigita Community System</a>. The ACS Bookmarks application enables bookmarks to be accessed from any web browser on any computer. The sharing of bookmarks between community members is also supported. The application is distributed under the GNU publich licence from <a href="http://www.arsdigita.com/acs-repository/">the ArsDigita Community System Repository</a>.
+
+<h3>Feature Overview</h3>
+The <a href="http://www.arsdigita.com/acs-repository/one-version?version_id=907">ACS Bookmarks module</a> enables web access to bookmarks that are normally stored in the browser on a desktop computer. Bookmarks are urls with metadata attached to them, they are called Favorites in the Internet Explorer browser. The obvious advantage of storing bookmarks on the web is that you may access your collection of favorite urls from any computer connected to the web. Another important feature of the Bookmarks module is that it lets you view the bookmarks of your fellow community members and the most popular urls in the community. Here is an overview of the key features of the Bookmarks module:
+
+<ul>
+<li><b>Adding Bookmarks</b> 
+<ul>
+<li> Bookmarks may be exported from/to Netscape bookmarks file format (readable also by the Internet Explorer browser).</li>
+
+<li>Bookmarks may be added easily during web browsing with the help of a Bookmarklet (a Bookmark in the browser that contains Javascript instead of a url).</li>
+</ul>
+</li>
+
+<li><b>Viewing Bookmarks</b>
+<ul>
+<li>Bookmarks are viewed in a tree structure with folders that may be opened and collapsed (like in a window file browser). The bookmark tree may be sorted by name or by access date. Alternatively the bookmarks can be viewed in a Javascript format.</li>
+<li>It is possible to view the bookmark tree of any fellow community member as well as the most popular hosts and urls in the community</li>
+<li>Keyword search is supported. In this search not only the urls and their titles will be used, but also any keywords and descriptions of urls that have been fetched from the html pages of those urls.</li>
+</ul>
+
+</li>
+
+<li><b>Maintaining Bookmarks</b>
+<ul>
+<li> It is possible to check if URLs are alive so that non-responding URLs can be deleted.</li>
+<li> The user may to edit, move or delete any folder or bookmark in his tree.</li>
+</ul>
+</li>
+
+</ul>
+
+<h3>Dependencies</h3>
+This version of the Bookmarks module requires the ArsDigita Community System versions <a href="http://developer.arsdigita.com/">4.1.X or 4.0.X</a>.
+
+<h3>Version History</h3>
+The following versions have been released so far for the the ACS 4.x TCL platform:
+<ul>
+<li><a href="http://www.arsdigita.com/acs-repository/one-version?version_id=779">bookmarks-4.0a</a> (Dec 14, 2000)
+<li><a href="http://www.arsdigita.com/acs-repository/one-version?version_id=907">bookmarks-4.01a</a> (Jan 09, 2001)
+<li>bookmarks-4.1.1b This version includes a number of bugfixes and minor improvements over the previous one. Three of the most severe bugs in the alpha versions that have been fixed are:
+<ul>
+<li> When two users were viewing the same bookmarks tree one user opening or closing folders would affect the view of the other user.</li>
+<li>The page displaying the most popular URLs displayed incorrect numbers.</li> 
+<li>The checking of URLs was done on a bookmarks basis leading to URLs being checked more than once.</li>
+</ul>
+
+</ul>
+
+<h3>Upgrade Instructions</h3>
+I have not prepared any data model upgrade scripts for the alpha
+versions. If you feel that you have the need for such an upgrade <a
+href="mailto:pmarklun@arsdigita.com">please let me know</a>. If you
+don't have too many users in your system you can export their
+bookmarks manually to Netscape format files. Then you have to delete
+the package (make sure that the drop script gets run) and then install
+the new version of the bookmarks module (make sure that you have the
+new source code and that the create script gets run). 
+
+<h3>Feedback and Bugreports</h3>
+Bugs and enhancement requests should be submitted to the <a
+href="http://www.arsdigita.com/sdm/one-module?module_id=8322">ArsDigita SDM</a>.
+
+<h3>Community of Contributors and Testers</h3>
+Here is a list of people who have contributed with ideas and testing of the bookmarks module: 
+<ul>
+<li> <a href="mailto:kishorebalakrishnan@carnatic.com">Kishore Balakrishnan</a> (SAP, Malaysia) - grand ideas for collaborative categorization and metadata
+<li> <a href="mailto:carsten@arsdigita.com">Carsten Clasohm</a> (ArsDigita, Munich) - testing
+<li> <a href="mailto:mohan@melody.se">Mohan Pakkurti</a> (Melody, Sweden) - bug reports
+<li> <a href="mailto:kenzoid@io.com">Ken Kennedy</a> - requirements documentation
+</ul>
+
+If your are using the bookmarks module and have any ideas of how it
+could be improved - please contact me!
+
+
+<h3>Requirements</h3>
+Although a separate document with formal requirements have not yet been written almost all requirements may be derived from the test protocol below.
+
+<h3>Test Protocol for version 4.1.1b</h3>
+This Bookmark release has been rigorously tested according to the
+protocol below.
+During the test I was logged in simultaneously with three different
+users, two bookmark users (Joe and Jane) and one bookmarks admin (George).
+
+<ol>
+<li> I installed the bookmarks module from the apm file on top of a
+fresh ACS 4.1.1 installation.</li>
+<li>I mounted a bookmarks instance called "Main Bookmarks" under the
+main site and another bookmarks instance called "Sub Bookmarks" under a subsite</li>
+<li>Added some bookmarks for George admin and verified that the
+content in different instances is separated.
+<li>Tried to add a non-existant url. A warning was issued but the
+bookmark could still be added.</li>
+<li>Tried adding a responding url without title. The application tries
+to fetch the title from the web page.</li>
+<li>On the bookmark-add page it is possible to create a new folder
+that may be placed inside another folder.</li>
+<li>Single bookmarks as well as non-empty folders can be deleted.</li>
+<li>For every bookmark a details page showing html title, keywords and
+description fetched from the html page of that URL may be viewed.</li>
+<li>A tree of bookmarks may be imported/exported from/to a Netscape format
+bookmarks file. Exporting a bookmark structure that has been imported
+I end up with a Netscape file with identical structure to the one that
+was imported.</li>
+<li>When browsing the web bookmarks may be added easily to the
+bookmarks module wihout interrupting the web browsing too much. This
+is achieved by the use of a Bookmarklet (a browser bookmark that
+contains Javascript). This Bookmarklet may be added to the
+browser toolbar so that everytime the user comes across a page that he
+wants to bookmark all he has to do is click on a button in the toolbar
+and he is given the possibility to enter a title and choose a folder
+for the bookmark whereafter he is redirected back to the web page he
+was viewing.</li>
+<li>Bookmarks may be sorted by name or by access date</li>
+<li>An administrator may check all urls in the system (in one
+package instance) and may opt to delete those that are not
+responding. Every user may check his own bookmarks</li>
+<li>The url and title of bookmarks may be edited.</li>
+<li>Bookmarks and folders may be moved to a different folder</li>
+<li>A bookmark may be marked as private in which case only the owner of
+the bookmark may view it. If a folder is marked as private it means
+that all contained bookmarks and folders are private. If a bookmark is not marked as private it
+will per default have the same permissions as the bookmarks package
+instance. Bookmarks and folders inherit permissions from their parent
+folder and the root folder of a user inherits permissions from the bookmark package instance.</li>
+<li>Any user can view the non-private part of any other users bookmark
+tree. </li>
+<li>It is possible to see a list of the domains that have the most
+bookmarks in the system as well as a list of the urls that have been
+bookmarked most times.</li>
+<li>I dropped the bookmarks package (sourced bookmarks-drop.sql) and
+then recreated it (sourced bookmarks-create.sql). There were no error messages and the application was fully
+functional again.</li>
+<li>Two users can close/open the same folder without affecting
+eachother. Also tested what happens to the view of the other user if
+one of the users moves a folder or adds a folder.</li>
+<li>Tested all links in the Javascript version</li>
+<li>Removed all debugging print outs</li>
+</ol>
+
+<h3>Ideas for Future Improvements</h3>
+<h4>Collaboration and Metadata</h4>
+It is planned to make the bookmarks application more rich with metadata and more collaborative with the followoing additions:
+<ul> 
+<li> General comments on urls 
+<li> Possibility to add keywords for bookmarks 
+<li> Shared hierarchical categorization of urls. It will be possible to browse all urls in the system by these categories.
+<li> Rating of urls 
+<li> Possibility to easily view all fellow users meta data about a url
+</ul>
+With these additions the bookmarks module will evolve beyond being merely a web storage of bookmarks to being a tool for collaboratively categorizing and adding metadata to the web.
+
+<h4>Scalability</h4>
+The tree view of bookmarks does not scale very well - closing and opening folders becomes impractible with for example 200 bookmarks (however the bookmarks may still be viewed and used). Users who have this many bookmarks can preferably use the Javascript version. Load tests have shown that the Bookmarks module can not handle thousends of bookmarks for a single user. Future versions will try to address these cases with a viewing mode different from the current tree view.
+
+<hr>
+<address><a href="mailto:pmarklun@arsdigita.com">pmarklun@arsdigita.com</a></address>
+
+</body>
+</html>
