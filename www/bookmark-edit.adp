@@ -11,12 +11,12 @@
 <if @bookmark.folder_p@ eq "f">
 <tr> 
 <td align=right valign=top>URL:</td> 
-<td align=left><input type=text size=40 maxlength=500 name=complete_url value="<%= [ad_quotehtml "@bookmark.complete_url@"]%>"></td>
+<td align=left><input type=text size=40 maxlength=500 name=complete_url value="@bookmark.complete_url@"></td>
 </if>
 
 <tr>
 <td align=right valign=top>Title:</td>
-<td align=left><input type=text maxlength=500 size=40 name=local_title value="<%= [ad_quotehtml "@bookmark.local_title@"]%>"></td>
+<td align=left><input type=text maxlength=500 size=40 name=local_title value="@bookmark.local_title@"></td>
 </tr>
 
 <tr>

@@ -23,42 +23,52 @@ set name [db_string name "
     where  user_id = :user_id"]
 
 set folder_list 0
+set previous_folder_p "f"
+set indent 1
+set indent_str "    "
+set i_str [string repeat $indent_str $indent]
 
 db_foreach bm_info { } {
 
-if { [string equal $folder_list 0] } {
-	    lappend folder_list $parent_id
-} else {
-	    set previous_parent_id [lindex $folder_list [expr [llength $folder_list]-1]]	
-	    if {$parent_id != $previous_parent_id} {
+    if { [string equal $folder_list 0] } {
+	lappend folder_list $parent_id
+    } else {
+	set previous_parent_id [lindex $folder_list end]	
+	if {$parent_id != $previous_parent_id} {
+	    set parent_location [lsearch -exact $folder_list $parent_id]
 
-		set parent_location [lsearch -exact $folder_list $parent_id]
-		
-		
-
-		if {$parent_location==-1} {
-		    lappend folder_list $parent_id
-		    append bookmark_html "<DL><p>\n\n"
-		} else { 	    
-		    set drop [expr [llength $folder_list]-$parent_location]
-		    set folder_list [lrange $folder_list 0 $parent_location]
-		    for {set i 1} {$i<$drop} {incr i} {
-			append bookmark_html "</DL><p>\n\n"
-		    }
-        }
-    } elseif { [string equal $folder_p "t"] && [string equal $previous_folder_p "t"] } {
-		# The previous folder was empty
-		append bookmark_html "<DL><p>\n</DL><p>\n\n"
+	    if {$parent_location==-1} {
+		lappend folder_list $parent_id
+		append bookmark_html "$i_str<DL><p>\n"
+		incr indent
+		set i_str [string repeat $indent_str $indent]
+	    } else {
+		set drop [expr [llength $folder_list]-$parent_location]
+		set folder_list [lrange $folder_list 0 $parent_location]
+		for {set i 1} {$i<$drop} {incr i} {
+		    incr indent -1
+		    set i_str [string repeat $indent_str $indent]
+		    append bookmark_html "$i_str</DL><p>\n\n"
+		}
 	    }
+	} elseif { [string equal $folder_p "t"] && [string equal $previous_folder_p "t"] } {
+	    # The previous folder was empty
+	    append bookmark_html "$i_str<DL><p>\n$i_str</DL><p>\n"
+	}
     }
 
     if {$folder_p=="t"} {
-	    append bookmark_html "<DT><H3 ADD_DATE=\"[ns_time]\">$local_title</H3>\n\n"
+	if {$local_title eq "Personal Toolbar Folder"} {
+	    # Maintain special tags for Personal Toolbar Folder
+	    append bookmark_html "$i_str<DT><H3 LAST_MODIFIED=\"[ns_time]\" PERSONAL_TOOLBAR_FOLDER=\"true\" ID=\"NC:PersonalToolbarFolder\">$local_title</H3>\n"
+	} else {
+	    append bookmark_html "$i_str<DT><H3 ADD_DATE=\"[ns_time]\">$local_title</H3>\n"
+	}
     } else {
-	    append bookmark_html "<DT><A HREF=\"$complete_url\" ADD_DATE=\"[ns_time]\" LAST_VISIT=\"0\" LAST_MODIFIED=\"0\">$local_title</A>\n\n"
+	append bookmark_html "$i_str<DT><A HREF=\"$complete_url\" ADD_DATE=\"[ns_time]\" LAST_VISIT=\"0\" LAST_MODIFIED=\"0\">$local_title</A>\n"
     }
 
-	set previous_folder_p $folder_p
+    set previous_folder_p $folder_p
 }
 
 set html "<!DOCTYPE NETSCAPE-Bookmark-file-1>
