@@ -160,7 +160,10 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="query_file" db_type="postgresql" path="www/toggle-open-close-postgresql.xql"/>
             <file type="content_page" path="www/toggle-open-close.tcl"/>
             <file type="content_page" path="www/top-frame.tcl"/>
+            <file type="query_file" db_type="oracle" path="www/tree-dynamic-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="www/tree-dynamic-postgresql.xql"/>
             <file type="content_page" path="www/tree-dynamic.tcl"/>
+            <file type="query_file" path="www/tree-dynamic.xql"/>
             <file type="content_page" path="www/tree-frame.tcl"/>
             <file type="content_page" path="www/tree-static.js"/>
             <file type="content_page" path="www/tree.css"/>
