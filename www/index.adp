@@ -1,7 +1,12 @@
 <master>
-<property name="title">@page_title;noquote@</property>
-<property name="context">@context;noquote@</property>
-<property name="head_contents"><script runat=client>function launch_window(file) {window.open(file,'bookmarks','toolbar=no,location=no,directories=no,status=no,scrollbars=auto,resizable=yes,copyhistory=no,width=350,height=480')}</script></property>
+  <property name="title">@page_title;noquote@</property>
+  <property name="context">@context;noquote@</property>
+  <property name="header_stuff">
+    <script runat=client>
+      function launch_window(file) {
+          window.open(file,'bookmarks','toolbar=no,location=no,directories=no,status=no,scrollbars=auto,resizable=yes,copyhistory=no,width=350,height=480')}
+    </script>
+  </property>
 
 <% set folder_bgcolor [ad_parameter FolderBGColor bookmarks "#f3f3f3"]
 set bookmark_bgcolor  [ad_parameter BookmarkBGColor bookmarks "#ffffff"]

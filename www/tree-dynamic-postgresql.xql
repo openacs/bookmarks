@@ -22,8 +22,7 @@ where exists
 	select 1 from bm_bookmarks bm, bm_bookmarks bm2
 	where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
           and bm2.bookmark_id = b.bookmark_id
-	)
-	and acs_permission__permission_p(bookmark_id, :user_id, 'read') = 't'
+	and acs_permission__permission_p(bm.bookmark_id, :user_id, 'read') = 't'
 	)
 and      b.bookmark_id <> :root_id
 order by b.tree_sortkey
