@@ -41,7 +41,7 @@
  
 <fullquery name="bm_clean_up_session_data.delete_old_in_closed_p">      
       <querytext>
-      delete from bm_in_closed_p where creation_date < (current_timestamp - 1)
+      delete from bm_in_closed_p where creation_date < (current_timestamp - interval '1 day')
       </querytext>
 </fullquery>
 
