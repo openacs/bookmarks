@@ -82,9 +82,14 @@ create table bm_bookmarks (
 
 
 -- We use these index for sorting the bookmarks tree
-create index bm_bookmarks_local_title_idx on bm_bookmarks (parent_id, lower(local_title), bookmark_id);
-create index bm_bookmarks_access_date_idx on bm_bookmarks (parent_id, last_access_date, bookmark_id);
 
+-- DRB: Functional indexes are an Enterprise Edition feature, so this is disabled.  What should
+-- we use?  I'm not sure at the moment because most of the queries seem to use UPPER not LOWER
+-- on local title, at least in LIKE clauses!  Making this index fairly useless (besides it is
+-- only useful if parent_id is included as a qualifier in such cases).
+-- create index bm_bookmarks_local_title_idx on bm_bookmarks (parent_id, lower(local_title), bookmark_id);
+
+create index bm_bookmarks_access_date_idx on bm_bookmarks (parent_id, last_access_date, bookmark_id);
 
 -- For connect by queries
 create index bm_bookmarks_idx1 on bm_bookmarks(bookmark_id, parent_id);
