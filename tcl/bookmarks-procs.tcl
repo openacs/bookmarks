@@ -256,3 +256,24 @@ ad_proc bm_initialize_in_closed_p { viewed_user_id in_closed_p_id package_id} {
 	    end;
 	}    
 }
+
+ad_proc -private bm_close_js_brackets {prev_folder_p prev_lev lev} {
+	This helper function is used by the tree-dynamic.tcl page in
+	constructing the bookmark tree for the javascript page.
+} {
+	set result ""
+	if {$prev_folder_p && ($prev_lev >= $lev)} {
+		# Empty folder. We need to add a fake bookmark to the folder or else
+		# it will not have a folder icon attached to it.
+		set i_str [string repeat "\t" $prev_lev]
+		append result "$i_str\t\['Empty folder']\n"
+		append result "$i_str],\n"
+	}
+	while {$prev_lev > $lev} {
+		set i_str [string repeat "\t" [expr $prev_lev - 1]]
+		append result "$i_str],\n"
+		incr prev_lev -1
+	}
+
+	return $result
+}

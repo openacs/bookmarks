@@ -1,474 +1,132 @@
-// You are free to copy the "Folder-Tree" script as long as you  
-// keep this copyright notice: 
-// Script found in: http://www.geocities.com/Paris/LeftBank/2178/ 
-// Author: Marcelino Alves Martins (martins@hks.com) December '97. 
-//**************************************************************** 
- 
-//Log of changes: 
-//       17 Feb 98 - Fix initialization flashing problem with Netscape
-//       
-//       27 Jan 98 - Root folder starts open; support for USETEXTLINKS; 
-//                   make the ftien4 a js file 
-//       
- 
- 
-// Definition of class Folder 
-// ***************************************************************** 
- 
-function Folder(folderDescription, hreference, decoration, key) //constructor 
-{ 
-  //constant data 
-  this.desc = folderDescription 
-  this.hreference = hreference 
-  this.decoration = decoration
-  this.key = key
-  this.id = -1   
-  this.navObj = 0  
-  this.iconImg = 0  
-  this.nodeImg = 0  
-  this.isLastNode = 0 
- 
-  //dynamic data 
-  this.isOpen = true 
-  this.iconSrc = "pics/ftv2folderopen.gif"   
-  this.children = new Array 
-  this.nChildren = 0 
- 
-  //methods 
-  this.initialize = initializeFolder 
-  this.setState = setStateFolder 
-  this.addChild = addChild 
-  this.createIndex = createEntryIndex 
-  this.hide = hideFolder 
-  this.display = display 
-  this.renderOb = drawFolder 
-  this.totalHeight = totalHeight 
-  this.subEntries = folderSubEntries 
-  this.outputLink = outputFolderLink 
-} 
- 
-function setStateFolder(isOpen) 
-{ 
-  var subEntries 
-  var totalHeight 
-  var fIt = 0 
-  var i=0 
- 
-  if (isOpen == this.isOpen) 
-    return 
- 
-  if (browserVersion == 2)  
-  { 
-    totalHeight = 0 
-    for (i=0; i < this.nChildren; i++) 
-      totalHeight = totalHeight + this.children[i].navObj.clip.height 
-      subEntries = this.subEntries() 
-    if (this.isOpen) 
-      totalHeight = 0 - totalHeight 
-    for (fIt = this.id + subEntries + 1; fIt < nEntries; fIt++) 
-      indexOfEntries[fIt].navObj.moveBy(0, totalHeight) 
-  }  
-  this.isOpen = isOpen 
-  propagateChangesInState(this) 
-} 
- 
-function propagateChangesInState(folder) 
-{   
-  var i=0 
- 
-  if (folder.isOpen) 
-  { 
-    if (folder.nodeImg) 
-      if (folder.isLastNode) 
-        folder.nodeImg.src = "pics/ftv2mlastnode.gif" 
-      else 
-	  folder.nodeImg.src = "pics/ftv2mnode.gif" 
-    folder.iconImg.src = "pics/ftv2folderopen.gif" 
-    for (i=0; i<folder.nChildren; i++) 
-      folder.children[i].display() 
-  } 
-  else 
-  { 
-    if (folder.nodeImg) 
-      if (folder.isLastNode) 
-        folder.nodeImg.src = "pics/ftv2plastnode.gif" 
-      else 
-	  folder.nodeImg.src = "pics/ftv2pnode.gif" 
-    folder.iconImg.src = "pics/ftv2folderclosed.gif" 
-    for (i=0; i<folder.nChildren; i++) 
-      folder.children[i].hide() 
-  }  
-} 
- 
-function hideFolder() 
-{ 
-  if (browserVersion == 1) { 
-    if (this.navObj.style.display == "none") 
-      return 
-    this.navObj.style.display = "none" 
-  } else { 
-    if (this.navObj.visibility == "hiden") 
-      return 
-    this.navObj.visibility = "hiden" 
-  } 
-   
-  this.setState(0) 
-} 
- 
-function initializeFolder(level, lastNode, leftSide) 
-{ 
-var j=0 
-var i=0 
-var numberOfFolders 
-var numberOfDocs 
-var nc 
-      
-  nc = this.nChildren 
-   
-  this.createIndex() 
- 
-  var auxEv = "" 
- 
-  if (browserVersion > 0) 
-    auxEv = "<a href='javascript:clickOnNode("+this.id+")'>" 
-  else 
-    auxEv = "<a>" 
- 
-  if (level>0) 
-    if (lastNode) //the last 'brother' in the children array 
-    { 
-      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='pics/ftv2mlastnode.gif' width=16 height=22 border=0></a>") 
-      leftSide = leftSide + "<img src='pics/ftv2blank.gif' width=16 height=22>"  
-      this.isLastNode = 1 
-    } 
-    else 
-    { 
-      this.renderOb(leftSide + auxEv + "<img name='nodeIcon" + this.id + "' src='pics/ftv2mnode.gif' width=16 height=22 border=0></a>") 
-      leftSide = leftSide + "<img src='pics/ftv2vertline.gif' width=16 height=22>" 
-      this.isLastNode = 0 
-    } 
-  else 
-    this.renderOb("") 
-   
-  if (nc > 0) 
-  { 
-    level = level + 1 
-    for (i=0 ; i < this.nChildren; i++)  
-    { 
-      if (i == this.nChildren-1) 
-        this.children[i].initialize(level, 1, leftSide) 
-      else 
-        this.children[i].initialize(level, 0, leftSide) 
-      } 
-  } 
-} 
- 
-function drawFolder(leftSide) 
-{ 
-  if (browserVersion == 2) { 
-    if (!doc.yPos) 
-      doc.yPos=8 
-    doc.write("<layer id='folder" + this.id + "' top=" + doc.yPos + " visibility=hiden>") 
-  } 
-   
-  doc.write("<table width=100% bgcolor=#f3f3f3") 
-  if (browserVersion == 1) 
-    doc.write(" id='folder" + this.id + "' style='position:block;' ") 
-  doc.write(" border=0 cellspacing=0 cellpadding=0>") 
-  doc.write("<tr><td>") 
-  doc.write(leftSide) 
-  this.outputLink() 
-  doc.write("<img  name='folderIcon" + this.id + "' ") 
-  doc.write("src='" + this.iconSrc+"' border=0></a>") 
-  doc.write("</td><td width=100% valign=middle nowrap>") 
-  if (USETEXTLINKS) 
-  { 
-    this.outputLink() 
-	if (this.id>0)
-	{
-		doc.write("<font size=-1 color=#000066 face=arial,helvetica>"+this.decoration+this.desc + "</a> (<a href=bookmark-edit?return_url=" + return_url + "&bookmark_id="+this.key+">edit</a>)")
-	} else {
-		doc.write("<font size=-1 color=#000066 face=arial,helvetica>"+this.decoration+this.desc + "</a>")
+// Title: Tigra Tree
+// Description: See the demo at url
+// URL: http://www.softcomplex.com/products/tigra_menu_tree/
+// Version: 1.1
+// Date: 11-12-2002 (mm-dd-yyyy)
+// Notes: This script is free. Visit official site for further details.
+
+function tree (a_items, a_template) {
+
+	this.a_tpl      = a_template;
+	this.a_config   = a_items;
+	this.o_root     = this;
+	this.a_index    = [];
+	this.o_selected = null;
+	this.n_depth    = -1;
+	
+	var o_icone = new Image(),
+		o_iconl = new Image();
+	o_icone.src = a_template['icon_e'];
+	o_iconl.src = a_template['icon_l'];
+	a_template['im_e'] = o_icone;
+	a_template['im_l'] = o_iconl;
+	for (var i = 0; i < 64; i++)
+		if (a_template['icon_' + i]) {
+			var o_icon = new Image();
+			a_template['im_' + i] = o_icon;
+			o_icon.src = a_template['icon_' + i];
+		}
+	
+	this.toggle = function (n_id) {	var o_item = this.a_index[n_id]; o_item.open(o_item.b_opened) };
+	this.select = function (n_id) { return this.a_index[n_id].select(); };
+	this.mout   = function (n_id) { this.a_index[n_id].upstatus(true) };
+	this.mover  = function (n_id) { this.a_index[n_id].upstatus() };
+
+	this.a_children = [];
+	for (var i = 0; i < a_items.length; i++)
+		new tree_item(this, i);
+
+	this.n_id = trees.length;
+	trees[this.n_id] = this;
+	
+	for (var i = 0; i < this.a_children.length; i++) {
+		document.write(this.a_children[i].init());
+		this.a_children[i].open();
 	}
+}
+function tree_item (o_parent, n_order) {
 
-  } 
-  else 
-    doc.write(this.desc) 
-  doc.write("</td>")  
-  doc.write("</table>") 
-   
-  if (browserVersion == 2) { 
-    doc.write("</layer>") 
-  } 
- 
-  if (browserVersion == 1) { 
-    this.navObj = doc.all["folder"+this.id] 
-    this.iconImg = doc.all["folderIcon"+this.id] 
-    this.nodeImg = doc.all["nodeIcon"+this.id] 
-  } else if (browserVersion == 2) { 
-    this.navObj = doc.layers["folder"+this.id] 
-    this.iconImg = this.navObj.document.images["folderIcon"+this.id] 
-    this.nodeImg = this.navObj.document.images["nodeIcon"+this.id] 
-    doc.yPos=doc.yPos+this.navObj.clip.height 
-  } 
-} 
- 
-function outputFolderLink() 
-{ 
-  if (this.hreference) 
-  { 
-    doc.write("<a href='" + this.hreference + "' TARGET=\"basefrm\" ") 
-    if (browserVersion > 0) 
-      doc.write("onClick='javascript:clickOnFolder("+this.id+")'") 
-    doc.write(">") 
-  } 
-  else 
-//    doc.write("<a>") 
-  doc.write("<a href='javascript:clickOnNode("+this.id+")'>")   
-} 
- 
-function addChild(childNode) 
-{ 
-  this.children[this.nChildren] = childNode 
-  this.nChildren++ 
-  return childNode 
-} 
- 
-function folderSubEntries() 
-{ 
-  var i = 0 
-  var se = this.nChildren 
- 
-  for (i=0; i < this.nChildren; i++){ 
-    if (this.children[i].children) //is a folder 
-      se = se + this.children[i].subEntries() 
-  } 
- 
-  return se 
-} 
- 
- 
-// Definition of class Item (a document or link inside a Folder) 
-// ************************************************************* 
- 
-function Item(itemDescription, itemLink, decoration, key) // Constructor 
-{ 
-  // constant data 
-  this.desc = itemDescription 
-  this.link = itemLink 
-  this.decoration = decoration
-  this.key = key
-  this.id = -1 //initialized in initalize() 
-  this.navObj = 0 //initialized in render() 
-  this.iconImg = 0 //initialized in render() 
-  this.iconSrc = "pics/ftv2doc.gif" 
- 
-  // methods 
-  this.initialize = initializeItem 
-  this.createIndex = createEntryIndex 
-  this.hide = hideItem 
-  this.display = display 
-  this.renderOb = drawItem 
-  this.totalHeight = totalHeight 
-} 
- 
-function hideItem() 
-{ 
-  if (browserVersion == 1) { 
-    if (this.navObj.style.display == "none") 
-      return 
-    this.navObj.style.display = "none" 
-  } else { 
-    if (this.navObj.visibility == "hiden") 
-      return 
-    this.navObj.visibility = "hiden" 
-  }     
-} 
- 
-function initializeItem(level, lastNode, leftSide) 
-{  
-  this.createIndex() 
- 
-  if (level>0) 
-    if (lastNode) //the last 'brother' in the children array 
-    { 
-      this.renderOb(leftSide + "<img src='pics/ftv2lastnode.gif' width=16 height=22>") 
-      leftSide = leftSide + "<img src='pics/ftv2blank.gif' width=16 height=22>"  
-    } 
-    else 
-    { 
-      this.renderOb(leftSide + "<img src='pics/ftv2node.gif' width=16 height=22>") 
-      leftSide = leftSide + "<img src='pics/ftv2vertline.gif' width=16 height=22>" 
-    } 
-  else 
-    this.renderOb("")   
-} 
- 
-function drawItem(leftSide) 
-{ 
-  if (browserVersion == 2) 
-    doc.write("<layer id='item" + this.id + "' top=" + doc.yPos + " visibility=hiden>") 
-     
-  doc.write("<table ") 
-  if (browserVersion == 1) 
-    doc.write(" id='item" + this.id + "' style='position:block;' ") 
-  doc.write(" border=0 cellspacing=0 cellpadding=0>") 
-  doc.write("<tr><td>") 
-  doc.write(leftSide) 
-  doc.write("<a href=" + this.link + ">") 
-  doc.write("<img id='itemIcon"+this.id+"' ") 
-  doc.write("src='"+this.iconSrc+"' border=0>") 
-  doc.write("</a>") 
-  doc.write("</td><td valign=middle nowrap>") 
-  if (USETEXTLINKS) 
-    doc.write("<font size=-1 face=arial,helvetica><a href=" + this.link + ">" +this.decoration + this.desc + "</a> (<a href=bookmark-edit?return_url=" + return_url + "&bookmark_id="+this.key+">edit</a>)")
-  else 
-    doc.write(this.desc) 
-  doc.write("</table>") 
-   
-  if (browserVersion == 2) 
-    doc.write("</layer>") 
- 
-  if (browserVersion == 1) { 
-    this.navObj = doc.all["item"+this.id] 
-    this.iconImg = doc.all["itemIcon"+this.id] 
-  } else if (browserVersion == 2) { 
-    this.navObj = doc.layers["item"+this.id] 
-    this.iconImg = this.navObj.document.images["itemIcon"+this.id] 
-    doc.yPos=doc.yPos+this.navObj.clip.height 
-  } 
-} 
- 
- 
-// Methods common to both objects (pseudo-inheritance) 
-// ******************************************************** 
- 
-function display() 
-{ 
-  if (browserVersion == 1) 
-    this.navObj.style.display = "block" 
-  else 
-    this.navObj.visibility = "show" 
-} 
- 
-function createEntryIndex() 
-{ 
-  this.id = nEntries 
-  indexOfEntries[nEntries] = this 
-  nEntries++ 
-} 
- 
-// total height of subEntries open 
-function totalHeight() //used with browserVersion == 2 
-{ 
-  var h = this.navObj.clip.height 
-  var i = 0 
-   
-  if (this.isOpen) //is a folder and _is_ open 
-    for (i=0 ; i < this.nChildren; i++)  
-      h = h + this.children[i].totalHeight() 
- 
-  return h 
-} 
- 
- 
-// Events 
-// ********************************************************* 
- 
-function clickOnFolder(folderId) 
-{ 
-  var clicked = indexOfEntries[folderId] 
- 
-  if (!clicked.isOpen) 
-    clickOnNode(folderId) 
- 
-  return  
- 
-  if (clicked.isSelected) 
-    return 
-} 
- 
-function clickOnNode(folderId) 
-{ 
-  var clickedFolder = 0 
-  var state = 0 
- 
-  clickedFolder = indexOfEntries[folderId] 
-  state = clickedFolder.isOpen 
- 
-  clickedFolder.setState(!state) //open<->close  
-} 
- 
-function initializeDocument() 
-{ 
-  if (doc.all) 
-    browserVersion = 1 //IE4   
-  else 
-    if (doc.layers) 
-      browserVersion = 2 //NS4 
-    else 
-      browserVersion = 0 //other 
- 
-  aux0.initialize(0, 1, "") 
-  aux0.display()
-  
-  if (browserVersion > 0) 
-  { 
-    doc.write("<layer top="+indexOfEntries[nEntries-1].navObj.top+">&nbsp;</layer>") 
- 
-    // close the whole tree 
-    clickOnNode(0) 
-    // open the root folder 
-    clickOnNode(0) 
-  } 
-} 
- 
-// Auxiliary Functions for Folder-Treee backward compatibility 
-// ********************************************************* 
- 
-function gFld(description, decoration, key, hreference) 
-{ 
-  folder = new Folder(description, hreference, decoration, key) 
-  return folder 
-} 
- 
-function gLnk(target, description, linkData, decoration, key) 
-{ 
-  fullLink = "" 
- 
-  if (target==0) 
-  { 
-    fullLink = "'"+linkData+"' target=\"basefrm\"" 
-  } 
-  else 
-  { 
-    if (target==1) 
-       fullLink = "'"+linkData+"' target=target_frame" 
-    else 
-       fullLink = "'"+linkData+"' target=\"basefrm\"" 
-  } 
- 
-  linkItem = new Item(description, fullLink, decoration, key)   
-  return linkItem 
-} 
- 
-function insFld(parentFolder, childFolder) 
-{ 
-  return parentFolder.addChild(childFolder) 
-} 
- 
-function insDoc(parentFolder, document) 
-{ 
-  parentFolder.addChild(document) 
-} 
- 
-// Global variables 
-// **************** 
- 
-USETEXTLINKS = 1
-indexOfEntries = new Array 
-nEntries = 0 
-doc = document 
-browserVersion = 0 
-selectedFolder=0
+	this.n_depth  = o_parent.n_depth + 1;
+	this.a_config = o_parent.a_config[n_order + (this.n_depth ? 2 : 0)];
+	if (!this.a_config) return;
 
+	this.o_root    = o_parent.o_root;
+	this.o_parent  = o_parent;
+	this.n_order   = n_order;
+	this.b_opened  = !this.n_depth;
+
+	this.n_id = this.o_root.a_index.length;
+	this.o_root.a_index[this.n_id] = this;
+	o_parent.a_children[n_order] = this;
+
+	this.a_children = [];
+	for (var i = 0; i < this.a_config.length - 2; i++)
+		new tree_item(this, i);
+
+	this.get_icon = item_get_icon;
+	this.open     = item_open;
+	this.select   = item_select;
+	this.init     = item_init;
+	this.upstatus = item_upstatus;
+	this.is_last  = function () { return this.n_order == this.o_parent.a_children.length - 1 };
+}
+
+function item_open (b_close) {
+	var o_idiv = get_element('i_div' + this.o_root.n_id + '_' + this.n_id);
+	if (!o_idiv) return;
+	
+	if (!o_idiv.innerHTML) {
+		var a_children = [];
+		for (var i = 0; i < this.a_children.length; i++)
+			a_children[i]= this.a_children[i].init();
+		o_idiv.innerHTML = a_children.join('');
+	}
+	o_idiv.style.display = (b_close ? 'none' : 'block');
+	
+	this.b_opened = !b_close;
+	var o_jicon = document.images['j_img' + this.o_root.n_id + '_' + this.n_id],
+		o_iicon = document.images['i_img' + this.o_root.n_id + '_' + this.n_id];
+	if (o_jicon) o_jicon.src = this.get_icon(true);
+	if (o_iicon) o_iicon.src = this.get_icon();
+	this.upstatus();
+}
+
+function item_select (b_deselect) {
+	if (!b_deselect) {
+		var o_olditem = this.o_root.o_selected;
+		this.o_root.o_selected = this;
+		if (o_olditem) o_olditem.select(true);
+	}
+	var o_iicon = document.images['i_img' + this.o_root.n_id + '_' + this.n_id];
+	if (o_iicon) o_iicon.src = this.get_icon();
+	get_element('i_txt' + this.o_root.n_id + '_' + this.n_id).style.fontWeight = b_deselect ? 'normal' : 'bold';
+	
+	this.upstatus();
+	return Boolean(this.a_config[1]);
+}
+
+function item_upstatus (b_clear) {
+	window.setTimeout('window.status="' + (b_clear ? '' : this.a_config[0] + (this.a_config[1] ? ' ('+ this.a_config[1] + ')' : '')) + '"', 10);
+}
+
+function item_init () {
+	var a_offset = [],
+		o_current_item = this.o_parent;
+	for (var i = this.n_depth; i > 1; i--) {
+		a_offset[i] = '<img src="' + this.o_root.a_tpl[o_current_item.is_last() ? 'icon_e' : 'icon_l'] + '" border="0" align="absbottom">';
+		o_current_item = o_current_item.o_parent;
+	}
+	return '<table cellpadding="0" cellspacing="0" border="0"><tr><td nowrap>' + (this.n_depth ? a_offset.join('') + (this.a_children.length
+		? '<a href="javascript: trees[' + this.o_root.n_id + '].toggle(' + this.n_id + ')" onmouseover="trees[' + this.o_root.n_id + '].mover(' + this.n_id + ')" onmouseout="trees[' + this.o_root.n_id + '].mout(' + this.n_id + ')"><img src="' + this.get_icon(true) + '" border="0" align="absbottom" name="j_img' + this.o_root.n_id + '_' + this.n_id + '"></a>'
+		: '<img src="' + this.get_icon(true) + '" border="0" align="absbottom">') : '') 
+		+ '<a href="' + this.a_config[1] + '" target="' + this.o_root.a_tpl['target'] + '" onclick="return trees[' + this.o_root.n_id + '].select(' + this.n_id + ')" ondblclick="trees[' + this.o_root.n_id + '].toggle(' + this.n_id + ')" onmouseover="trees[' + this.o_root.n_id + '].mover(' + this.n_id + ')" onmouseout="trees[' + this.o_root.n_id + '].mout(' + this.n_id + ')" class="t' + this.o_root.n_id + 'i" id="i_txt' + this.o_root.n_id + '_' + this.n_id + '"><img src="' + this.get_icon() + '" border="0" align="absbottom" name="i_img' + this.o_root.n_id + '_' + this.n_id + '" class="t' + this.o_root.n_id + 'im">' + this.a_config[0] + '</a></td></tr></table>' + (this.a_children.length ? '<div id="i_div' + this.o_root.n_id + '_' + this.n_id + '" style="display:none"></div>' : '');
+}
+
+function item_get_icon (b_junction) {
+	return this.o_root.a_tpl['icon_' + ((this.n_depth ? 0 : 32) + (this.a_children.length ? 16 : 0) + (this.a_children.length && this.b_opened ? 8 : 0) + (!b_junction && this.o_root.o_selected == this ? 4 : 0) + (b_junction ? 2 : 0) + (b_junction && this.is_last() ? 1 : 0))];
+}
+
+var trees = [];
+get_element = document.all ?
+	function (s_id) { return document.all[s_id] } :
+	function (s_id) { return document.getElementById(s_id) };

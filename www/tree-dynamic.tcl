@@ -33,62 +33,55 @@ set dead_decoration   [ad_parameter DeadDecoration   bm]
 set name [db_string name_query "
 select first_names||' '||last_name as name 
 from   cc_users 
-where  user_id = :user_id"]
+where  user_id = :viewed_user_id"]
+
+set name [regsub -all {'} $name {\'}]
 
 append js "
-USETEXTLINKS = 1
-aux0 = gFld(\"Bookmarks for $name\",\"<b>\")
+var TREE_ITEMS = \[
+	\['Bookmarks for $name', null,
 "
 
 set root_id [bm_get_root_folder_id [ad_conn package_id] $viewed_user_id]
+set prev_lev 1
+set prev_folder_p "f"
 
-db_foreach bookmark_items {
-    select   b.bookmark_id, 
-             b.url_id, 
-             b.local_title, 
-             last_live_date, 
-             last_checked_date,
-             b.parent_id, 
-             complete_url, 
-             b.folder_p
-    from     (select /*+INDEX(bm_bookmarks bm_bookmarks_local_title_idx)*/ 
-              bookmark_id, url_id, local_title, folder_p, 
-              level lev, parent_id, owner_id, rownum as ord_num 
-              from bm_bookmarks start with bookmark_id = :root_id 
-              connect by prior bookmark_id = parent_id) b, 
-             bm_urls
-    where exists (select 1 from bm_bookmarks where acs_permission.permission_p(bookmark_id, :user_id, 'read') = 't'
-            start with bookmark_id = b.bookmark_id connect by prior bookmark_id = parent_id)
-    and      b.bookmark_id <> :root_id
-    and      b.url_id = bm_urls.url_id(+)
-    order by ord_num
-} {
 
-    # In the ACS3 version parent_id empty meant root - I am setting parent_id
-    # to empty string here to make the old code work (pmarklun@arsdigita.com)
-    if { [string equal $parent_id $root_id] } {
-	set parent_id "0"
-    }
+db_foreach bookmark_items {} {
 
-    # decoration refers to color and font of the associated text
-    set decoration ""
+    append js [bm_close_js_brackets $prev_folder_p $prev_lev $lev]
+    set i_str [string repeat "\t" $lev]
+    set local_title [regsub -all {'} $local_title {\'}]
+    set complete_url [regsub -all {'} $complete_url {\'}]
 
-    # make dead links appear as definied in the .ini file
-    if {$last_checked_date != $last_live_date} {
-	append decoration $dead_decoration
-    }
-    
-    # make folder titles appear  as definied in the .ini file
+#    # decoration refers to color and font of the associated text
+#    set decoration ""
+#
+#    # make dead links appear as definied in the .ini file
+#    if {$last_checked_date != $last_live_date} {
+#	append decoration $dead_decoration
+#    }
+#    
+#    # make folder titles appear  as definied in the .ini file
+#    if {$folder_p == "t"} {
+#	append decoration $folder_decoration
+#    }
+
+   
     if {$folder_p == "t"} {
-	append decoration $folder_decoration
-    }
-
-    
-    if {$folder_p == "t"} {
-	append js "aux$bookmark_id = insFld(aux$parent_id, gFld(\"[philg_quote_double_quotes [string trim $local_title]]\", \"$decoration\", $bookmark_id))\n"
+	append js "$i_str\['[ad_quotehtml [string trim $local_title]]', null,\n"
     } else {
-	append js "aux$bookmark_id = insDoc(aux$parent_id, gLnk(1, \"[philg_quote_double_quotes [string trim $local_title]]\",\"[string trim [philg_quote_double_quotes $complete_url]]\",\"$decoration\", $bookmark_id))\n"
+	append js "$i_str\['[ad_quotehtml [string trim $local_title]]', '[string trim [ad_quotehtml $complete_url]]'],\n"
     }
+    set prev_lev $lev
+    set prev_folder_p $folder_p
+
+} if_no_rows {
+    append js "\t\t\['No bookmarks found'],\n\t],\n"
 }
+
+append js [bm_close_js_brackets $prev_folder_p $prev_lev 1]
+append js "];\n"
+
 
 doc_return  200 text/html "$js"

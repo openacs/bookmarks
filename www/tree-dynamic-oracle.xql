@@ -13,7 +13,8 @@
              last_checked_date,
              b.parent_id, 
              complete_url, 
-             b.folder_p
+	     b.folder_p,
+	     lev
     from     (select /*+INDEX(bm_bookmarks bm_bookmarks_local_title_idx)*/ 
               bookmark_id, url_id, local_title, folder_p, 
               level lev, parent_id, owner_id, rownum as ord_num 
