@@ -260,7 +260,7 @@ create unique index bm_in_closed_p_idx on bm_in_closed_p (bookmark_id, in_closed
 
 --KDK: here!
 
-CREATE FUNCTION url__new(integer,varchar,varchar,varchar,text,text,integer,varchar,integer)
+CREATE FUNCTION url__new (integer,varchar,varchar,varchar,text,text,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
        p_url_id ALIAS FOR $1;	
@@ -286,7 +286,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION url__delete(integer)
+CREATE FUNCTION url__delete (integer)
 RETURNS integer AS '
 DECLARE
        p_url_id ALIAS FOR $1;	
@@ -298,7 +298,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION url__insert_or_update(varchar,varchar,varchar,text,text,integer,varchar,integer)
+CREATE FUNCTION url__insert_or_update (varchar,varchar,varchar,text,text,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
        p_url_title ALIAS FOR $1;		-- in bm_urls.url_title%TYPE,
@@ -342,7 +342,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__new(varchar,varchar,varchar,text,text,integer,varchar,integer)
+CREATE FUNCTION bookmark__new (varchar,varchar,varchar,text,text,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE, 
@@ -407,7 +407,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__delete(integer)
+CREATE FUNCTION bookmark__delete (integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
@@ -488,7 +488,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__name(integer)
+CREATE FUNCTION bookmark__name (integer)
 RETURNS integer AS '
 DECLARE
 	p_object_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
@@ -503,7 +503,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__get_in_closed_p(integer,integer)
+CREATE FUNCTION bookmark__get_in_closed_p (integer,integer)
 RETURNS integer AS '
 DECLARE
 	p_new_parent_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
@@ -533,7 +533,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__update_in_closed_p_one_user(integer, integer)
+CREATE FUNCTION bookmark__update_in_closed_p_one_user (integer, integer)
 RETURNS integer AS '
 DECLARE
        p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,	     
@@ -594,7 +594,7 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__update_in_closed_p_all_users(integer, integer)
+CREATE FUNCTION bookmark__update_in_closed_p_all_users (integer, integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
@@ -861,5 +861,4 @@ BEGIN
 
 END;
 ' LANGUAGE 'plpgsql';
-
 

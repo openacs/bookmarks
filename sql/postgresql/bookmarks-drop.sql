@@ -75,15 +75,15 @@ DROP FUNCTION bm_bookmarks_update_tr ();
 -- (new, delete, name, get_in_closed_p, update_in_closed_p_one_user, update_in_closed_p_all_users,
 --  toggle_open_close, toggle_open_close_all, get_root_folder, new_root_folder, private_p, 
 --  update_private_p, initialize_in_closed_p)
-DROP FUNCTION bookmark__new(varchar,varchar,varchar,text,text,integer,varchar,integer);
-DROP FUNCTION bookmark__delete(integer);
-DROP FUNCTION bookmark__name(integer);
-DROP FUNCTION bookmark__get_in_closed_p(integer,integer);
-DROP FUNCTION bookmark__update_in_closed_p_one_user(integer, integer);
-DROP FUNCTION bookmark__update_in_closed_p_all_users(integer, integer);
-DROP FUNCTION bookmark__toggle_open_close(integer, integer);
-DROP FUNCTION bookmark__toggle_open_close_all(integer, boolean, integer);
-DROP FUNCTION bookmark__new_root_folder(integer, integer);
+DROP FUNCTION bookmark__new (varchar,varchar,varchar,text,text,integer,varchar,integer);
+DROP FUNCTION bookmark__delete (integer);
+DROP FUNCTION bookmark__name (integer);
+DROP FUNCTION bookmark__get_in_closed_p (integer,integer);
+DROP FUNCTION bookmark__update_in_closed_p_one_user (integer, integer);
+DROP FUNCTION bookmark__update_in_closed_p_all_users (integer, integer);
+DROP FUNCTION bookmark__toggle_open_close (integer, integer);
+DROP FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer);
+DROP FUNCTION bookmark__new_root_folder (integer, integer);
 DROP FUNCTION bookmark__get_root_folder (integer, integer);
 DROP FUNCTION bookmark__private_p (integer);
 DROP FUNCTION bookmark__update_private_p (integer, boolean);
