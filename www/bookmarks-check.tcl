@@ -143,7 +143,9 @@ foreach check_set $check_list {
 	incr dead_count
 
 	} else {
-	    ns_set put $checked_url last_live_date "sysdate"
+	    set set_last_live_date_to_now [db_map set_last_live_date_to_now]
+	    ns_set put $checked_url last_live_date $set_last_live_date_to_now
+	    # ns_set put $checked_url last_live_date "sysdate"
 	    set url_content ""
 	    if {![catch {ns_httpget $complete_url 3 1} url_content]} {
 
