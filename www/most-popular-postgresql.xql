@@ -7,9 +7,7 @@
 <fullquery name="popular_hosts">      
       <querytext>
       
-select distinct host_url,
-       (
-	select count(*) 
+select host_url, count(*) as n_bookmarks
 	from 
 	(
 		select 	o2.bookmark_id, o2.url_id
@@ -19,10 +17,9 @@ select distinct host_url,
 			and o2.tree_sortkey >= o1.tree_sortkey
 			and o2.tree_sortkey like (o1.tree_sortkey || '%')
 		order by o2.tree_sortkey
-	) b 
-	where b.url_id = bm_urls.url_id
-        and acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't') as n_bookmarks
-from  bm_urls
+	) b join bm_urls using (url_id)
+        where acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't'
+group by host_url
 order by n_bookmarks desc
 
       </querytext>
@@ -32,10 +29,8 @@ order by n_bookmarks desc
 <fullquery name="popular_urls">      
       <querytext>
       
-    select coalesce(url_title, complete_url) as local_title, 
-           complete_url, 
-                      (
-	select count(*) 
+    select complete_url as local_title, 
+           complete_url, count(*) as n_bookmarks
 	from 
 	(
 		select 	o2.bookmark_id, o2.url_id
@@ -45,10 +40,9 @@ order by n_bookmarks desc
 			and o2.tree_sortkey >= o1.tree_sortkey
 			and o2.tree_sortkey like (o1.tree_sortkey || '%')
 		order by o2.tree_sortkey
-	) b 
-	where b.url_id = bm_urls.url_id
-        and acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't') as n_bookmarks
-    from   bm_urls
+	) b join bm_urls using (url_id)
+        where acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't' 
+group by complete_url, local_title
     order by n_bookmarks desc
 
       </querytext>
