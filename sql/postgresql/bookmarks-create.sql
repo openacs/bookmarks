@@ -463,7 +463,7 @@ END;
 
 
 CREATE FUNCTION bookmark__name (integer)
-RETURNS integer AS '
+RETURNS varchar AS '
 DECLARE
 	p_object_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
 	v_name	bm_bookmarks.local_title%TYPE;
