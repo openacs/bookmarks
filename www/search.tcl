@@ -126,4 +126,4 @@ db_foreach bookmark_search_other {
 }
 
 
-ad_return_template
+

@@ -16,7 +16,7 @@ ad_page_contract {
 } {
     bookmark_id:integer
     {viewed_user_id:integer ""}
-    return_url
+    {return_url "."}
 
 } -validate {
 
