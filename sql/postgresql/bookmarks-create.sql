@@ -544,6 +544,7 @@ BEGIN
                           and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
 		)
 		AND in_closed_p_id = p_browsing_user_id
+	        AND bookmark_id <> v_parent_ids.bookmark_id
 		AND bookmark_id <> p_bookmark_id;
 	END LOOP;
 	RETURN 0;
