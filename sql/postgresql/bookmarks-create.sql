@@ -640,7 +640,6 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-
 CREATE FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer)
 RETURNS integer AS '
 DECLARE
@@ -655,12 +654,14 @@ BEGIN
 	WHERE bookmark_id IN 
 	(
 		SELECT bookmark_id FROM bm_bookmarks
-		WHERE tree_sortkey like
-		    (
-		    SELECT tree_sortkey || ''%''
-		    FROM bm_bookmarks 
-		    WHERE parent_id = p_root_id
-		    )
+		WHERE tree_level(tree_sortkey) > 1
+		and 
+		tree_sortkey like 
+		(
+			select tree_sortkey || ''%''
+			from bm_bookmarks where 
+			bookmark_id = p_root_id
+		)
 	); 
 
 	-- Update the value of in_closed_p for all bookmarks belonging to 
@@ -669,17 +670,8 @@ BEGIN
 	WHERE bookmark_id IN 
 	(
 		SELECT bookmark_id FROM bm_bookmarks 
-		WHERE tree_sortkey like
-		(
-		    SELECT tree_sortkey || ''%''
-		    FROM bm_bookmarks 
-		    WHERE parent_id in 
-		    (
-			SELECT bookmark_id FROM bm_bookmarks 
-			WHERE parent_id = p_root_id
-		    )
-		)
-	) 
+		WHERE  tree_level(tree_sortkey) > 2
+	)
 	AND in_closed_p_id = p_browsing_user_id;	 	
 
 	RETURN 0;
