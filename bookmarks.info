@@ -62,6 +62,8 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="content_page" path="www/admin/site-info.tcl"/>
             <file type="content_page" path="www/bm-master.adp"/>
             <file type="content_page" path="www/bm-master.tcl"/>
+            <file type="query_file" db_type="oracle" path="www/bookmark-access-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="www/bookmark-access-postgresql.xql"/>
             <file type="content_page" path="www/bookmark-access.tcl"/>
             <file type="content_page" path="www/bookmark-add-import.adp"/>
             <file type="content_page" path="www/bookmark-add-import.tcl"/>
