@@ -26,10 +26,7 @@ end;
  
 <fullquery name="new_url">      
       <querytext>
-	declare
-	   v_url_id integer;
-	begin
-	   v_url_id := url__new (
+	select url__new (
            		:url_id,
            		:local_title,
 	   		:host_url,
@@ -40,16 +37,13 @@ end;
            		:creation_ip,
 			null
 			);
-	return v_url_id;
-	end;
       </querytext>
 </fullquery>
 
  
 <fullquery name="bookmark_insert">      
       <querytext>
-begin
-	perform	   bookmark__new (
+select	   bookmark__new (
 			:bookmark_id,
 			:viewed_user_id,
 			:url_id,
@@ -59,10 +53,7 @@ begin
 			null,
 			:user_id,
 			:creation_ip,
-			null
-		);       
-	return '';
-end;
+			null);       
       </querytext>
 </fullquery>
 

@@ -182,7 +182,7 @@ foreach line $lines {
 
 		set url_id [db_nextval acs_object_id_seq]
 
-		if [catch {db_dml new_url "		
+		if [catch {db_exec_plsql new_url "		
 		declare
 		   dummy_var integer;
 		begin
@@ -216,7 +216,7 @@ foreach line $lines {
 	    } else {
 	    
 		# try to insert bookmark into user's list	
-		if [catch {db_dml bookmark_insert  "
+		if [catch {db_exec_plsql bookmark_insert  "
 		
 		declare
 		   dummy_var integer;
