@@ -56,74 +56,52 @@ set browsing_user_id [ad_conn user_id]
 
 set search_pattern "%[string toupper $search_text]%"
 
-multirow create my_list bookmark_id complete_url title
-multirow create others_list bookmark_id complete_url title admin_p
-
 
 # this select gets all of the users bookmarks that match the user's request
-set bookmark_count 0
-set bookmark_html ""
+template::list::create \
+	-name my_list -multirow my_list \
+	-elements {
+		title {
+			label "Matches from your bookmark list"
+			link_url_eval {$complete_url}
+		}
+		invoke {
+			label "Edit"
+			link_url_eval {[export_vars -base "bookmark_edit" {{bookmark_id $bookmark_id}} ]}
+			link_html { title "Edit bookmark" }
+			display_template {
+				<img src="/resources/acs-subsite/Edit16.gif" width="16" height="16" border="0">
+			}
+		}
+	} -no_data {
+		Your search returned no matches in your bookmark list.
+	}
 
-db_foreach bookmark_search_user {
-    select   bookmark_id, 
-             complete_url,
-             nvl(local_title, url_title) as title, 
-             meta_keywords, 
-             meta_description
-    from     (select bookmark_id, url_id, local_title, folder_p, owner_id 
-              from bm_bookmarks start with bookmark_id = :root_folder_id 
-              connect by prior bookmark_id = parent_id) b, 
-             bm_urls
-    where    owner_id = :browsing_user_id 
-    and      folder_p = 'f'
-    and      b.url_id = bm_urls.url_id 
-    and      b.bookmark_id <> :root_folder_id
-    and     (    upper(local_title)      like :search_pattern
-              or upper(url_title)        like :search_pattern
-              or upper(complete_url)     like :search_pattern
-              or upper(meta_keywords)    like :search_pattern
-              or upper(meta_description) like :search_pattern)
-    order by title
-} {
-    incr bookmark_count
-
-    multirow append my_list $bookmark_id $complete_url $title
-
-}
+db_multirow my_list bookmark_search_user {*SQL*}
 
 
 # thie query searches across other peoples bookmarks that the browsing user
 # has read permission on
+template::list::create \
+	-name others_list -multirow others_list \
+	-elements {
+		title {
+			label "Matches from other bookmark lists"
+			link_url_eval {$complete_url}
+		}
+		invoke {
+			label "Edit"
+			link_url_eval {[export_vars -base "bookmark_edit" {bookmark_id viewed_user_id return_url} ]}
+			link_html { title "Edit bookmark" }
+			display_template {
+				<if @others_list.admin_p@ eq "t">
+				<img src="/resources/acs-subsite/Edit16.gif" width="16" height="16" border="0">
+				</if>
+			}
+		}
+	} -no_data {
+		Your search returned no matches in other bookmark lists.
+	}
 
-set bookmark_count 0
-set bookmark_html ""
-
-db_foreach bookmark_search_other {
-    select   distinct complete_url,
-             bookmark_id,
-             nvl(local_title, url_title) as title, 
-             meta_keywords, 
-             meta_description, 
-             folder_p,
-             acs_permission.permission_p(bookmark_id, :browsing_user_id, 'admin') as admin_p
-    from     (select bookmark_id, url_id, local_title, folder_p, owner_id 
-              from bm_bookmarks start with bookmark_id in (select bookmark_id
-                           from bm_bookmarks where parent_id = :package_id)
-              connect by prior bookmark_id = parent_id) b, 
-             bm_urls
-    where    owner_id <> :browsing_user_id
-    and      acs_permission.permission_p(bookmark_id, :browsing_user_id, 'read') = 't'
-    and      folder_p  = 'f' 
-    and      b.url_id = bm_urls.url_id 
-    and     (   upper(local_title)      like :search_pattern
-             or upper(url_title)        like :search_pattern
-             or upper(complete_url)     like :search_pattern
-             or upper(meta_keywords)    like :search_pattern
-             or upper(meta_description) like :search_pattern)
-    order by title
-} {
-    multirow append others_list $bookmark_id $complete_url $title $admin_p
-}
-
-
+db_multirow others_list bookmark_search_other {*SQL*}
 
