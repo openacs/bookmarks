@@ -482,7 +482,7 @@ BEGIN
  		acs_object__delete(c_bookmark_id_one_level.bookmark_id);
  	    END LOOP;
  	END LOOP;
-
+	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
 
@@ -533,7 +533,6 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-
 CREATE FUNCTION bookmark__update_in_closed_p_one_user (integer, integer)
 RETURNS integer AS '
 DECLARE
@@ -545,7 +544,7 @@ BEGIN
 	-- the toggled folder in the tree for one particular user/session.
 
 	-- First set all in_closed_p flags to f ...
-	UPDATE bm_in_closed_p SET in_closed_p = ''f'' 
+	UPDATE bm_in_closed_p SET in_closed_p = FALSE
 	WHERE bookmark_id IN 
 	      (
 	      select bookmark_id from bm_bookmarks
@@ -560,7 +559,7 @@ BEGIN
 	AND in_closed_p_id = p_browsing_user_id;
 
         -- then set all in_closed_p flags to t that lie under a closed folder
-	UPDATE bm_in_closed_p set in_closed_p = ''t'' 
+	UPDATE bm_in_closed_p set in_closed_p = TRUE 
 	WHERE bookmark_id IN 
 	      (
 	      select bookmark_id from bm_bookmarks
@@ -578,7 +577,6 @@ BEGIN
 			  and bip.in_closed_p_id = p_browsing_user_id
 			  )
 		    )
-	      order by tree_sortkey
 	      INTERSECT
 	      select bookmark_id from bm_bookmarks
 	      where tree_sortkey like
@@ -587,12 +585,12 @@ BEGIN
 		    from bm_bookmarks 
 		    where bookmark_id = p_bookmark_id 
 		    )
-	      order by tree_sortkey
 	      )
 	AND in_closed_p_id = p_browsing_user_id;
-
+	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
+
 
 
 CREATE FUNCTION bookmark__update_in_closed_p_all_users (integer, integer)
@@ -613,10 +611,9 @@ BEGIN
 	    -- under the folder
 	    update_in_closed_p_one_user (p_bookmark_id, c_viewing_in_closed_p_ids.in_closed_p_id);
 	END LOOP;
-
+	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
-
 
 CREATE FUNCTION bookmark__toggle_open_close (integer, integer)
 RETURNS integer AS '
@@ -628,7 +625,7 @@ BEGIN
 	-- Toggle the closed_p flag
 	UPDATE bm_in_closed_p SET closed_p = 
 	       (
-	       SELECT CASE WHEN closed_p = ''t'' THEN ''f'' ELSE ''t''
+	       SELECT CASE WHEN closed_p = TRUE THEN FALSE ELSE TRUE END
 	       FROM bm_in_closed_p 
 	       WHERE bookmark_id = p_bookmark_id
 	       AND in_closed_p_id = p_browsing_user_id
@@ -638,10 +635,11 @@ BEGIN
 
 	-- Now update the in_closed_p status for this user for all bookmarks under
 	-- the toggled folder
-	update_in_closed_p_one_user (p_bookmark_id, p_browsing_user_id);
-
+	perform bookmark__update_in_closed_p_one_user (p_bookmark_id, p_browsing_user_id);
+	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
+
 
 
 CREATE FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer)
@@ -686,7 +684,7 @@ BEGIN
 		) 
 	AND in_closed_p_id = p_browsing_user_id;	 	
 
-
+	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
 
@@ -814,14 +812,14 @@ DECLARE
 
 BEGIN
 
-	IF p_private_p = ''f'' THEN
+	IF p_private_p = FALSE THEN
 	   -- Turn on security inheritance
-	   UPDATE acs_objects SET security_inherit_p = ''t'' WHERE object_id = p_bookmark_id;
+	   UPDATE acs_objects SET security_inherit_p = TRUE WHERE object_id = p_bookmark_id;
 	
 	ELSE
 		-- Private case
 		-- turn off inheritance
-		UPDATE acs_objects SET security_inherit_p = ''f'' WHERE object_id = p_bookmark_id;
+		UPDATE acs_objects SET security_inherit_p = FALSE WHERE object_id = p_bookmark_id;
 
 		-- Grant admin rights to the owner
 		SELECT owner_id INTO v_owner_id FROM bm_bookmarks WHERE bookmark_id = p_bookmark_id;	
@@ -832,7 +830,7 @@ BEGIN
 		''admin'');
 	    
 	END IF;
-
+	RETURN 0;
 
 END;
 ' LANGUAGE 'plpgsql';
