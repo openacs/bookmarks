@@ -842,7 +842,7 @@ DECLARE
  	p_in_closed_p_id ALIAS FOR $2;	-- in users.user_id%TYPE	
 	v_count_in_closed_p integer;
 	v_count_bookmarks integer;
-
+	c_bookmark_ids RECORD;
 BEGIN
 
 	   FOR c_bookmark_ids IN
