@@ -53,8 +53,10 @@ db_foreach bookmark_items {} {
     set i_str [string repeat "\t" $lev]
     set local_title [regsub -all {\\} $local_title {\\\\}]
     set local_title [regsub -all {'} $local_title {\'}]
+    set local_title [regsub -all {[[:cntrl:]]} $local_title {}]
     set complete_url [regsub -all {\\} $complete_url {\\\\}]
     set complete_url [regsub -all {'} $complete_url {\'}]
+    set complete_url [regsub -all {[[:cntrl:]]} $complete_url {}]
 
 
 #    # decoration refers to color and font of the associated text
@@ -70,7 +72,7 @@ db_foreach bookmark_items {} {
 #	append decoration $folder_decoration
 #    }
 
-   
+
     if {$folder_p == "t"} {
 	append js "$i_str\['[ad_quotehtml [string trim $local_title]]', null,\n"
     } else {
