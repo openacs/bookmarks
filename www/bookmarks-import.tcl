@@ -50,18 +50,19 @@ if {![regexp {<DL>(.*)</DL>} $contents match format_p]} {
 if { [info exists error_list] } {
     set n_errors [llength $error_list]
     ad_return_template "complaint"
+    ad_script_abort
 }
 
 
 
 # Let's check for a doubleclick first
 if { [db_string dbclick_check "
-select count(bookmark_id) as n_existing
-from   bm_bookmarks 
-where  bookmark_id = :bookmark_id"] != 0 } {
+ select count(bookmark_id) as n_existing
+ from   bm_bookmarks 
+ where  bookmark_id = :bookmark_id"] != 0 } {
     # must have doubleclicked
     ad_returnredirect $return_url
-    return
+    ad_script_abort
 }
 
 set page_title "Import Statistics"
@@ -132,7 +133,7 @@ foreach line $lines {
 		    </pre>
 		    </blockquote>"]
 		    ad_return_template "error"
-		    return 
+                    ad_script_abort
 		} else {
 		    # success in inserting folder into bm_bookmarks
 		    lappend import_list "Inserting folder \"$local_title\""
@@ -245,10 +246,11 @@ foreach line $lines {
 			    </pre>
 			    </blockquote>"]
 			    ad_return_template "error" 
-			    return 
+                            ad_script_abort
 			} else { 
 			    # assume this was a double click
 			    ad_returnredirect $return_url
+                            ad_script_abort
 			} 
 		    } else {
 			# insert into bm_bookmarks succeeded
@@ -270,5 +272,3 @@ if { [info exists import_list] } {
     lappend import_list "Hmmm...the file seemed ok, but nothing was imported. Sorry!"
 }
 
-
-ad_return_template

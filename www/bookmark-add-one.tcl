@@ -110,7 +110,7 @@ set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_url_vars viewed_user_id
 set user_id [ad_conn user_id]
 if { $user_id == "0" } {
     ad_returnredirect "/register/?return_url=$this_url_urlenc"
-    return
+    ad_script_abort
 }
 
 
@@ -128,10 +128,11 @@ set export_form_vars_html [export_form_vars return_url local_title complete_url 
 # ask for a confirmation
 if { $url_unreachable_p == "f" && $user_provided_title_p == "t"} {
     ad_returnredirect "bookmark-add-one-2?[export_url_vars return_url local_title complete_url bookmark_id meta_description meta_keywords url_title viewed_user_id parent_id]"
-    return
-} else {
-    ad_return_template
-}
+    ad_script_abort
+} 
+  
+ad_return_template
+
 
 
 

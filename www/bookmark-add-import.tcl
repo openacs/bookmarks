@@ -63,7 +63,7 @@ set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_url_vars viewed_user_id
 set user_id [ad_conn user_id]
 if { $user_id == "0" } {
     ad_returnredirect "/register/?return_url=$this_url_urlenc"
-    return
+    ad_script_abort
 }
 
 set full_bookmark_add_url "[ad_parameter -package_id [ad_acs_kernel_id] SystemURL][ad_conn package_url]bookmark-add-import"

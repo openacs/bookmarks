@@ -69,7 +69,7 @@ ad_proc bm_handle_bookmark_double_click { bookmark_id errmsg return_url } {
 	
 	if {$dbclick_p == "1"} {   
 	    ad_returnredirect $return_url
-	    return
+            ad_script_abort
 	} else {
 
 	    upvar \#[template::adp_level] n_errors n_errors
@@ -81,7 +81,7 @@ ad_proc bm_handle_bookmark_double_click { bookmark_id errmsg return_url } {
 	      uplevel \#[template::adp_level] {
   		ad_return_template "complaint"
   	    }
-	    return -code return
+            ad_script_abort
 	}
 }
 
