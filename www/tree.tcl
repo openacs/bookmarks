@@ -14,8 +14,8 @@ doc_return 200 text/html "<html>
 </head>
 
     <frameset rows=\"58,*\" frameborder=yes border=1 framespacing=1>
-      <frame src=\"top-frame.tcl?viewed_user_id=$viewed_user_id&write_p=$write_p\" name=top marginwidth=0 marginheight=0 scrollbars=no>
-      <frame src=\"tree-frame.tcl?viewed_user_id=$viewed_user_id\" name=main marginwidth=4 marginheight=0>
+      <frame src=\"top-frame?viewed_user_id=$viewed_user_id&write_p=$write_p\" name=top marginwidth=0 marginheight=0 scrollbars=no>
+      <frame src=\"tree-frame?viewed_user_id=$viewed_user_id\" name=main marginwidth=4 marginheight=0>
     </frameset>
 
 <body bgcolor=white>
