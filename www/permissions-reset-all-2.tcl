@@ -11,7 +11,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } { 
     root_folder_id:integer
     viewed_user_id:integer

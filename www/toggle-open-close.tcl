@@ -21,7 +21,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } {
     {bookmark_id:integer ""}
     {action ""}

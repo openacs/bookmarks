@@ -13,7 +13,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 }
 
 set page_title "View other users bookmarks"

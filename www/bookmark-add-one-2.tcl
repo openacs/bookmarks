@@ -15,7 +15,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } { 
     return_url
     viewed_user_id:integer

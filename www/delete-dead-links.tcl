@@ -13,7 +13,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } {
     deleteable_link:integer,notnull,multiple
     {return_url:trim ""}

@@ -10,7 +10,7 @@ ad_page_contract {
     in December 2000.
 
     @creation-date December 2000
-    @cvs-id $Id:
+    @cvs-id $Id$
 } -properties {
     page_title:onevalue
     context:onevalue
