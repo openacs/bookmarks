@@ -5,6 +5,20 @@
 // Date: 11-12-2002 (mm-dd-yyyy)
 // Notes: This script is free. Visit official site for further details.
 
+function expand_all () {
+	for (var i = 1; i < trees[0].a_index.length; i++) {
+		var o_item = trees[0].a_index[i];
+		if (!o_item.b_opened) o_item.open(o_item.b_opened);
+	}
+}
+
+function collapse_all () {
+	for (var i = 1; i < trees[0].a_index.length; i++) {
+		var o_item = trees[0].a_index[i];
+		if (o_item.b_opened) o_item.open(o_item.b_opened);
+	}
+}
+
 function tree (a_items, a_template) {
 
 	this.a_tpl      = a_template;
