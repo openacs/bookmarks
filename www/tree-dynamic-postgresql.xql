@@ -11,6 +11,7 @@ FIX ME OUTER JOIN
 FIX ME ROWNUM
 
     select   b.bookmark_id, 
+
              b.url_id, 
              b.local_title, 
              last_live_date, 
@@ -35,3 +36,4 @@ FIX ME ROWNUM
 
  
 </queryset>
+
