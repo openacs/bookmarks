@@ -13,7 +13,7 @@
     </database-support>
         <owner url="mailto:pmarklun@arsdigita.com">Peter Marklund</owner>
         <summary>This module lets you manage your bookmarks on the web and enables sharing of bookmarks between people in a community (one ACS installation).</summary>
-        <release-date>2001-02-23</release-date>
+        <release-date>2001-02-23 00:00:00-08</release-date>
         <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
         <description format="text/plain">This version contains a number of bugfixes and minor improvements over the 4.X alpha versions and has been rigorously tested. 
 
@@ -123,10 +123,10 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="content_page" path="www/tree.tcl"/>
         </files>
         <parameters>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively urls that will be shown on the most popular bookmarks page"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLDescriptionMaxLength"  default="1000" description="Max length of the meta description that is fetched from the html code of a page and stored in the database"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLKeywordsMaxLength"  default="1000" description="Max length of the keyword string that is fetched from an HTML page and stored in the database"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLTitleMaxLength"  default="100" description="Max length of the title fetched from the title-tag of an html page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLKeywordsMaxLength"  default="1000" description="Max length of the keyword string that is fetched from an HTML page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLDescriptionMaxLength"  default="1000" description="Max length of the meta description that is fetched from the html code of a page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively urls that will be shown on the most popular bookmarks page"/>
         </parameters>
 
     </version>
