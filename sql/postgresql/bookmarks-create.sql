@@ -517,7 +517,6 @@ DECLARE
 BEGIN
 	-- Update the in_closed_p flag of bookmarks and folders that lie under
 	-- the toggled folder in the tree for one particular user/session.
-
 	-- First set all in_closed_p flags to f ...
 	UPDATE bm_in_closed_p SET in_closed_p = FALSE
 	WHERE bookmark_id IN 
@@ -532,36 +531,37 @@ BEGIN
 	      order by tree_sortkey
 	      )
 	AND in_closed_p_id = p_browsing_user_id;
-
-        -- then set all in_closed_p flags to t that lie under a closed folder
-	UPDATE bm_in_closed_p set in_closed_p = TRUE 
-	WHERE bookmark_id IN 
-	      (
-	      select bookmark_id from bm_bookmarks
-	      where tree_sortkey like
-		    (
-		    select tree_sortkey || ''%''
-		    from bm_bookmarks 
-		    where parent_id in 
-			  (
-			  select bm.bookmark_id from 
-			  bm_bookmarks bm, bm_in_closed_p bip
-			  where bm.bookmark_id = bip.bookmark_id
-			  and bm.folder_p = ''t'' 
-			  and bip.closed_p = ''t''
-			  and bip.in_closed_p_id = p_browsing_user_id
-			  )
-		    )
-	      INTERSECT
-	      select bookmark_id from bm_bookmarks
-	      where tree_sortkey like
-		    (
-		    select tree_sortkey || ''%''
-		    from bm_bookmarks 
-		    where bookmark_id = p_bookmark_id 
-		    )
-	      )
-	AND in_closed_p_id = p_browsing_user_id;
+	-- then set all in_closed_p flags to t that lie under a closed folder
+	FOR c_parent_ids IN
+	    select bm.bookmark_id from 
+	    bm_bookmarks bm, bm_in_closed_p bip
+	    where bm.bookmark_id = bip.bookmark_id
+	    and bm.folder_p = ''t'' 
+	    and bip.closed_p = ''t''
+	    and bip.in_closed_p_id = p_browsing_user_id
+	LOOP
+		UPDATE bm_in_closed_p set in_closed_p = TRUE 
+		WHERE bookmark_id IN 
+		(
+			select bookmark_id from bm_bookmarks
+			where tree_sortkey like
+			(
+				select tree_sortkey || ''%''
+				from bm_bookmarks 
+				where bookmark_id = c_parent_ids.bookmark_id
+			)
+		INTERSECT
+			select bookmark_id from bm_bookmarks
+			where tree_sortkey like
+			(
+				select tree_sortkey || ''%''
+				from bm_bookmarks 
+				where bookmark_id = p_bookmark_id 
+			)
+		)
+		AND in_closed_p_id = p_browsing_user_id
+		AND bookmark_id <> p_bookmark_id;
+	END LOOP;
 	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
