@@ -15,6 +15,7 @@
 			select tree_sortkey || '%'
 			from bm_bookmarks
 			where parent_id = :package_id
+			and owner_id = :user_id
 			)
 		order by tree_sortkey
 		)
@@ -34,12 +35,13 @@
 	select tree_sortkey || '%'
 	from bm_bookmarks
 	where parent_id = :package_id
+	and owner_id = :user_id
 	)
     and folder_p = 't'
     and owner_id = :user_id
     and bookmark_id <> :bookmark_id
     and parent_id <> :package_id
-    and acs_permission__permission_p(bookmark_id, :user_id, 'write') = 't'
+    and acs_permission__permission_p(:bookmark_id, :user_id, 'write') = 't'
     $exclude_folders
     order by tree_sortkey
       </querytext>

@@ -368,7 +368,7 @@ BEGIN
 		      now(),
 		      p_creation_user,
 		      p_creation_ip,
-		      p_context_id
+		      p_parent_id
 		      );
 
 	if p_last_access_date is null then
