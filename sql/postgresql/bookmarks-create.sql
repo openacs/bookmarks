@@ -107,6 +107,13 @@ create index bm_bookmarks_access_date_idx on bm_bookmarks (parent_id, last_acces
 -- With index on tree_sortkey
 create index bm_bookmarks_idx1 on bm_bookmarks(tree_sortkey);
 
+create function bm_bookmarks_get_tree_sortkey(integer) returns varbit as '
+declare
+  p_bookmark_id    alias for $1;
+begin
+  return tree_sortkey from bm_bookmarks where bookmark_id = p_bookmark_id;
+end;' language 'plpgsql';
+
 create function bm_bookmarks_insert_tr () returns opaque as '
 declare
         v_parent_sk     varbit default null;
@@ -721,10 +728,9 @@ BEGIN
 	SELECT CASE WHEN count(*)=0 THEN ''f'' ELSE ''t'' END INTO v_private_p
 	FROM acs_objects, 
 	(
-		SELECT bm2.bookmark_id FROM bm_bookmarks bm, bm_bookmarks bm2
-		WHERE bm.bookmark_id = p_bookmark_id
-                  and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
-                  and tree_ancestor_p(bm2.tree_sortkey, bm.tree_sortkey)
+		SELECT bm.bookmark_id FROM bm_bookmarks bm,
+                  (SELECT tree_ancestor_keys(bm_bookmarks_get_tree_sortkey(p_bookmark_id)) as tree_sortkey) parents
+		WHERE bm.tree_sortkey = parents.tree_sortkey
 	) b
 	WHERE b.bookmark_id = acs_objects.object_id
 	AND acs_objects.security_inherit_p = ''f'';
