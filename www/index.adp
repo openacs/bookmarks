@@ -14,12 +14,12 @@ set user_name_url [ad_urlencode @user_name@]
 
 <if @viewed_user_id@ ne "0">
 
-[<if @write_p@ eq "t"><a href=bookmark-add-import?return_url=@return_url_urlenc@&viewed_user_id=@viewed_user_id@>Add / Import</a> |</if>
+[<if @write_p@ eq "t"><if @browsing_user_id@ ne @viewed_user_id@><strong>Not your account!</strong> </if><a href=bookmark-add-import?return_url=@return_url_urlenc@&viewed_user_id=@viewed_user_id@>Add / Import</a> |</if>
 <if @viewed_user_id@ eq @browsing_user_id@>
 <a href=bookmarks-export?viewed_user_id=@viewed_user_id@>Export</a> |</if>
 <if @write_p@ eq "t"> <a href=folder-add?return_url=index&viewed_user_id=@viewed_user_id@>Create New Folder</a> |</if>
 <a href=bookmarks-check?return_url=index&viewed_user_id=@viewed_user_id@>Check Links</a> |
-<a href="javascript:launch_window('tree?viewed_user_id=@viewed_user_id@&write_p=@write_p@&user_name=@user_name_url@')">Javascript version</a> |
+<if @browsing_user_id@ eq @viewed_user_id@><a href="javascript:launch_window('tree?viewed_user_id=@viewed_user_id@&write_p=@write_p@&user_name=@user_name_url@')">Javascript version</a> |</if>
 <a href=bookmarks-user-list>View bookmarks of other users</a> 
 <if @root_admin_p@ eq "1"> | <a href="bookmark-permissions?viewed_user_id=@viewed_user_id@&user_name=@user_name_url@">Manage access permissions on all bookmarks</a> </if>
 ] 
