@@ -43,7 +43,7 @@ Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_
 <table bgcolor=$folder_bgcolor cellpadding=0 cellspacing=0 border=0 width="100%">
 <tr>
 <td width="100%"><img border=0 src=pics/ftv2folderopen.gif
-align=top><b> Bookmarks for @user_name@ </b> &nbsp; &nbsp;
+align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 <a href=toggle-open-close?action=close_all&viewed_user_id=@viewed_user_id@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id@>Close</a>/<a href=toggle-open-close?action=open_all&viewed_user_id=@viewed_user_id@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id@>Open</a> All Folders</td>
 </tr>
 </table>
@@ -63,7 +63,7 @@ align=top><b> Bookmarks for @user_name@ </b> &nbsp; &nbsp;
 	append decoration_close "</b>"
     } 
 
-    regsub -all {'|"} @bookmark.bookmark_title@ {} javascript_title
+    regsub -all {'|"} @bookmark.bookmark_title;noquote@ {} javascript_title
 
     set action_bar ""
 
@@ -101,7 +101,7 @@ align=top><b> Bookmarks for @user_name@ </b> &nbsp; &nbsp;
     <tr>
     <td valign=top><img src="pics/spacer.gif" width=<%=[expr [expr @bookmark.indentation@ - 1] * 24]%> height=1></td>
     <td><a href="@url@"><img width=24 height=22 border=0 src="<%= $image_url %>" align=top></a></td>
-    <td width="100%"><a href="@url@">@decoration_open@@bookmark.bookmark_title@@decoration_close@</a> @action_bar@ @private_text@</td>
+    <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>
     </tr>
     </table>
 	  
