@@ -11,15 +11,10 @@
              coalesce(local_title, url_title) as title, 
              meta_keywords, 
              meta_description
-    from     (select bookmark_id, url_id, local_title, folder_p, owner_id 
-              	from bm_bookmarks
-		where tree_sortkey like
-			(
-			select tree_sortkey || '%'
-			from bm_bookmarks
-			where bookmark_id = :root_folder_id
-			)
-		order by tree_sortkey
+    from     (select bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, bm.owner_id 
+              	from bm_bookmarks bm, bm_bookmarks bm2
+		where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+                  and bm2.bookmark_id = :root_folder_id
 		) b, 
              bm_urls
     where    owner_id = :browsing_user_id 
@@ -54,8 +49,7 @@ from
 		from bm_bookmarks o1, bm_bookmarks o2
 		where 
 			o1.parent_id = :package_id
-			and o2.tree_sortkey >= o1.tree_sortkey
-			and o2.tree_sortkey like (o1.tree_sortkey || '%')
+			and o2.tree_sortkey between o1.tree_sortkey and tree_right(o1.tree_sortkey)
 		order by o2.tree_sortkey
 	) b join bm_urls using (url_id) 
 where    owner_id <> :browsing_user_id

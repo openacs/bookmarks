@@ -14,9 +14,7 @@ select host_url, count(*) as n_bookmarks
 		from bm_bookmarks o1, bm_bookmarks o2
 		where 
 			o1.parent_id = :root_folder_id
-			and o2.tree_sortkey >= o1.tree_sortkey
-			and o2.tree_sortkey like (o1.tree_sortkey || '%')
-		order by o2.tree_sortkey
+			and o2.tree_sortkey between o1.tree_sortkey and tree_right(o1.tree_sortkey)
 	) b join bm_urls using (url_id)
         where acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't'
 group by host_url
@@ -37,9 +35,7 @@ order by n_bookmarks desc
 		from bm_bookmarks o1, bm_bookmarks o2
 		where 
 			o1.parent_id = :root_folder_id
-			and o2.tree_sortkey >= o1.tree_sortkey
-			and o2.tree_sortkey like (o1.tree_sortkey || '%')
-		order by o2.tree_sortkey
+			and o2.tree_sortkey between o1.tree_sortkey and tree_right(o1.tree_sortkey)
 	) b join bm_urls using (url_id)
         where acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'read') = 't' 
 group by complete_url, local_title

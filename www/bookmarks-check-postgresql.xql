@@ -11,14 +11,12 @@
        	coalesce(url_title, complete_url) as url_title
        	from bm_urls join
 	(
-		select bookmark_id, url_id from bm_bookmarks
-		where tree_sortkey like 
-			       (
-				select tree_sortkey || '%' from bm_bookmarks
-				where bookmark_id= :root_folder_id
-			       )
-			       order by tree_sortkey
+		select bm.bookmark_id, bm.url_id, bm.tree_sortkey
+                from bm_bookmarks bm, bm_bookmarks bm2
+		where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey) 
+                  and bm2.parent_id = :root_folder_id
 	) bm on (bm.url_id=bm_urls.url_id)
+        order by bm.tree_sortkey
       
 	</querytext>
 </fullquery>

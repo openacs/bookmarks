@@ -25,19 +25,15 @@
 	         b.parent_id,
                  bm_urls.complete_url, 
 	         b.folder_p
-        from     (select bookmark_id, url_id, local_title, folder_p, 
-		  parent_id, owner_id from bm_bookmarks 
-		  where tree_sortkey like
-			(
-			select tree_sortkey || '%'
-			from bm_bookmarks
-			where bookmark_id = :root_folder_id
-			)
-		 order by tree_sortkey) b left join bm_urls using (url_id),
+        from     (select bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, 
+		  bm.parent_id, bm.owner_id, bm.tree_sortkey from bm_bookmarks bm, bm_bookmarks bm2
+		  where bm2.bookmark_id = :root_folder_id
+                    and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+		 ) b left join bm_urls using (url_id),
 	         acs_objects
         where    owner_id       = :user_id
 	and      acs_objects.object_id = b.bookmark_id
-	order by tree_sortkey
+	order by b.tree_sortkey
     
       </querytext>
 </fullquery>

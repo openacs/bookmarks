@@ -16,8 +16,7 @@ cc_users u,
 	select o2.bookmark_id, o2.url_id, o2.folder_p, o2.owner_id
 	from bm_bookmarks o1, bm_bookmarks o2
 	where o1.parent_id = :package_id
-	and o2.tree_sortkey >= o1.tree_sortkey
-	and o2.tree_sortkey like (o1.tree_sortkey || '%')
+	and o2.tree_sortkey between o1.tree_sortkey and tree_right(o1.tree_sortkey)
 	order by o2.tree_sortkey
 ) b
 where   u.object_id = b.owner_id

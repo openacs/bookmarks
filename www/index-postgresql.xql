@@ -42,12 +42,11 @@
         from 
           bm_in_closed_p cross join
           ((( bm_urls u right join (
-	    select $index_order bookmark_id, url_id, local_title, folder_p, 
- 	      tree_level(tree_sortkey) as lev, parent_id, tree_sortkey 
-	    from bm_bookmarks
-	    where tree_sortkey like (select tree_sortkey || '%'
-		                     from bm_bookmarks
-		                     where bookmark_id = :root_folder_id)
+	    select $index_order bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, 
+ 	      tree_level(bm.tree_sortkey) as lev, bm.parent_id, bm.tree_sortkey 
+	    from bm_bookmarks bm, bm_bookmarks bm2
+	    where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+              and bm2.bookmark_id = :root_folder_id
             ) b on (u.url_id=b.url_id)) left join (
 	    select distinct object_id
             from all_object_party_privilege_map
@@ -61,15 +60,14 @@
           and bm_in_closed_p.in_closed_p = 'f'
           and bm_in_closed_p.in_closed_p_id = :in_closed_p_id
           and exists (select 1
-                      from bm_bookmarks
+                      from bm_bookmarks bm, bm_bookmarks bm2
                       where exists (select 1
                                     from all_object_party_privilege_map 
 		                    where object_id = bookmark_id
                                       and party_id = :browsing_user_id
 		                      and privilege = 'read')
-	              and tree_sortkey like (select tree_sortkey || '%'
-		                             from bm_bookmarks
-		                             where bookmark_id = b.bookmark_id))
+	              and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+                      and bm2.bookmark_id = b.bookmark_id)
           and b.bookmark_id <> :root_folder_id
         order by b.tree_sortkey
       </querytext>
@@ -85,12 +83,11 @@
           b.lev as indentation
           $private_select
         from bm_in_closed_p cross join ( 
-	  bm_urls u right join (select $index_order bookmark_id, url_id, local_title, folder_p, 
- 		                  tree_level(tree_sortkey) as lev, parent_id, tree_sortkey 
-	                        from bm_bookmarks
-	                        where tree_sortkey like (select tree_sortkey || '%'
-			                                 from bm_bookmarks
-			                                 where bookmark_id = :root_folder_id)) b on (u.url_id=b.url_id))
+	  bm_urls u right join (select $index_order bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, 
+ 		                  tree_level(bm.tree_sortkey) as lev, bm.parent_id, bm.tree_sortkey 
+	                        from bm_bookmarks bm, bm_bookmarks bm2
+	                        where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+			          and bm2.bookmark_id = :root_folder_id) b on (u.url_id=b.url_id))
         where bm_in_closed_p.bookmark_id = b.bookmark_id
           and bm_in_closed_p.in_closed_p = 'f'
           and bm_in_closed_p.in_closed_p_id = :in_closed_p_id

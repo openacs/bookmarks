@@ -85,7 +85,7 @@ create table bm_bookmarks (
 				references acs_objects (object_id),
 	-- When the bookmark was last clicked on
 	last_access_date	timestamp,
-        tree_sortkey            varchar(4000)
+        tree_sortkey            varbit
 );
 
 
@@ -109,27 +109,25 @@ create index bm_bookmarks_idx1 on bm_bookmarks(tree_sortkey);
 
 create function bm_bookmarks_insert_tr () returns opaque as '
 declare
-        v_parent_sk     varchar;
-        max_key         varchar;
+        v_parent_sk     varbit default null;
+        v_max_value     integer;
 begin
         if new.parent_id is null then 
-            select max(tree_sortkey) into max_key 
+            select max(tree_leaf_key_to_int(tree_sortkey)) into v_max_value 
               from bm_bookmarks 
              where parent_id is null;
-
-            v_parent_sk := '''';
         else 
-            select max(tree_sortkey) into max_key 
+            select max(tree_leaf_key_to_int(tree_sortkey)) into v_max_value 
               from bm_bookmarks 
              where parent_id = new.parent_id;
 
-            select coalesce(max(tree_sortkey),'''') into v_parent_sk 
+            select tree_sortkey into v_parent_sk 
               from bm_bookmarks 
              where bookmark_id = new.parent_id;
         end if;
 
 
-        new.tree_sortkey := v_parent_sk || ''/'' || tree_next_key(max_key);
+        new.tree_sortkey := tree_next_key(v_parent_sk, v_max_value);
 
         return new;
 
@@ -142,8 +140,8 @@ execute procedure bm_bookmarks_insert_tr ();
 
 create function bm_bookmarks_update_tr () returns opaque as '
 declare
-        v_parent_sk     varchar;
-        max_key         varchar;
+        v_parent_sk     varbit default null;
+        v_max_value     integer;
         ctx_id          integer;
         v_rec           record;
         clr_keys_p      boolean default ''t'';
@@ -158,12 +156,12 @@ begin
 
         for v_rec in select bookmark_id
                        from bm_bookmarks 
-                      where tree_sortkey like new.tree_sortkey || ''%''
+                      where tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey)
                    order by tree_sortkey
         LOOP
             if clr_keys_p then
                update bm_bookmarks set tree_sortkey = null
-               where tree_sortkey like new.tree_sortkey || ''%'';
+               where tree_sortkey between new.tree_sortkey and tree_right(new.tree_sortkey);
                clr_keys_p := ''f'';
             end if;
             
@@ -172,23 +170,21 @@ begin
              where bookmark_id = v_rec.bookmark_id;
 
             if ctx_id is null then 
-                select max(tree_sortkey) into max_key
+                select max(tree_leaf_key_to_int(tree_sortkey)) into v_max_value
                   from bm_bookmarks 
                  where parent_id is null;
-
-                v_parent_sk := '''';
             else 
-                select max(tree_sortkey) into max_key
+                select max(tree_leaf_key_to_int(tree_sortkey)) into v_max_value
                   from bm_bookmarks 
                  where parent_id = ctx_id;
 
-                select coalesce(max(tree_sortkey),'''') into v_parent_sk 
+                select tree_sortkey into v_parent_sk 
                   from bm_bookmarks 
                  where bookmark_id = ctx_id;
             end if;
 
             update bm_bookmarks 
-               set tree_sortkey = v_parent_sk || ''/'' || tree_next_key(max_key)
+               set tree_sortkey = tree_next_value(v_parent_sk, v_max_value)
              where bookmark_id = v_rec.bookmark_id;
 
         end LOOP;
@@ -420,15 +416,15 @@ BEGIN
 	    select bookmark_id,
 	    (select case when count(*)=0 then 1 else 0 end from 
 	    bm_bookmarks where parent_id = bm.bookmark_id) as is_leaf_p
-	    from bm_bookmarks bm
-	    where tree_sortkey like
-	    (
-		select tree_sortkey || ''%''
-		from bm_bookmarks
-		where bookmark_id = p_bookmark_id
-	    )
+	    from bm_bookmarks bm, bm_bookmarks bm2
+            where bm2.bookmark_id = p_bookmark_id
+	      and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
             order by tree_level(tree_sortkey) desc, is_leaf_p desc, tree_sortkey
  	LOOP
+
+            -- DRB: This query is insane in both its PG and Oracle versions but I do not
+            -- have time to improve it at the moment ... 
+
 	    FOR c_bookmark_id_one_level IN 
 	    select bookmark_id
 	    from bm_bookmarks bm_outer
@@ -442,13 +438,10 @@ BEGIN
 	    )
 	    and bm_outer.bookmark_id in 
 	    (
-		select bookmark_id from bm_bookmarks 
-		where tree_sortkey like 
-		(
-			select tree_sortkey || ''%'' from bm_bookmarks
-			where bookmark_id = p_bookmark_id
-		)
-		order by tree_sortkey
+		select bm.bookmark_id from bm_bookmarks bm, bm_bookmarks bm2
+		where bm2.bookmark_id = p_bookmark_id
+                  and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey) 
+		order by bm.tree_sortkey
 	    )
  	    LOOP
 		delete from acs_permissions where object_id = c_bookmark_id_one_level.bookmark_id;
@@ -491,15 +484,10 @@ BEGIN
 	bm_in_closed_p bic
 	right join
 	     (
-	     select bookmark_id from 
-	     bm_bookmarks
-	     where tree_sortkey like 
-		   (
-		   select tree_sortkey || ''%''
-		   from bm_bookmarks
-		   where bookmark_id = p_new_parent_id
-		   ) 
-	     order by tree_sortkey
+	     select bm.bookmark_id from 
+	     bm_bookmarks bm, bm_bookmarks bm2
+	     where bm2.bookmark_id = p_new_parent_id
+               and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey) 
 	     )
 	bm on (bm.bookmark_id = bic.bookmark_id)
 	where bic.closed_p = TRUE
@@ -522,14 +510,9 @@ BEGIN
 	UPDATE bm_in_closed_p SET in_closed_p = FALSE
 	WHERE bookmark_id IN 
 	      (
-	      select bookmark_id from bm_bookmarks
-	      where tree_sortkey like
-		    (
-		    select tree_sortkey || ''%''
-		    from bm_bookmarks 
-		    where bookmark_id = p_bookmark_id
-		    )
-	      order by tree_sortkey
+	      select bm.bookmark_id from bm_bookmarks bm, bm_bookmarks bm2
+	      where bm2.bookmark_id = p_bookmark_id
+                and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
 	      )
 	AND in_closed_p_id = p_browsing_user_id;
 
@@ -545,21 +528,13 @@ BEGIN
 		UPDATE bm_in_closed_p set in_closed_p = TRUE 
 		WHERE bookmark_id IN 
 		(
-			select bookmark_id from bm_bookmarks
-			where tree_sortkey like
-			(
-				select tree_sortkey || ''%''
-				from bm_bookmarks 
-				where bookmark_id = v_parent_ids.bookmark_id
-			)
+			select bm.bookmark_id from bm_bookmarks bm, bm_bookmarks bm2
+			where bm2.bookmark_id = v_parent_ids.bookmark_id
+                          and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
 		INTERSECT
-			select bookmark_id from bm_bookmarks
-			where tree_sortkey like
-			(
-				select tree_sortkey || ''%''
-				from bm_bookmarks 
-				where bookmark_id = p_bookmark_id 
-			)
+			select bm.bookmark_id from bm_bookmarks bm, bm_bookmarks bm2
+			where bm2.bookmark_id = p_bookmark_id
+                          and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
 		)
 		AND in_closed_p_id = p_browsing_user_id
 		AND bookmark_id <> p_bookmark_id;
@@ -630,15 +605,10 @@ BEGIN
 	UPDATE bm_in_closed_p SET closed_p = p_closed_p
 	WHERE bookmark_id IN 
 	(
-		SELECT bookmark_id FROM bm_bookmarks
-		WHERE tree_level(tree_sortkey) > 1
-		and 
-		tree_sortkey like 
-		(
-			select tree_sortkey || ''%''
-			from bm_bookmarks where 
-			bookmark_id = p_root_id
-		)
+		SELECT bm.bookmark_id FROM bm_bookmarks bm, bm_bookmarks bm2
+		WHERE tree_level(bm.tree_sortkey) > 1
+		  and bm2.bookmark_id = p_root_id
+                  and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
 	); 
 
 	-- Update the value of in_closed_p for all bookmarks belonging to 
@@ -751,14 +721,10 @@ BEGIN
 	SELECT CASE WHEN count(*)=0 THEN ''f'' ELSE ''t'' END INTO v_private_p
 	FROM acs_objects, 
 	(
-		SELECT bookmark_id FROM bm_bookmarks
-		WHERE tree_sortkey like
-		    (
-		    SELECT tree_sortkey || ''%''
-		    FROM bm_bookmarks 
-		    WHERE bookmark_id = p_bookmark_id
-		    )
-		ORDER BY tree_sortkey
+		SELECT bm2.bookmark_id FROM bm_bookmarks bm, bm_bookmarks bm2
+		WHERE bm.bookmark_id = p_bookmark_id
+                  and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+                  and tree_ancestor_p(bm2.tree_sortkey, bm.tree_sortkey)
 	) b
 	WHERE b.bookmark_id = acs_objects.object_id
 	AND acs_objects.security_inherit_p = ''f'';
