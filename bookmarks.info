@@ -68,9 +68,14 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="content_page" path="www/bookmark-add-one-2.tcl"/>
             <file type="content_page" path="www/bookmark-add-one.adp"/>
             <file type="content_page" path="www/bookmark-add-one.tcl"/>
+            <file type="query_file" db_type="oracle" path="www/bookmark-delete-2-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="www/bookmark-delete-2-postgresql.xql"/>
             <file type="content_page" path="www/bookmark-delete-2.tcl"/>
+            <file type="query_file" db_type="oracle" path="www/bookmark-delete-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="www/bookmark-delete-postgresql.xql"/>
             <file type="content_page" path="www/bookmark-delete.adp"/>
             <file type="content_page" path="www/bookmark-delete.tcl"/>
+            <file type="query_file" path="www/bookmark-delete.xql"/>
             <file type="content_page" path="www/bookmark-edit-2.tcl"/>
             <file type="content_page" path="www/bookmark-edit.adp"/>
             <file type="content_page" path="www/bookmark-edit.tcl"/>
