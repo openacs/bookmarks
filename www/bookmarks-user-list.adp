@@ -1,7 +1,7 @@
 <master>
 <property name="title">@page_title;noquote@</property>
-<property name="context"">@context;noquote@</property>
-
+<property name="context">@context;noquote@</property>
+<include src="bookmark-header">
 
 <if @user_list:rowcount@ eq 0>
     No other users have stored bookmarks on which you have read permission. <p>

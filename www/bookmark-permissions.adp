@@ -2,7 +2,7 @@
 <property name="title">@page_title;noquote@</property>
 <property name="context">@context;noquote@</property>
 <property name="viewed_user_id">@viewed_user_id;noquote@</property>
-
+<include src="bookmark-header">
 <form method=post action=bookmark-permissions-2>
 <input type=hidden name=root_folder_id value="@root_folder_id@">
 <input type=hidden name=viewed_user_id value="@viewed_user_id@">

@@ -117,7 +117,7 @@ if { $user_id == "0" } {
 
 set page_title "Inserting \"[string trim $local_title]\""
 
-set context [bm_context_bar_args "\[list bookmark-add-import?[export_url_vars return_url viewed_user_id] \"Add/Import Bookmarks\"\] \"[ad_quotehtml $page_title]\"" $viewed_user_id]
+# set context [bm_context_bar_args "\[list bookmark-add-import?[export_url_vars return_url viewed_user_id] \"Add/Import Bookmarks\"\] \"[ad_quotehtml $page_title]\"" $viewed_user_id]
 
 set meta_description [bm_get_html_description $url_content]
 set meta_keywords [bm_get_html_keywords $url_content]

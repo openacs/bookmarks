@@ -1,7 +1,7 @@
 <master>
 <property name="title">@page_title;noquote@</property>
-<property name="context">@context;noquote@</property>
 
+<include src="bookmark-header">
 <if @url_unreachable_p@ eq "t">
 <strong>Warning: We are not able to reach the url (@complete_url@) that you specified. Please make sure that you did not misspell the url.</strong>
 </if>

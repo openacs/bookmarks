@@ -14,26 +14,9 @@ set edit_anchor "<font size=-1>Edit</font>"
 set delete_anchor "<font size=-1>Delete</font>"
 %>
 
-
+<include src=bookmark-header>
 <if @viewed_user_id@ ne "0">
-
-[<if @write_p@ eq "t"><if @browsing_user_id@ ne @viewed_user_id@><strong>Not your account!</strong> </if><a href=bookmark-add-import?return_url=@return_url_urlenc@&viewed_user_id=@viewed_user_id@>Add / Import</a> |</if>
-<if @viewed_user_id@ eq @browsing_user_id@>
-<a href=bookmarks-export?viewed_user_id=@viewed_user_id@>Export</a> |</if>
-<if @write_p@ eq "t"> <a href=folder-add?return_url=index&viewed_user_id=@viewed_user_id@>Create New Folder</a> |</if>
-<a href=bookmarks-check?return_url=index&viewed_user_id=@viewed_user_id@>Check Links</a> |
-<if @browsing_user_id@ eq @viewed_user_id@><a href="javascript:launch_window('@tree_url@')">Javascript version</a> |</if>
-<a href=bookmarks-user-list>View bookmarks of other users</a> 
-<if @root_admin_p@ eq "1"> | <a href="@permissions_url@">Manage access permissions on all bookmarks</a> </if>
-] 
 <p>
-
-<if @bookmarks_admin_p@ eq "1">
-<a href="admin">Bookmarks Administration</a>
-</if>
-
-<p>
-
 Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_user_id@&sort_by=name">name</a></if><else><b>name</b></else> | 
 <if @sort_by@ eq "name"><a href="index?viewed_user_id=@viewed_user_id@&sort_by=access_date">access date</a></if><else><b>access date</b></else> 
 <!-- | <a href="index?viewed_user_id=@viewed_user_id@&sort_by=creation_date">creation date</a> --> ]
@@ -130,7 +113,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 Key to bookmark display:
 <table>
 <tr>
-<td><ul><li> <i> Unreachable links appear like this. These links may not be completely dead, but they were unreachable by our server on last attempt.</i> </td>
+<td><ul><li> <i> Unreachable links appear like this. These links may not be completely dead, but they were unreachable by our server on last attempt.</i></ul> </td>
 </tr>
 </table>
 

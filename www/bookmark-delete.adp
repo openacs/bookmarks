@@ -2,7 +2,7 @@
 <property name="title">@page_title;noquote@</property>
 <property name="context">@context;noquote@</property>
 
-
+<include src="bookmark-header">
 
 <if @contained_bookmarks:rowcount@ eq 1>
 Are you sure that you want to delete the bookmark "@bookmark_title@"?

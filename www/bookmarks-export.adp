@@ -1,7 +1,7 @@
 <master>
 <property name="title">@page_title;noquote@</property>
 <property name="context">@context;noquote@</property>
-
+<include src="bookmark-header">
 Clicking on the link below (alternatively you can right click on the link 
 and choose "Save Target As..." or "Save Link As...") will deliver your bookmarks file in a
 traditional Netscape format. You will need to save the file on your
