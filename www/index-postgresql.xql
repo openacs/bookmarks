@@ -77,14 +77,14 @@ and exists
 		where object_id = bookmark_id and party_id in 
 		(:browsing_user_id, -1)
 		and privilege = 'read'
-		and tree_sortkey like
-		    (
-			select tree_sortkey || '%'
-			from bm_bookmarks
-			where bookmark_id = '2249'
-		    )
-		order by tree_sortkey 	
-	) 
+	)
+	and tree_sortkey like
+		(
+		select tree_sortkey || '%'
+		from bm_bookmarks
+		where bookmark_id = b.bookmark_id
+		)
+	order by tree_sortkey 	
 )
 and b.bookmark_id <> :root_folder_id
 order by ord_num

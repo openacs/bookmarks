@@ -641,7 +641,6 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-
 CREATE FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer)
 RETURNS integer AS '
 DECLARE
@@ -652,7 +651,7 @@ DECLARE
 BEGIN
 	-- Change the value of closed_p for all folders belonging to the
 	-- user (except the root folder)
-	UPDATE bm_in_closed_p bm_outer SET closed_p = p_closed_p
+	UPDATE bm_in_closed_p SET closed_p = p_closed_p
 	WHERE bookmark_id IN 
 	(
 		SELECT bookmark_id FROM bm_bookmarks
@@ -662,7 +661,6 @@ BEGIN
 		    FROM bm_bookmarks 
 		    WHERE parent_id = p_root_id
 		    )
-		ORDER BY tree_sortkey
 	); 
 
 	-- Update the value of in_closed_p for all bookmarks belonging to 
@@ -680,8 +678,8 @@ BEGIN
 			SELECT bookmark_id FROM bm_bookmarks 
 			WHERE parent_id = p_root_id
 		    )
-		ORDER BY tree_sortkey
-		) 
+		)
+	) 
 	AND in_closed_p_id = p_browsing_user_id;	 	
 
 	RETURN 0;

@@ -7,6 +7,8 @@
       <querytext>
 begin
 	perform bookmark__toggle_open_close (:bookmark_id,:browsing_user_id);
+	
+	return 0;
 end;
       </querytext>
 </fullquery>
@@ -20,6 +22,8 @@ begin
  				:closed_p,
    				bookmark__get_root_folder(:package_id,:viewed_user_id)
     				);
+	
+	return 0;
 end;
       </querytext>
 </fullquery>
