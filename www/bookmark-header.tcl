@@ -53,6 +53,8 @@ if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_us
 # will be the page that the user is browsing.
 set return_url_urlenc [ad_urlencode [ad_conn url]?[export_url_vars viewed_user_id]]
 
+set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]
+
 if { ![string equal $viewed_user_id "0"] } {
     set root_folder_id [bm_get_root_folder_id [ad_conn package_id] $viewed_user_id]
 } else {
