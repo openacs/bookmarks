@@ -29,7 +29,7 @@
 <fullquery name="bm_get_root_folder_id.fs_root_folder">      
       <querytext>
 
-          select bookmark__get_root_folder (:package_id, :user_id)
+          select bookmark__get_root_folder (:package_id, :user_id);
 
       </querytext>
 </fullquery>
@@ -79,7 +79,7 @@ select count(*) from bm_bookmarks
 <fullquery name="bm_initialize_in_closed_p.initialize_in_closed_p">      
       <querytext>
 
-	select bookmark__initialize_in_closed_p (:viewed_user_id, :in_closed_p_id)
+	select bookmark__initialize_in_closed_p (:viewed_user_id, :in_closed_p_id);
 	
       </querytext>
 </fullquery>

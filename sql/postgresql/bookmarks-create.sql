@@ -122,7 +122,7 @@ begin
 
             select coalesce(max(tree_sortkey),'''') into v_parent_sk 
               from bm_bookmarks 
-             where object_id = new.parent_id;
+             where parent_id = new.parent_id;
         end if;
 
 
@@ -341,13 +341,12 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-
-CREATE FUNCTION bookmark__new (varchar,varchar,varchar,text,text,integer,varchar,integer)
+CREATE FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamp,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE, 
 	p_owner_id ALIAS FOR $2;		-- in bm_bookmarks.owner_id%TYPE, 
-	p_url_id in ALIAS FOR $3;		-- bm_urls.url_id%TYPE default null, 
+	p_url_id ALIAS FOR $3;			-- in bm_urls.url_id%TYPE default null, 
 	p_local_title ALIAS FOR $4;		-- in bm_bookmarks.local_title%TYPE default null,
 	p_folder_p ALIAS FOR $5;		-- in bm_bookmarks.folder_p%TYPE default f, 
 	p_parent_id ALIAS FOR $6;		-- in bm_bookmarks.parent_id%TYPE, 
@@ -389,11 +388,11 @@ BEGIN
 	    select distinct in_closed_p_id 
 	    from bm_in_closed_p 
 	    where bookmark_id = (select parent_id from bm_bookmarks 
-			     where bookmark_id = v_bookmark_id); 
+			     where bookmark_id = v_bookmark_id)
 	LOOP
 	    -- For each user or session record the in_closed_p status of
 	    -- the bookmark
-	    select bookmark__get_in_closed_p(parent_id, c_viewing_in_closed_p_ids.in_closed_p_id)
+	    select bookmark__get_in_closed_p (p_parent_id, c_viewing_in_closed_p_ids.in_closed_p_id)
 		   into v_in_closed_p;
 
 	    insert into bm_in_closed_p (bookmark_id, in_closed_p_id, in_closed_p, creation_date)
@@ -698,18 +697,20 @@ DECLARE
 	v_folder_id	bm_bookmarks.bookmark_id%TYPE;
 	v_bookmark_id   bm_bookmarks.bookmark_id%TYPE;
 	v_email		parties.email%TYPE;
+	v_local_title	bm_bookmarks.local_title%TYPE;
 
 BEGIN
 	SELECT acs_object_id_seq.nextval INTO v_bookmark_id FROM dual;
-
+        
 	SELECT email INTO v_email 
 	FROM parties where party_id = p_user_id;
 
+	v_local_title := '' Bookmarks Root Folder of '' || v_email;
 	v_folder_id := bookmark__new (
 		    v_bookmark_id,
 		    p_user_id,
 		    null,
-		    '' Bookmarks Root Folder of '' || v_email,
+		    v_local_title,
 		    ''t'',
 		    p_package_id,
 		    null,
@@ -719,8 +720,8 @@ BEGIN
 
 		    -- bookmark_id => v_bookmark_id,
 		    -- owner_id    => p_user_id,
-		    -- folder_p => ''t'',
-		    -- local_title => '' Bookmarks Root Folder of '' || v_email,
+		    -- folder_p => t,
+		    -- local_title => Bookmarks Root Folder of || v_email,
 		    -- parent_id   => new_root_folder.package_id
     
         -- set up default permissions
@@ -734,13 +735,12 @@ BEGIN
 	
 		-- object_id => v_folder_id,
 		-- grantee_id => new_root_folder.user_id,
-		-- privilege => ''admin''
+		-- privilege => admin
 
 	RETURN v_folder_id;
 
 END;
 ' LANGUAGE 'plpgsql';
-
 
 CREATE FUNCTION bookmark__get_root_folder (integer, integer)
 RETURNS integer AS '
@@ -763,7 +763,7 @@ BEGIN
 	    AND owner_id = p_user_id;
 	ELSE
 	    -- must be a new instance.  Gotta create a new root folder
-	    v_folder_id := new_root_folder(package_id, user_id);
+	    v_folder_id := bookmark__new_root_folder (p_package_id, p_user_id);
 	END IF;
 
 	RETURN v_folder_id;
@@ -858,7 +858,10 @@ BEGIN
 	       VALUES (c_bookmark_ids.bookmark_id, p_in_closed_p_id, ''f'', now());
 	   END LOOP;
 
-
+	   RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
+
+
+
 
