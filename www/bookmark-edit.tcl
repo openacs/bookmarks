@@ -81,7 +81,7 @@ if { [string equal $old_private_p "t"] && [string equal $security_inherit_p "t"]
 }
 
 
-template::query bookmark onerow "select local_title,
+template::query bookmark_edit bookmark onerow "select local_title,
                owner_id,
                complete_url, 
                folder_p,

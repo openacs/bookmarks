@@ -337,7 +337,7 @@ BEGIN
       else
 	    select url_id into v_return_id from bm_urls where bm_urls.complete_url= p_complete_url;
 	    return v_return_id;
-
+      end if;
 END;
 ' LANGUAGE 'plpgsql';
 
@@ -405,7 +405,6 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-
 CREATE FUNCTION bookmark__delete (integer)
 RETURNS integer AS '
 DECLARE
@@ -415,42 +414,17 @@ DECLARE
 BEGIN
 
  	FOR c_bookmark_id_tree IN 
-	    select bookmark_id
-	    from bm_bookmarks
-	    where bookmark_id not in 
-		  (
-		  select bookmark_id from bm_bookmarks
-		  where tree_sortkey like 
-			(
-			select tree_sortkey || ''%''
-			from bm_bookmarks 
-			where bookmark_id = p_bookmark_id
-			)
-		  order by tree_sortkey
-		  )
+	    select bookmark_id,
+	    (select case when count(*)=0 then 1 else 0 end from 
+	    bm_bookmarks where parent_id = bm.bookmark_id) as is_leaf_p
+	    from bm_bookmarks bm
 	    where tree_sortkey like
-		  (
-		  select tree_sortkey || ''%''
-		  from bm_bookmarks 
-		  where bookmark_id in 
-		  (
-		  select bookmark_id
-		  from bm_bookmarks bm_outer where not exists
-		       (
-		       select 1 from bm_bookmarks bm_inner where 
-		       bm_outer.bookmark_id = bm_inner.parent_id
-		       )
-		  intersect
-		  select bookmark_id from bm_bookmarks
-		  where tree_sortkey like
-			(
-			select tree_sortkey || ''%''
-			from bm_bookmarks
-			where bookmark_id = p_bookmark_id
-			)
-		  order by tree_sortkey
-		  )
-            order by tree_sortkey;
+	    (
+		select tree_sortkey || ''%''
+		from bm_bookmarks
+		where bookmark_id = p_bookmark_id
+	    )
+            order by tree_level(tree_sortkey) desc, is_leaf_p desc, tree_sortkey
  	LOOP
 	    FOR c_bookmark_id_one_level IN 
 	    select bookmark_id
@@ -472,14 +446,12 @@ BEGIN
 			where bookmark_id = p_bookmark_id
 		)
 		order by tree_sortkey
-	    );
-
- 	    for one_level_bookmark_id in c_bookmark_id_one_level(tree_bookmark_id.bookmark_id)
+	    )
  	    LOOP
 		delete from acs_permissions where object_id = c_bookmark_id_one_level.bookmark_id;
 		delete from bm_in_closed_p where bookmark_id = c_bookmark_id_one_level.bookmark_id;
 		delete from bm_bookmarks where bookmark_id = c_bookmark_id_one_level.bookmark_id;
- 		acs_object__delete(c_bookmark_id_one_level.bookmark_id);
+ 		perform acs_object__delete(c_bookmark_id_one_level.bookmark_id);
  	    END LOOP;
  	END LOOP;
 	RETURN 0;
@@ -592,7 +564,6 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-
 CREATE FUNCTION bookmark__update_in_closed_p_all_users (integer, integer)
 RETURNS integer AS '
 DECLARE
@@ -602,18 +573,19 @@ DECLARE
 
 BEGIN
 	FOR c_viewing_in_closed_p_ids IN
-	select unique in_closed_p_id 
+	select distinct in_closed_p_id 
 	from bm_in_closed_p 
 	where bookmark_id = (select bookmark_id from bm_bookmarks 
 			     where bookmark_id = p_bookmark_id) 
 	LOOP	
 	    -- Update the in_closed_p status for this user/session for all bookmarks
 	    -- under the folder
-	    update_in_closed_p_one_user (p_bookmark_id, c_viewing_in_closed_p_ids.in_closed_p_id);
+	    perform bookmark__update_in_closed_p_one_user (p_bookmark_id, c_viewing_in_closed_p_ids.in_closed_p_id);
 	END LOOP;
 	RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
+
 
 CREATE FUNCTION bookmark__toggle_open_close (integer, integer)
 RETURNS integer AS '

@@ -47,7 +47,7 @@ from
 bm_in_closed_p cross join
 ((( bm_urls u right join (
 	select $index_order bookmark_id, url_id, local_title, folder_p, 
- 	tree_level(tree_sortkey) as lev, parent_id, 999 as ord_num 
+ 	tree_level(tree_sortkey) as lev, parent_id, tree_sortkey 
 	from bm_bookmarks
 	where tree_sortkey like
 	(
@@ -87,10 +87,11 @@ and exists
 	order by tree_sortkey 	
 )
 and b.bookmark_id <> :root_folder_id
-order by ord_num
+order by b.tree_sortkey
       </querytext>
 </fullquery>
 
  
 </queryset>
+
 

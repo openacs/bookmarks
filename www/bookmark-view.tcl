@@ -27,7 +27,7 @@ set context_bar_args "\"$page_title\""
 ad_require_permission $bookmark_id read
 
 
-template::query bookmark onerow "select local_title,
+template::query bookmark_view bookmark onerow "select local_title,
                email,
                owner_id,
                complete_url, 
@@ -41,7 +41,6 @@ template::query bookmark onerow "select local_title,
         where  bookmark_id = :bookmark_id
         and    bm_bookmarks.url_id = bm_urls.url_id(+)
         and    bm_bookmarks.owner_id = parties.party_id"
-
 
 ad_return_template
 
