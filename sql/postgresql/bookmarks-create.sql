@@ -347,7 +347,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamp,integer,varchar,integer)
+CREATE FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamp with time zone,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE, 
