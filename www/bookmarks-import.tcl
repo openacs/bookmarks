@@ -50,7 +50,7 @@ if {![regexp {<DL>(.*)</DL>} $contents match format_p]} {
 if { [info exists error_list] } {
     set n_errors [llength $error_list]
     ad_return_template "complaint"
-    ad_script_abort
+    return
 }
 
 
@@ -133,7 +133,7 @@ foreach line $lines {
 		    </pre>
 		    </blockquote>"]
 		    ad_return_template "error"
-                    ad_script_abort
+                    return
 		} else {
 		    # success in inserting folder into bm_bookmarks
 		    lappend import_list "Inserting folder \"$local_title\""
@@ -246,7 +246,7 @@ foreach line $lines {
 			    </pre>
 			    </blockquote>"]
 			    ad_return_template "error" 
-                            ad_script_abort
+                            return
 			} else { 
 			    # assume this was a double click
 			    ad_returnredirect $return_url
