@@ -4,6 +4,7 @@
 <package key="bookmarks" url="http://www.arsdigita.com/acs-repository/apm/packages/bookmarks" type="apm_application">
     <package-name>Bookmarks</package-name>
     <pretty-plural>Bookmarks Modules</pretty-plural>
+    <initial-install-p>f</initial-install-p>
     <singleton-p>f</singleton-p>
 
     <version name="4.1.1b" url="http://www.arsdigita.com/acs-repository/download/apm/bookmarks-4.1.1b.apm">
@@ -13,7 +14,7 @@
     </database-support>
         <owner url="mailto:pmarklun@arsdigita.com">Peter Marklund</owner>
         <summary>This module lets you manage your bookmarks on the web and enables sharing of bookmarks between people in a community (one ACS installation).</summary>
-        <release-date>2001-02-23 00:00:00-08</release-date>
+        <release-date>2001-02-23</release-date>
         <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
         <description format="text/plain">This version contains a number of bugfixes and minor improvements over the 4.X alpha versions and has been rigorously tested. 
 
@@ -45,6 +46,8 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="package_spec" path="bookmarks.info"/>
             <file type="data_model_create" db_type="oracle" path="sql/oracle/bookmarks-create.sql"/>
             <file type="data_model_drop" db_type="oracle" path="sql/oracle/bookmarks-drop.sql"/>
+            <file type="data_model_create" db_type="postgresql" path="sql/postgresql/bookmarks-create.sql"/>
+            <file type="data_model_drop" db_type="postgresql" path="sql/postgresql/bookmarks-drop.sql"/>
             <file type="tcl_init" path="tcl/bookmarks-init.tcl"/>
             <file type="tcl_procs" path="tcl/bookmarks-procs.tcl"/>
             <file type="content_page" path="www/admin/index.adp"/>
