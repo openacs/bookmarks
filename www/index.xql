@@ -13,6 +13,5 @@
       select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id
       </querytext>
 </fullquery>
-
  
 </queryset>
