@@ -75,7 +75,6 @@ select count(*) from bm_bookmarks
 	where  bookmark_id = :bookmark_id
 	)
 	and acs_permission__permission_p(bookmark_id, :browsing_user_id, 'delete') = 'f'
-	order by tree_sortkey
       </querytext>
 </fullquery>
 

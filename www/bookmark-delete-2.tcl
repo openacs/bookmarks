@@ -21,7 +21,7 @@ ad_page_contract {
 bm_require_delete_permission $bookmark_id
 
 
-if [catch {db_exec_plsql bookmark_add "
+if [catch {db_exec_plsql bookmark_delete "
     begin
       bookmark.delete (
        bookmark_id => :bookmark_id

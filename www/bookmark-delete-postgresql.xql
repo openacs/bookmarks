@@ -5,11 +5,11 @@
 
 <fullquery name="contained_bookmarks">      
       <querytext>
-select local_title, tree_level(tree_sorkkey) as indentation 
+select local_title, tree_level(tree_sortkey) as indentation 
 from bm_bookmarks
 where tree_sortkey like
 (
-	select tree_sortkey || ''%'' from bm_bookmarks
+	select tree_sortkey || '%' from bm_bookmarks
 	where bookmark_id  = :bookmark_id 
 )
 order by tree_sortkey
