@@ -9,9 +9,11 @@
     select   bookmark_id, 
              complete_url,
              coalesce(local_title, url_title) as title, 
+	     bm_bookmarks_get_folder_names(bookmark_id, null) as folder_names,
+	     tree_sortkey,
              meta_keywords, 
              meta_description
-    from     (select bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, bm.owner_id 
+    from     (select bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, bm.owner_id, bm.tree_sortkey
               	from bm_bookmarks bm, bm_bookmarks bm2
 		where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
                   and bm2.bookmark_id = :root_folder_id
@@ -26,7 +28,7 @@
               or upper(complete_url)     like :search_pattern
               or upper(meta_keywords)    like :search_pattern
               or upper(meta_description) like :search_pattern)
-    order by title
+    order by tree_sortkey
 
       </querytext>
 </fullquery>
@@ -38,6 +40,8 @@
 select	distinct complete_url,
       	bookmark_id,
       	coalesce(local_title, url_title) as title, 
+	bm_bookmarks_get_folder_names(bookmark_id, null) as folder_names,
+	tree_sortkey,
       	meta_keywords, 
       	meta_description, 
      	folder_p,
@@ -45,7 +49,7 @@ select	distinct complete_url,
 from
 	(
 		select 	o2.bookmark_id, o2.url_id, o2.local_title, 
-			o2.folder_p, o2.owner_id
+			o2.folder_p, o2.owner_id, o2.tree_sortkey
 		from bm_bookmarks o1, bm_bookmarks o2
 		where 
 			o1.parent_id = :package_id
@@ -62,7 +66,7 @@ and	(
       	or upper(meta_keywords)    like :search_pattern
       	or upper(meta_description) like :search_pattern
 	)
-order by title
+order by tree_sortkey
 
       </querytext>
 </fullquery>

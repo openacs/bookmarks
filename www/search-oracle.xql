@@ -9,6 +9,7 @@
     select   bookmark_id, 
              complete_url,
              nvl(local_title, url_title) as title, 
+	     'N/A' as folder_names,
              meta_keywords, 
              meta_description
     from     (select bookmark_id, url_id, local_title, folder_p, owner_id 
@@ -36,6 +37,7 @@
     select   distinct complete_url,
              bookmark_id,
              nvl(local_title, url_title) as title, 
+	     'N/A' as folder_names,
              meta_keywords, 
              meta_description, 
              folder_p,

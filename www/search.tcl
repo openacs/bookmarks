@@ -85,8 +85,12 @@ db_multirow my_list bookmark_search_user {*SQL*}
 template::list::create \
 	-name others_list -multirow others_list \
 	-elements {
+		folder_names {
+			label "Folders"
+			html {nowrap ""}
+		}
 		title {
-			label "Matches from other bookmark lists"
+			label "Matches in other bookmark lists"
 			link_url_eval {$complete_url}
 		}
 		invoke {
@@ -105,3 +109,13 @@ template::list::create \
 
 db_multirow others_list bookmark_search_other {*SQL*}
 
+
+# Take this "if" statement out once oracle has a bm_bookmarks_get_folder_names equivalent.
+# Until then we won't display the folder_names column when using oracle.
+set db_type [db_rdbms_get_type [db_current_rdbms]]
+if {$db_type != "postgresql"} {
+	template::list::element::set_property -list_name my_list \
+		-element_name folder_names -property hide_p -value 1
+	template::list::element::set_property -list_name others_list \
+		-element_name folder_names -property hide_p -value 1
+}
