@@ -146,7 +146,9 @@ order by ord_num"
 
 }
 
+set tree_url [export_vars -base tree { viewed_user_id write_p user_name }]
 
+set permissions_url [export_vars -base bookmark-permissions { viewed_user_id user_name }]
 
 ad_return_template
 

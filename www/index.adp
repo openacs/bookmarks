@@ -7,8 +7,6 @@
 set bookmark_bgcolor  [ad_parameter BookmarkBGColor bookmarks "#ffffff"]
 set edit_anchor "<font size=-1>Edit</font>"
 set delete_anchor "<font size=-1>Delete</font>"
-
-set user_name_url [ad_urlencode @user_name@]
 %>
 
 
@@ -19,11 +17,10 @@ set user_name_url [ad_urlencode @user_name@]
 <a href=bookmarks-export?viewed_user_id=@viewed_user_id@>Export</a> |</if>
 <if @write_p@ eq "t"> <a href=folder-add?return_url=index&viewed_user_id=@viewed_user_id@>Create New Folder</a> |</if>
 <a href=bookmarks-check?return_url=index&viewed_user_id=@viewed_user_id@>Check Links</a> |
-<if @browsing_user_id@ eq @viewed_user_id@><a href="javascript:launch_window('tree?viewed_user_id=@viewed_user_id@&write_p=@write_p@&user_name=@user_name_url@')">Javascript version</a> |</if>
+<if @browsing_user_id@ eq @viewed_user_id@><a href="javascript:launch_window('@tree_url@')">Javascript version</a> |</if>
 <a href=bookmarks-user-list>View bookmarks of other users</a> 
-<if @root_admin_p@ eq "1"> | <a href="bookmark-permissions?viewed_user_id=@viewed_user_id@&user_name=@user_name_url@">Manage access permissions on all bookmarks</a> </if>
+<if @root_admin_p@ eq "1"> | <a href="@permissions_url@">Manage access permissions on all bookmarks</a> </if>
 ] 
-
 <p>
 
 <if @bookmarks_admin_p@ eq "1">
