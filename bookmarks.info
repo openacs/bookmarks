@@ -13,32 +13,21 @@
         <database>postgresql</database>
     </database-support>
         <owner url="mailto:pmarklun@arsdigita.com">Peter Marklund</owner>
-        <summary>This module lets you manage your bookmarks on the web and enables sharing of bookmarks between people in a community (one ACS installation).</summary>
+        <summary>Web based user bookmark application.</summary>
         <release-date>2002-10-27</release-date>
         <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
-        <description format="text/plain">This version contains a number of bugfixes and minor improvements over the 4.X alpha versions and has been rigorously tested. 
-
-New features in the ACS4 (not in the ACS4 version) include:
-
-- Adding bookmarks when browsing with the help of a Bookmarklet (a Bookmark in the browser that contains Javascript instead of a url).
-
-- Sorting by name and access date
-
-- Enhanced access permissions. The alpha version will only include toggling between private and public. Future versions could use the ACS permission API to grant read, write, delete and admin rights to any party on a bookmark level.  It is not yet clear how big the need for this granular access permissions is.
-
-- Display of keywords and descriptions of urls (fetched with ns_httpget)
-
-Important features from the ACS3 version are:
-
-- Bookmarks are viewed in a tree structure with open/collapse functionality of folders. Alternatively the bookmarks can be viewed in a Javascript version.
-
-- Importing/exporting bookmarks from/to Netscape and IE browsers
-
-- Checking if URLs are alive
-
-- Display of the most popular hosts and urls in the community
-
-Areas that need improvement: The query on the index page is a bit slow - closing and opening folders becomes impractible with for example 200 bookmarks. Users who have this many bookmarks can preferably use the Javascript version. </description>
+        <description format="text/html">User bookmark management package with the following functionality:
+&lt;ul&gt;
+&lt;li&gt;Adding bookmarks when browsing with the help of a Bookmarklet (a Bookmark in the browser that contains Javascript instead of a url).&lt;/li&gt;
+&lt;li&gt;Sorting by name and access date&lt;/li&gt;
+&lt;li&gt;Enhanced access permissions including toggling between private and public.&lt;/li&gt;
+&lt;li&gt;Display of keywords and descriptions of urls (fetched with ns_httpget)
+&lt;li&gt;Bookmarks are viewed in a tree structure with open/collapse functionality of folders. Alternatively the bookmarks can be viewed in a Javascript version.&lt;/li&gt;
+&lt;li&gt;Importing/exporting bookmarks from/to Netscape and IE browsers&lt;/li&gt;
+&lt;li&gt;Checking for broken or changed URLs&lt;/li&gt;
+&lt;li&gt;Display of the most popular hosts and urls in the community&lt;/li&gt;
+&lt;/ul&gt;
+</description>
 
         <requires url="acs-kernel" version="5.0d13"/>
 
