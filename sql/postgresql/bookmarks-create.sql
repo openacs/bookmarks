@@ -503,7 +503,7 @@ END;
 
 
 CREATE FUNCTION bookmark__get_in_closed_p (integer,integer)
-RETURNS integer AS '
+RETURNS boolean AS '
 DECLARE
 	p_new_parent_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
 	p_user_id	ALIAS FOR $2;	-- in users.user_id%TYPE	
@@ -513,20 +513,22 @@ BEGIN
 
 	select (case when count(*) = 0 then ''f'' else ''t'' end) into
 	v_return_value from 
-	(
-	     select bookmark_id from bm_bookmarks
-	     where tree_sortkey like 
+	bm_in_closed_p bic
+	right join
 	     (
+	     select bookmark_id from 
+	     bm_bookmarks
+	     where tree_sortkey like 
+		   (
 		   select tree_sortkey || ''%''
 		   from bm_bookmarks
 		   where bookmark_id = p_new_parent_id
-	     )
-	     
-	     bm left join bm_in_closed_p bic on (bm.bookmark_id = bic.bookmark_id)
-	     and bic.closed_p = ''t''
-	     and bic.in_closed_p_id = p_user_id
+		   ) 
 	     order by tree_sortkey
-	)
+	     )
+	bm on (bm.bookmark_id = bic.bookmark_id)
+	and bic.closed_p = ''t''
+	and bic.in_closed_p_id = p_user_id;
 	return v_return_value;
 END;
 ' LANGUAGE 'plpgsql';

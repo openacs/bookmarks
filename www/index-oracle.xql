@@ -3,6 +3,25 @@
 <queryset>
    <rdbms><type>oracle</type><version>8.1.6</version></rdbms>
 
+<partialquery name="index_order_by_name">
+	<querytext>
+		/*+INDEX(bm_bookmarks bm_bookmarks_local_title_idx)*/		
+	</querytext>
+</partialquery>
+
+<partialquery name="index_order_by_access_date">
+	<querytext>
+		/*+INDEX_DESC(bm_bookmarks bm_bookmarks_access_date_idx)*/		
+	</querytext>
+</partialquery>
+
+
+<partialquery name="private_select">
+	<querytext>
+		, bookmark.private_p(b.bookmark_id) as private_p
+	</querytext>
+</partialquery>
+
 <fullquery name="bookmark_system_name">      
       <querytext>
       select acs_object.name(:package_id) from dual

@@ -3,6 +3,18 @@
 <queryset>
    <rdbms><type>oracle</type><version>8.1.6</version></rdbms>
 
+<partialquery name="exclude_folders">
+	<querytext>
+		and bookmark_id not in 
+		(
+		select bookmark_id from bm_bookmarks where folder_p = 't' 
+		and owner_id = :user_id 
+		start with parent_id = :bookmark_id 
+		connect by bookmark_id = parent_id
+		)
+	</querytext>
+</partialquery>
+
 <fullquery name="bm_folder_selection.folder_select">      
       <querytext>
       
@@ -14,7 +26,7 @@
     and owner_id = :user_id
     and bookmark_id <> :bookmark_id
     and parent_id <> :package_id
-    and acs_permission.permission_p(bookmark_id, :user_id, 'write') = 't'
+    and acs_permission.permission_p(:bookmark_id, :user_id, 'write') = 't'
     $exclude_folders
     start with parent_id = :package_id
     connect by prior bookmark_id = parent_id

@@ -3,6 +3,25 @@
 <queryset>
    <rdbms><type>postgresql</type><version>7.1</version></rdbms>
 
+<partialquery name="index_order_by_name">
+	<querytext>
+
+	</querytext>
+</partialquery>
+
+<partialquery name="index_order_by_access_date">
+	<querytext>
+
+	</querytext>
+</partialquery>
+
+
+<partialquery name="private_select">
+	<querytext>
+		, bookmark__private_p(b.bookmark_id) as private_p
+	</querytext>
+</partialquery>
+
 <fullquery name="bookmark_system_name">      
       <querytext>
       select acs_object__name(:package_id) 

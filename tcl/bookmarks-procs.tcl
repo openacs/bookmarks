@@ -21,7 +21,7 @@ ad_proc bm_folder_selection { user_id bookmark_id folder_p } {
 } {
     # We cannot move folders to be their own children
     if { $folder_p == "t" } {
-	set exclude_folders "and bookmark_id not in (select bookmark_id from bm_bookmarks where folder_p = 't' and owner_id = :user_id start with parent_id = :bookmark_id connect by bookmark_id = parent_id)"
+	set exclude_folders [db_map exclude_folders]
     } else {
 	set exclude_folders ""
     }

@@ -85,17 +85,16 @@ set root_admin_p [ad_permission_p $root_folder_id admin]
 set bookmarks_admin_p [ad_permission_p $package_id admin]
 set write_p [bm_user_can_write_in_some_folder_p $viewed_user_id]
 
-# NB: KDK Removing these for now...
-# Put switch in for Oracle later...
-# NB: KDK This case (creation_date) was already hashed out...do not add back.
+
+# NB: KDK The one case (creation_date) was already hashed out...do not add back.
 switch $sort_by {
-    #"name" {
-	#set index_order "/*+INDEX(bm_bookmarks bm_bookmarks_local_title_idx)*/"
-    #}
+    "name" {
+	set index_order [db_map index_order_by_name ]
+    }
     
-    #"access_date" {
-	# set index_order "/*+INDEX_DESC(bm_bookmarks bm_bookmarks_access_date_idx)*/"
-    #}
+    "access_date" {
+	set index_order [db_map index_order_by_access_date]
+    }
 
     #"creation_date" {
 	#set index_order "/*+INDEX_DESC(bm_bookmarks bm_bookmarks_creation_date_idx)*/"
@@ -108,7 +107,7 @@ switch $sort_by {
 
 # We let the owner of the bookmarks see which bookmarks are private
 if { [string equal $browsing_user_id $viewed_user_id] } {
-    set private_select ", bookmark__private_p(b.bookmark_id) as private_p"
+    set private_select [db_map private_select]
 } else {
     set private_select ", 'f' as private_p"
 }
