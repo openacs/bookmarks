@@ -51,8 +51,12 @@ db_foreach bookmark_items {} {
 
     append js [bm_close_js_brackets $prev_folder_p $prev_lev $lev]
     set i_str [string repeat "\t" $lev]
+    set complete_url [ad_urlencode $complete_url]
+    set local_title [regsub -all {\\} $local_title {\\\\}]
     set local_title [regsub -all {'} $local_title {\'}]
+    set complete_url [regsub -all {\\} $complete_url {\\\\}]
     set complete_url [regsub -all {'} $complete_url {\'}]
+
 
 #    # decoration refers to color and font of the associated text
 #    set decoration ""
