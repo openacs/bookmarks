@@ -40,7 +40,7 @@ Important features from the ACS3 version are:
 
 Areas that need improvement: The query on the index page is a bit slow - closing and opening folders becomes impractible with for example 200 bookmarks. Users who have this many bookmarks can preferably use the Javascript version. </description>
 
-        <requires url="acs-kernel" version="4.0b2"/>
+        <requires url="acs-kernel" version="4.6.2"/>
 
         <files>
             <file type="package_spec" path="bookmarks.info"/>
