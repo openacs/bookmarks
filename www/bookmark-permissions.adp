@@ -1,7 +1,7 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
-<property name="viewed_user_id">@viewed_user_id@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
+<property name="viewed_user_id">@viewed_user_id;noquote@</property>
 
 <form method=post action=bookmark-permissions-2>
 <input type=hidden name=root_folder_id value="@root_folder_id@">

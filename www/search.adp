@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 <% set img_html "<img border=0 src=pics/ftv2doc.gif align=top>"
 set edit_tag "<font size=-1>Edit</font>"%>
@@ -12,7 +12,7 @@ Here are your bookmarks that match your search:
 <p>
 <multiple name="my_list">
 
-@img_html@ <a href="@my_list.complete_url@">@my_list.title@</a> &nbsp; &nbsp;<a href=bookmark-edit?bookmark_id=@my_list.bookmark_id@&viewed_user_id=@viewed_user_id@>@edit_tag@</a><br>
+@img_html;noquote@ <a href="@my_list.complete_url@">@my_list.title@</a> &nbsp; &nbsp;<a href=bookmark-edit?bookmark_id=@my_list.bookmark_id@&viewed_user_id=@viewed_user_id@>@edit_tag@</a><br>
 
 </multiple>
 </if>
@@ -28,7 +28,7 @@ Here are other people's bookmarks that match your search:
 <p>
 <multiple name="others_list">
 
-@img_html@ <a target=target_frame href="@others_list.complete_url@">@others_list.title@</a> <if @admin_p@ eq "t"> &nbsp; &nbsp; <a href=bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@>@edit_tag@</a></if> <br>
+@img_html;noquote@ <a target=target_frame href="@others_list.complete_url@">@others_list.title@</a> <if @admin_p@ eq "t"> &nbsp; &nbsp; <a href=bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@>@edit_tag@</a></if> <br>
 
 </multiple>
 </if>

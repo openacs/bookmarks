@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 <% set hidden_form_vars "<input type=hidden name=return_url value=@return_url@>
 <input type=hidden name=viewed_user_id value=@viewed_user_id@>
@@ -11,7 +11,7 @@ Insert the URL below.  If you leave the title blank, we will
 attempt to get the title from the web site.  
 
 <form action=bookmark-add-one method=post name=topform>
-@hidden_form_vars@
+@hidden_form_vars;noquote@
 
 <table>
 <tr>
@@ -25,8 +25,8 @@ attempt to get the title from the web site.
 
 <tr>
     <td>Folder</td>
-    <td><include src=folder-selection bookmark_id=@bookmark_id@ folder_p="f" default_id="" viewed_user_id=@viewed_user_id@><br>
-    <a href="folder-add?return_url=@this_url_urlenc@">create a new folder</a></td>
+    <td><include src=folder-selection bookmark_id=@bookmark_id;noquote@ folder_p="f" default_id="" viewed_user_id=@viewed_user_id;noquote@><br>
+    <a href="folder-add?return_url=@this_url_urlenc;noquote@">create a new folder</a></td>
 </tr>
 
 <tr>
@@ -57,7 +57,7 @@ easily accessible button to press every time you want to bookmark a page.
 <h3>Import multiple bookmarks from Netscape or Microsoft Internet Explorer bookmark.htm file</h3>
 
 <form enctype=multipart/form-data method=POST action=bookmarks-import>
-@hidden_form_vars@
+@hidden_form_vars;noquote@
 
 Netscape users: Just specify your bookmark file<br>
 Users of new versions of IE: Export your shortcuts to Netscape format, then

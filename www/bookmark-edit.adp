@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 
 <form method=post action=bookmark-edit-2>
@@ -21,7 +21,7 @@
 
 <tr>
   <td align=right valign=top>Parent Folder:</td>
-  <td><include src=folder-selection bookmark_id=@bookmark.bookmark_id@ folder_p="@bookmark.folder_p@" default_id="@bookmark.parent_id@" viewed_user_id="@bookmark.owner_id@"></td>
+  <td><include src=folder-selection bookmark_id=@bookmark.bookmark_id;noquote@ folder_p="@bookmark.folder_p;noquote@" default_id="@bookmark.parent_id;noquote@" viewed_user_id="@bookmark.owner_id;noquote@"></td>
 </tr>
 
 <tr>

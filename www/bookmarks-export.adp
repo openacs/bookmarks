@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 Clicking on the link below (alternatively you can right click on the link 
 and choose "Save Target As..." or "Save Link As...") will deliver your bookmarks file in a

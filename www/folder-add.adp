@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context@</property>
+<property name="title">@page_title;noquote@</property>
+<property name="context">@context;noquote@</property>
 
 
 <form action=folder-add-2 method=post>
@@ -16,7 +16,7 @@
 <tr>
   <td valign=top align=right>Place in folder:  
   <img border=0 src=pics/ftv2folderopen align=top></td>
-  <td><include src="folder-selection" bookmark_id="@bookmark_id@" folder_p="t" default_id="" viewed_user_id=@viewed_user_id@></td>
+  <td><include src="folder-selection" bookmark_id="@bookmark_id;noquote@" folder_p="t" default_id="" viewed_user_id=@viewed_user_id;noquote@></td>
 </tr>
 <tr>
   <td></td>
