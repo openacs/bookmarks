@@ -511,7 +511,7 @@ DECLARE
 	v_count integer;
 BEGIN
 
-	select (case when count(*) = 0 then ''f'' else ''t'' end) into
+	select (case when count(*) = 0 then FALSE else TRUE end) into
 	v_return_value from 
 	bm_in_closed_p bic
 	right join
@@ -527,7 +527,7 @@ BEGIN
 	     order by tree_sortkey
 	     )
 	bm on (bm.bookmark_id = bic.bookmark_id)
-	and bic.closed_p = ''t''
+	where bic.closed_p = TRUE
 	and bic.in_closed_p_id = p_user_id;
 	return v_return_value;
 END;
