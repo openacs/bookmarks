@@ -75,7 +75,7 @@ DROP FUNCTION bm_bookmarks_update_tr ();
 -- (new, delete, name, get_in_closed_p, update_in_closed_p_one_user, update_in_closed_p_all_users,
 --  toggle_open_close, toggle_open_close_all, get_root_folder, new_root_folder, private_p, 
 --  update_private_p, initialize_in_closed_p)
-DROP FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamp with time zone,integer,varchar,integer);
+DROP FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamptz,integer,varchar,integer);
 DROP FUNCTION bookmark__delete (integer);
 DROP FUNCTION bookmark__name (integer);
 DROP FUNCTION bookmark__get_in_closed_p (integer,integer);

@@ -32,9 +32,9 @@ create table bm_urls (
 	-- meta tags that could be looked up regularly	
 	meta_keywords 		text,
 	meta_description 	text,
-	last_checked_date 	timestamp,
+	last_checked_date 	timestamptz,
 	-- the last time the site returned a "live" status
-	last_live_date		timestamp
+	last_live_date		timestamptz
 );
 
 create function inline_0 ()
@@ -84,7 +84,7 @@ create table bm_bookmarks (
 				constraint bm_bookmarks_parent_id_fk
 				references acs_objects (object_id),
 	-- When the bookmark was last clicked on
-	last_access_date	timestamp,
+	last_access_date	timestamptz,
         tree_sortkey            varbit
 );
 
@@ -250,7 +250,7 @@ create table bm_in_closed_p (
        -- easily grow very large in big communities sharing bookmarks actively
        -- refers to whether a folder is open or closed
        closed_p		    boolean default 'f', 
-       creation_date	    timestamp,
+       creation_date	    timestamptz,
        constraint bm_in_closed_p_pk
        primary key (bookmark_id, in_closed_p_id)
 ); 
@@ -347,7 +347,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamp with time zone,integer,varchar,integer)
+CREATE FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamptz,integer,varchar,integer)
 RETURNS integer AS '
 DECLARE
 	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE, 
