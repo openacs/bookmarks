@@ -513,6 +513,7 @@ RETURNS integer AS '
 DECLARE
        p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,	     
        p_browsing_user_id ALIAS FOR $2;	-- in bm_bookmarks.owner_id%TYPE
+       v_parent_ids RECORD;
 
 BEGIN
 	-- Update the in_closed_p flag of bookmarks and folders that lie under
@@ -531,8 +532,9 @@ BEGIN
 	      order by tree_sortkey
 	      )
 	AND in_closed_p_id = p_browsing_user_id;
+
 	-- then set all in_closed_p flags to t that lie under a closed folder
-	FOR c_parent_ids IN
+	FOR v_parent_ids IN
 	    select bm.bookmark_id from 
 	    bm_bookmarks bm, bm_in_closed_p bip
 	    where bm.bookmark_id = bip.bookmark_id
@@ -548,7 +550,7 @@ BEGIN
 			(
 				select tree_sortkey || ''%''
 				from bm_bookmarks 
-				where bookmark_id = c_parent_ids.bookmark_id
+				where bookmark_id = v_parent_ids.bookmark_id
 			)
 		INTERSECT
 			select bookmark_id from bm_bookmarks

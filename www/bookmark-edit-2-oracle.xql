@@ -17,9 +17,8 @@
     end;
       </querytext>
 </fullquery>
-
  
-<fullquery name="update_in_closed_p">      
+<fullquery name="update_in_closed_p_all_users">      
       <querytext>
       
 begin
@@ -31,5 +30,5 @@ end;
       </querytext>
 </fullquery>
 
- 
+
 </queryset>

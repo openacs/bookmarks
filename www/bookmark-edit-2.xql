@@ -16,5 +16,10 @@
       </querytext>
 </fullquery>
 
+<partialquery name="url_clause">
+      <querytext>
+         , url_id = :url_id
+      </querytext>
+</partialquery>
  
 </queryset>

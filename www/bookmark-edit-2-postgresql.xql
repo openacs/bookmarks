@@ -24,17 +24,11 @@
 </fullquery>
 
  
-<fullquery name="update_in_closed_p">      
+<fullquery name="update_in_closed_p_all_users">      
       <querytext>
 
-begin
+         select bookmark__update_in_closed_p_all_users(:bookmark_id, :parent_id)
 
-perform bookmark__update_in_closed_p_all_users (
-                :bookmark_id,
-                :parent_id
-);
-return 0;
-end;
       </querytext>
 </fullquery>
 

@@ -59,7 +59,7 @@ if { [string equal $folder_p "f"] } {
     );
     end;"]
 
-    set url_clause ", url_id = :url_id"
+    set url_clause [db_map url_clause]
 } else {
     set url_clause ""
 }
@@ -74,7 +74,7 @@ db_dml update_context_id "update acs_objects set context_id = :parent_id where o
 
 # Since the bookmark may have been moved we need to update its
 # in_closed_p status for all users viewing the bookmark tree
-db_exec_plsql update_in_closed_p "
+db_exec_plsql update_in_closed_p_all_users "
 begin
 bookmark.update_in_closed_p_all_users (
                 bookmark_id => :bookmark_id,
