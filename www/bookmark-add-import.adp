@@ -51,7 +51,7 @@ href="@bookmarklet@">this link</a> and choose to add it as a Bookmark
 (in Internet Explorer it is called Favorite). In Netscape you may then
 preferably rename this Bookmark (for example to "Add Bookmark") and
 move it to your toolbar so that you have an
-easily accessible button to press everytime you want to bookmark a page. 
+easily accessible button to press every time you want to bookmark a page. 
 
 
 <h3>Import multiple bookmarks from Netscape or Microsoft Internet Explorer bookmark.htm file</h3>

@@ -191,7 +191,7 @@ begin
             end if;
 
             update bm_bookmarks 
-               set tree_sortkey = tree_next_value(v_parent_sk, v_max_value)
+               set tree_sortkey = tree_next_key(v_parent_sk, v_max_value)
              where bookmark_id = v_rec.bookmark_id;
 
         end LOOP;

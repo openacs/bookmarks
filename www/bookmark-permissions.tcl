@@ -28,7 +28,7 @@ set old_private_p [bm_bookmark_private_p $root_folder_id]
 
 ad_require_permission $root_folder_id admin
 
-set page_title "Manage Permisssions on all Bookmarks"
+set page_title "Manage Permissions on all Bookmarks"
 
 set context [bm_context_bar_args "\"[ad_quotehtml $page_title]\"" $viewed_user_id]
 

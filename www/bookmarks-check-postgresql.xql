@@ -16,6 +16,8 @@
 		where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey) 
                   and bm2.parent_id = :root_folder_id
 	) bm on (bm.url_id=bm_urls.url_id)
+        where acs_permission__permission_p(bm.bookmark_id, :browsing_user_id,
+       'delete')= 't' 
         order by bm.tree_sortkey
       
 	</querytext>

@@ -6,7 +6,7 @@
 
 <partialquery name="set_last_live_date_to_now">
 	<querytext>
-		now()
+              sysdate
 	</querytext>
 </partialquery>
  
