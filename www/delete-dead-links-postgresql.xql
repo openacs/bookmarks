@@ -7,31 +7,20 @@
       <querytext>
 
 select bookmark_id
-from 
-(
-	select bookmark_id, url_id 
-	from bm_bookmarks
-	where tree_sortkey like
-	(
-		select tree_sortkey || '%'
-		from bm_bookmarks
-		where parent_id = :root_folder_id 
-	)
-	order by tree_sortkey
-) bm
-where acs_permission__permission_p(bm.bookmark_id, :browsing_user_id, 'delete') = 't'
-and bm.url_id = :url_id
+    from (select bookmark_id, url_id from bm_bookmarks
+                        start with parent_id = :root_folder_id 
+                        connect by prior bookmark_id = parent_id) bm
+    where acs_permission__permission_p(bm.bookmark_id, :browsing_user_id, 'delete') = 't'
+    and bm.url_id = :url_id
       </querytext>
 </fullquery>
 
  
 <fullquery name="delete_dead_link">      
       <querytext>
-      FIX ME PLSQL
-FIX ME PLSQL
 
 	begin
-	bookmark__delete (
+	perform bookmark__delete (
 	bookmark_id => :bookmark_id
 	);       
         end;
@@ -42,12 +31,12 @@ FIX ME PLSQL
 <fullquery name="delete_dead_link">      
       <querytext>
 
-begin
+
+	begin
 	perform bookmark__delete (
 	bookmark_id => :bookmark_id
-	);
-	return 0;       
-end;
+	);       
+        end;
       </querytext>
 </fullquery>
 
