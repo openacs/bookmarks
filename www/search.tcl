@@ -46,7 +46,7 @@ if { [info exists error_list] } {
 }
 
 set page_title "Searching for \"$search_text\""
-set context [bm_context_bar_args "\"[ad_quotehtml $page_title]\"" $viewed_user_id]
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 
 set package_id [ad_conn package_id]
 

@@ -1,5 +1,5 @@
 <master>
-<property name="title">@page_title;noquote@</property>
+<property name="title">@page_title@</property>
 <property name="context">@context;noquote@</property>
 
 <if @viewed_user_id@ eq @browsing_user_id@>
@@ -8,7 +8,7 @@ Here are your bookmarks that match your search:
 <p>
 <multiple name="my_list">
 
-<img border=0 src="pics/ftv2doc.gif" align="top"> 
+<img border="0" src="pics/ftv2doc.gif" align="top"> 
 <a href="@my_list.complete_url@">@my_list.title@</a>
 &nbsp; &nbsp;<a href="bookmark-edit?bookmark_id=@my_list.bookmark_id@&viewed_user_id=@viewed_user_id@" title="Edit this bookmark"><img src="/resources/acs-subsite/Edit16.gif" height="16" width="16" alt="Edit" border="0"></a><br>
 
@@ -26,7 +26,12 @@ Here are other people's bookmarks that match your search:
 <p>
 <multiple name="others_list">
 
-@img_html;noquote@ <a target=target_frame href="@others_list.complete_url@">@others_list.title@</a> <if @admin_p@ eq "t"> &nbsp; &nbsp; <a href=bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@&return_url=index>@edit_tag@</a></if> <br>
+	<img border="0" src="pics/ftv2doc.gif" align="top"> 
+	<a target="target_frame" href="@others_list.complete_url@">@others_list.title@</a>
+	<if @admin_p@ eq "t"> &nbsp; &nbsp;
+		<a href="bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@&return_url=index" title="Edit this bookmark">
+		<img src="/resources/acs-subsite/Edit16.gif" width="16" height="16" alt="Edit" border="0"></a>
+	</if> <br>
 
 </multiple>
 </if>

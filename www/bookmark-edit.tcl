@@ -61,7 +61,7 @@ set folder_bookmark [ad_decode $folder_p "t" "folder" "bookmark"]
 
 set page_title "Edit [ad_decode $folder_p "t" "Folder" "Bookmark"]"
 
-set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 
 set delete_p [bm_delete_permission_p $bookmark_id]
 

@@ -161,10 +161,10 @@ ad_proc bm_require_delete_permission { bookmark_id } {
 }
 
 
-ad_proc bm_context_bar_args { arg_string viewed_user_id } {
+ad_proc bm_context_bar_args { arg_list viewed_user_id } {
     If viewed_user_id <> browsing_user_id we need to prefix the 
     context bar args with an entry for bookmarks of the viewed user. If the
-    arg_string is empty it is assumed that we are on the index page and that otherwise
+    arg_list is empty it is assumed that we are on the index page and that otherwise
     the page has been linked from the index page.
 } {
     set browsing_user_id [ad_conn user_id]
@@ -175,15 +175,15 @@ ad_proc bm_context_bar_args { arg_string viewed_user_id } {
 	# he can go back to viewing his own bookmarks
 	set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -default ""]
 
-	if { [empty_string_p $arg_string] } {
+	if { [empty_string_p $arg_list] } {
 	    # We are on the index page
-	    return "\"Bookmarks of $user_name\""
+	    return [list "Bookmarks of $user_name"]
 	} else {
 	    # We were linked from the index page
-	    return "\[list \"index?viewed_user_id=$viewed_user_id\" \"Bookmarks of $user_name\"\] $arg_string"
+	    return [linsert $arg_list 0 [list "index?viewed_user_id=$viewed_user_id" "Bookmarks of $user_name"]]
 	}
     } else {
-	return $arg_string
+	return $arg_list
     }
 }
 
