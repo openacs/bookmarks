@@ -247,12 +247,12 @@ ad_proc bm_update_bookmark_private_p { bookmark_id private_p} {
 }
 
 
-ad_proc bm_initialize_in_closed_p { viewed_user_id in_closed_p_id } {
+ad_proc bm_initialize_in_closed_p { viewed_user_id in_closed_p_id package_id} {
 
 } {
 	db_exec_plsql initialize_in_closed_p {
 	    begin
-	       bookmark.initialize_in_closed_p(:viewed_user_id, :in_closed_p_id);
+	       bookmark.initialize_in_closed_p(:viewed_user_id, :in_closed_p_id, :package_id);
 	    end;
 	}    
 }

@@ -85,7 +85,7 @@ select count(*) from bm_bookmarks bm, bm_bookmarks bm2
 <fullquery name="bm_initialize_in_closed_p.initialize_in_closed_p">      
       <querytext>
 
-	select bookmark__initialize_in_closed_p (:viewed_user_id, :in_closed_p_id);
+	select bookmark__initialize_in_closed_p (:viewed_user_id, :in_closed_p_id, :package_id);
 	
       </querytext>
 </fullquery>

@@ -30,6 +30,9 @@ ad_page_contract {
 }
 
 set browsing_user_id [ad_conn user_id]
+# browsing_user_id == 0 for all unregistered users so we use in_closed_p_id as
+# in index.tcl to allow them to open/close folders.
+set in_closed_p_id [ad_decode $browsing_user_id "0" -[ad_conn session_id] $browsing_user_id]
 
 if { ![empty_string_p $bookmark_id] } {
     # Toggle one folder
@@ -38,7 +41,7 @@ if { ![empty_string_p $bookmark_id] } {
     begin
    bookmark.toggle_open_close(
    bookmark_id => :bookmark_id,
-   browsing_user_id => :browsing_user_id
+   browsing_user_id => :in_closed_p_id
     );
     end;"
 } elseif { [string equal $action "open_all"] || [string equal $action "close_all"] } {
@@ -50,7 +53,7 @@ if { ![empty_string_p $bookmark_id] } {
     db_exec_plsql toggle_open_close_all "
     begin
    bookmark.toggle_open_close_all(
-   browsing_user_id => :browsing_user_id,
+   browsing_user_id => :in_closed_p_id,
    closed_p => :closed_p,
    root_id => bookmark.get_root_folder(
                 package_id => :package_id,

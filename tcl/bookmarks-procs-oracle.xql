@@ -89,7 +89,7 @@
       <querytext>
       
 	    begin
-	       bookmark.initialize_in_closed_p(:viewed_user_id, :in_closed_p_id);
+	       bookmark.initialize_in_closed_p(:viewed_user_id, :in_closed_p_id, :package_id);
 	    end;
 	
       </querytext>

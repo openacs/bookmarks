@@ -249,7 +249,7 @@ create table bm_in_closed_p (
        -- We might want to clean up old rows in this table since it could
        -- easily grow very large in big communities sharing bookmarks actively
        -- refers to whether a folder is open or closed
-       closed_p		    boolean default 'f', 
+       closed_p		    boolean default 't', 
        creation_date	    timestamptz,
        constraint bm_in_closed_p_pk
        primary key (bookmark_id, in_closed_p_id)
@@ -476,7 +476,7 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-
+-- Fix for bug 1491, 1653. This function did not always return the true value of closed_p.
 CREATE FUNCTION bookmark__get_in_closed_p (integer,integer)
 RETURNS boolean AS '
 DECLARE
@@ -485,20 +485,23 @@ DECLARE
 	v_return_value bm_in_closed_p.in_closed_p%TYPE;
 	v_count integer;
 BEGIN
+	SELECT count(*) INTO v_count
+	FROM bm_in_closed_p
+	WHERE bookmark_id = p_new_parent_id
+	AND in_closed_p_id = p_user_id;
 
-	select (case when count(*) = 0 then FALSE else TRUE end) into
-	v_return_value from 
-	bm_in_closed_p bic
-	right join
-	     (
-	     select bm.bookmark_id from 
-	     bm_bookmarks bm, bm_bookmarks bm2
-	     where bm2.bookmark_id = p_new_parent_id
-               and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey) 
-	     )
-	bm on (bm.bookmark_id = bic.bookmark_id)
-	where bic.closed_p = TRUE
-	and bic.in_closed_p_id = p_user_id;
+	IF v_count > 0 THEN
+		SELECT closed_p INTO v_return_value
+		FROM bm_in_closed_p
+		WHERE bookmark_id = p_new_parent_id
+		AND in_closed_p_id = p_user_id;
+	ELSE
+		-- This needs to match the default closed_p value from
+		-- bookmark__initialize_in_closed_p (which is TRUE for all
+		-- except the root folder itself).
+		v_return_value := TRUE;
+	END IF;
+
 	return v_return_value;
 END;
 ' LANGUAGE 'plpgsql';
@@ -775,33 +778,68 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION bookmark__initialize_in_closed_p (integer, integer)
+
+CREATE FUNCTION bookmark__initialize_in_closed_p (integer, integer, integer)
 RETURNS integer AS '
 DECLARE
- 	p_viewed_user_id ALIAS FOR $1;	-- in users.user_id%TYPE,	
- 	p_in_closed_p_id ALIAS FOR $2;	-- in users.user_id%TYPE	
-	v_count_in_closed_p integer;
-	v_count_bookmarks integer;
-	c_bookmark_ids RECORD;
+ 	p_viewed_user_id	ALIAS FOR $1;	-- in users.user_id%TYPE,	
+ 	p_in_closed_p_id	ALIAS FOR $2;	-- in users.user_id%TYPE	
+	p_package_id		ALIAS FOR $3;	-- in apm_packages.package_id%TYPE
+	v_root_id		bm_bookmarks.bookmark_id%TYPE;
+	c_bookmark		RECORD;
+	v_in_closed_p		bm_in_closed_p.in_closed_p%TYPE;
+	v_closed_p		bm_in_closed_p.closed_p%TYPE;
 BEGIN
+	-- We want to initialize all bookmarks to the closed state, except for
+	-- the root folder. That means we need to have the following settings
+	-- based on the tree_level the bookmark/folder is at:
+	-- bookmark type  in_closed_p closed_p tree_level
+	-- -------------- ----------- -------- ----------
+	-- root                f          f         1
+	-- top folders/bm      f          t         2
+	-- all others          t          t         3+
 
-	   FOR c_bookmark_ids IN
-	       SELECT bookmark_id FROM bm_bookmarks
-	       WHERE owner_id = p_viewed_user_id
-	       AND bookmark_id NOT IN 
-	       (
-		SELECT bookmark_id FROM bm_in_closed_p
-		WHERE in_closed_p_id = p_in_closed_p_id
-	       )
-	   LOOP
-	       INSERT INTO bm_in_closed_p (bookmark_id, in_closed_p_id, in_closed_p, creation_date)
-	       VALUES (c_bookmark_ids.bookmark_id, p_in_closed_p_id, ''f'', now());
+	-- The bookmarks package can be mounted a number of times, and the same
+	-- user can have bookmarks at more than one mount point, so we need to
+	-- pick the right root_folder:
+	v_root_id := bookmark__get_root_folder(p_package_id, p_viewed_user_id);
+
+	FOR c_bookmark IN
+		SELECT bookmark_id, tree_level(tree_sortkey) AS t_level FROM bm_bookmarks
+		WHERE owner_id = p_viewed_user_id
+		AND bookmark_id IN
+		(
+			-- Select bookmarks that belong to the root of this package_id only
+			SELECT bm.bookmark_id FROM bm_bookmarks bm, bm_bookmarks bm2
+			WHERE bm2.bookmark_id = v_root_id
+			AND bm.tree_sortkey BETWEEN bm2.tree_sortkey AND tree_right(bm2.tree_sortkey)
+		)
+		AND bookmark_id NOT IN
+		(
+			SELECT bookmark_id FROM bm_in_closed_p
+			WHERE in_closed_p_id = p_in_closed_p_id
+		)
+	LOOP
+		IF c_bookmark.t_level = 1 THEN
+			v_in_closed_p := FALSE;
+			   v_closed_p := FALSE;
+		ELSIF c_bookmark.t_level = 2 THEN
+			v_in_closed_p := FALSE;
+			   v_closed_p := TRUE;
+		ELSE
+			v_in_closed_p := TRUE;
+			   v_closed_p := TRUE;
+		END IF;
+
+		INSERT INTO bm_in_closed_p (bookmark_id, in_closed_p_id, in_closed_p, closed_p, creation_date)
+		VALUES (c_bookmark.bookmark_id, p_in_closed_p_id, v_in_closed_p, v_closed_p, now());
+		-- This is not quite right in the case bm_in_closed_p already contains some entries for
+		-- this p_in_closed_p_id, but it is no worse than what we had before so it will do for now.
+		-- in_closed_p should really be based on the parent folder state -- and the parent folder
+		-- must be inserted first.
 	   END LOOP;
 
 	   RETURN 0;
 END;
 ' LANGUAGE 'plpgsql';
-
-
-
 

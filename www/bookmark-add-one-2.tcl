@@ -36,7 +36,7 @@ ad_require_permission $parent_id write
 set host_url [bm_host_url $complete_url]
 
 
-# Check if the input url is allreay in the database. If the url is allready in the database
+# Check if the input url is already in the database. If the url is already in the database
 # we fetch the corresponding url_id, and if not we insert the url remembering the url_id. 
 #------------------------------------------------------------------------------------------
 set n_complete_urls [db_string count_url "
