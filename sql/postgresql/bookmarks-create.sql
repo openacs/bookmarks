@@ -122,7 +122,7 @@ begin
 
             select coalesce(max(tree_sortkey),'''') into v_parent_sk 
               from bm_bookmarks 
-             where parent_id = new.parent_id;
+             where bookmark_id = new.parent_id;
         end if;
 
 

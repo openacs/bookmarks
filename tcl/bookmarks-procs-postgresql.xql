@@ -39,7 +39,7 @@
     and owner_id = :user_id
     and bookmark_id <> :bookmark_id
     and parent_id <> :package_id
-    and acs_permission__permission_p(:bookmark_id, :user_id, 'write') = 't'
+    and acs_permission__permission_p(bookmark_id, :user_id, 'write') = 't'
     $exclude_folders
     order by tree_sortkey
       </querytext>

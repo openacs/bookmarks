@@ -99,3 +99,6 @@ if {$n_complete_urls == "0"} {
  
 
 ad_returnredirect "$return_url"
+
+
+
