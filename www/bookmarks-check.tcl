@@ -55,12 +55,18 @@ select url_id,
 
 # We want to give the user something to look at before we start contacting
 # the foreign hosts
+set cmd [list ad_context_bar --]
+foreach elem [bm_context_bar_args "\"$page_title\"" $viewed_user_id] {
+    lappend cmd $elem
+}
+set context_bar [eval $cmd]
+
 ReturnHeaders
 ns_write "[ad_header $page_title]
-
+$context_bar
 <h2>$page_title</h2>
 
-[eval ad_context_bar [bm_context_bar_args "\"$page_title\"" $viewed_user_id]]
+
 <hr>
 "
 
