@@ -91,6 +91,40 @@ order by b.tree_sortkey
       </querytext>
 </fullquery>
 
+<fullquery name="my_bookmarks_select">      
+      <querytext>
+select 
+	b.bookmark_id, b.url_id, b.local_title as bookmark_title,
+	u.complete_url, u.last_live_date, u.last_checked_date, 
+	b.folder_p, bm_in_closed_p.closed_p, 
+	b.bookmark_id as admin_p, b.bookmark_id as delete_p,
+	b.lev as indentation
+	$private_select
+from 
+	bm_in_closed_p 
+cross join ( 
+	bm_urls u 
+	right join (
+	select 
+		$index_order bookmark_id, url_id, local_title, folder_p, 
+ 		tree_level(tree_sortkey) as lev, parent_id, tree_sortkey 
+	from bm_bookmarks
+	where 
+		tree_sortkey like (
+			select tree_sortkey || '%'
+			from bm_bookmarks
+			where bookmark_id = :root_folder_id
+		)
+	) 
+	b on (u.url_id=b.url_id)
+)
+where bm_in_closed_p.bookmark_id = b.bookmark_id
+and bm_in_closed_p.in_closed_p = 'f'
+and bm_in_closed_p.in_closed_p_id = :in_closed_p_id
+and b.bookmark_id <> :root_folder_id
+order by b.tree_sortkey
+      </querytext>
+</fullquery>
  
 </queryset>
 

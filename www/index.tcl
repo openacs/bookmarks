@@ -105,14 +105,15 @@ switch $sort_by {
     }
 }
 
-# We let the owner of the bookmarks see which bookmarks are private
+# We let the owner of the bookmarks see which bookmarks are private,
+# and use a MUCH less expensive query that doesn't hit permissions
 if { [string equal $browsing_user_id $viewed_user_id] } {
     set private_select [db_map private_select]
+db_multirow bookmark my_bookmarks_select ""
+
 } else {
     set private_select ", 'f' as private_p"
-}
-
-db_multirow bookmark bookmarks_select "select b.bookmark_id,
+    db_multirow bookmark bookmarks_select "select b.bookmark_id,
 b.url_id,
 b.local_title as bookmark_title,
 u.complete_url,
@@ -142,6 +143,9 @@ and b.bookmark_id <> :root_folder_id
 and b.bookmark_id = admin_view.object_id(+)
 and b.bookmark_id = delete_view.object_id(+)
 order by ord_num"
+
+}
+
 
 
 ad_return_template
