@@ -59,7 +59,7 @@ drop index bm_bookmarks_access_date_idx ;
 -- KDK: Complete
 drop index bm_bookmarks_idx1;
 -- KDK: Complete
-drop index bm_bookmarks_idx2;
+-- drop index bm_bookmarks_idx2;
 
 
 -- Drop bookmark table and package
@@ -75,7 +75,7 @@ DROP FUNCTION bm_bookmarks_update_tr ();
 -- (new, delete, name, get_in_closed_p, update_in_closed_p_one_user, update_in_closed_p_all_users,
 --  toggle_open_close, toggle_open_close_all, get_root_folder, new_root_folder, private_p, 
 --  update_private_p, initialize_in_closed_p)
-DROP FUNCTION bookmark__new (varchar,varchar,varchar,text,text,integer,varchar,integer);
+DROP FUNCTION bookmark__new (integer,integer,integer,varchar,boolean,integer,timestamptz,integer,varchar,integer);
 DROP FUNCTION bookmark__delete (integer);
 DROP FUNCTION bookmark__name (integer);
 DROP FUNCTION bookmark__get_in_closed_p (integer,integer);
@@ -88,7 +88,7 @@ DROP FUNCTION bookmark__get_root_folder (integer, integer);
 DROP FUNCTION bookmark__private_p (integer);
 DROP FUNCTION bookmark__update_private_p (integer, boolean);
 DROP FUNCTION bookmark__initialize_in_closed_p (integer, integer);
-
+DROP FUNCTION bm_bookmarks_get_tree_sortkey(integer);
 
 -- Delete all url objects and corresponding acs objects
 -- KDK: Complete
