@@ -117,7 +117,7 @@ if { $user_id == "0" } {
 
 set page_title "Inserting \"[string trim $local_title]\""
 
-# set context [bm_context_bar_args "\[list bookmark-add-import?[export_url_vars return_url viewed_user_id] \"Add/Import Bookmarks\"\] \"[ad_quotehtml $page_title]\"" $viewed_user_id]
+set context [bm_context_bar_args [list [list [export_vars -base bookmark-add-import { return_url viewed_user_id }] "Add/Import Bookmarks"] $page_title] $viewed_user_id]
 
 set meta_description [bm_get_html_description $url_content]
 set meta_keywords [bm_get_html_keywords $url_content]
@@ -130,10 +130,6 @@ if { $url_unreachable_p == "f" && $user_provided_title_p == "t"} {
     ad_returnredirect "bookmark-add-one-2?[export_url_vars return_url local_title complete_url bookmark_id meta_description meta_keywords url_title viewed_user_id parent_id]"
     ad_script_abort
 } 
-  
-ad_return_template
-
-
 
 
 
