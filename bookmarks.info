@@ -154,6 +154,8 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="content_page" path="www/pics/ftv2pnode.gif"/>
             <file type="content_page" path="www/pics/ftv2vertline.gif"/>
             <file type="content_page" path="www/pics/spacer.gif"/>
+            <file type="query_file" db_type="oracle" path="www/search-oracle.xql"/>
+            <file type="query_file" db_type="postgresql" path="www/search-postgresql.xql"/>
             <file type="content_page" path="www/search.adp"/>
             <file type="content_page" path="www/search.tcl"/>
             <file type="query_file" db_type="oracle" path="www/toggle-open-close-oracle.xql"/>
@@ -170,10 +172,10 @@ Areas that need improvement: The query on the index page is a bit slow - closing
             <file type="content_page" path="www/tree.tcl"/>
         </files>
         <parameters>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively urls that will be shown on the most popular bookmarks page"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLDescriptionMaxLength"  default="1000" description="Max length of the meta description that is fetched from the html code of a page and stored in the database"/>
-            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLKeywordsMaxLength"  default="1000" description="Max length of the keyword string that is fetched from an HTML page and stored in the database"/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLTitleMaxLength"  default="100" description="Max length of the title fetched from the title-tag of an html page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLKeywordsMaxLength"  default="1000" description="Max length of the keyword string that is fetched from an HTML page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="URLDescriptionMaxLength"  default="1000" description="Max length of the meta description that is fetched from the html code of a page and stored in the database"/>
+            <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively urls that will be shown on the most popular bookmarks page"/>
         </parameters>
 
     </version>
