@@ -16,8 +16,8 @@
     </multiple>
 
     <% 
-       if {@folders:rowcount@ > 8} { 
-	  set size_count 8
+       if {@folders:rowcount@ > 20} { 
+	  set size_count 20
        } else {
 	  set size_count [expr @folders:rowcount@ + 1]
        }

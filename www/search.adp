@@ -26,7 +26,7 @@ Here are other people's bookmarks that match your search:
 <p>
 <multiple name="others_list">
 
-@img_html;noquote@ <a target=target_frame href="@others_list.complete_url@">@others_list.title@</a> <if @admin_p@ eq "t"> &nbsp; &nbsp; <a href=bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@>@edit_tag@</a></if> <br>
+@img_html;noquote@ <a target=target_frame href="@others_list.complete_url@">@others_list.title@</a> <if @admin_p@ eq "t"> &nbsp; &nbsp; <a href=bookmark-edit?bookmark_id=@others_list.bookmark_id@&viewed_user_id=@viewed_user_id@&return_url=index>@edit_tag@</a></if> <br>
 
 </multiple>
 </if>
@@ -41,8 +41,3 @@ Your search returned zero matches in other bookmark lists.
 Search bookmarks for: <input name=search_text type=text size=20 value="@search_text@">
 	<input type=submit value=Search>
 </form>
-
-
-
-
-

@@ -40,6 +40,13 @@ Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_
 
 </p>
 
+<form action="search" method=post>
+<input type="hidden" name="return_url" value="index">
+<input type="hidden" name="viewed_user_id" value="@viewed_user_id@">
+
+Search bookmarks for: <input name=search_text type=text size=20><input type=submit value=Search>
+</form>
+
 <p>
 
 <table bgcolor=$folder_bgcolor cellpadding=0 cellspacing=0 border=0 width="100%">
@@ -118,13 +125,6 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
     This user has no bookmarks that you have permission to see.
     </else>
 </if>
-
-<form action="search" method=post>
-<input type="hidden" name="return_url" value="index">
-<input type="hidden" name="viewed_user_id" value="@viewed_user_id@">
-
-Search bookmarks for: <input name=search_text type=text size=20><input type=submit value=Search>
-</form>
 
 <p>
 Key to bookmark display:
