@@ -43,7 +43,7 @@ ad_page_contract {
 
 # If we we are coming from a Bookmarklet there will be no viewed_user_id
 # supplied, but the browsing_user_id will do
-if { [empty_string_p $viewed_user_id] } {
+if { [empty_string_p $viewed_user_id] || $viewed_user_id == 0 } {
     set viewed_user_id [ad_conn user_id]
 }
 
