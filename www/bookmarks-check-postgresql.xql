@@ -14,13 +14,12 @@
 	(
 		select 1 from 
 		(
-			select bookmark_id, url_id from bm_bookmarks
-			where tree_sortkey like 
-			( 
-				select tree_sortkey || '%' from bm_bookmarks
-				where parent_id = :root_folder_id
-			)
-			order by tree_sortkey
+			select o2.bookmark_id, o2.url_id
+			from bm_bookmarks o1, bm_bookmarks o2
+			where o1.parent_id = :root_folder_id
+			and o2.tree_sortkey >= o1.tree_sortkey
+			and o2.tree_sortkey like (o1.tree_sortkey || '%')
+			order by o2.tree_sortkey
 		) bm
         	where bm.url_id = bm_urls.url_id
         	and acs_permission__permission_p(bm.bookmark_id, :browsing_user_id, 'delete')= 't' 
