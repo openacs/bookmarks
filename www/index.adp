@@ -19,7 +19,7 @@ set user_name_url [ad_urlencode @user_name@]
 <a href=bookmarks-export?viewed_user_id=@viewed_user_id@>Export</a> |</if>
 <if @write_p@ eq "t"> <a href=folder-add?return_url=index&viewed_user_id=@viewed_user_id@>Create New Folder</a> |</if>
 <a href=bookmarks-check?return_url=index&viewed_user_id=@viewed_user_id@>Check Links</a> |
-<a href="javascript:launch_window('tree.tcl?viewed_user_id=@viewed_user_id@&write_p=@write_p@&user_name=@user_name_url@')">Javascript version</a> |
+<a href="javascript:launch_window('tree?viewed_user_id=@viewed_user_id@&write_p=@write_p@&user_name=@user_name_url@')">Javascript version</a> |
 <a href=bookmarks-user-list>View bookmarks of other users</a> 
 <if @root_admin_p@ eq "1"> | <a href="bookmark-permissions?viewed_user_id=@viewed_user_id@&user_name=@user_name_url@">Manage access permissions on all bookmarks</a> </if>
 ] 
