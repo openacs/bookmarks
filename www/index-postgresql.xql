@@ -63,7 +63,7 @@
                       from bm_bookmarks bm, bm_bookmarks bm2
                       where exists (select 1
                                     from all_object_party_privilege_map 
-		                    where object_id = bookmark_id
+		                    where object_id = bm.bookmark_id
                                       and party_id = :browsing_user_id
 		                      and privilege = 'read')
 	              and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
