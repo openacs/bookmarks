@@ -101,8 +101,11 @@ create index bm_bookmarks_access_date_idx on bm_bookmarks (parent_id, last_acces
 
 
 -- For connect by queries
-create index bm_bookmarks_idx1 on bm_bookmarks(bookmark_id, parent_id);
-create index bm_bookmarks_idx2 on bm_bookmarks(parent_id, bookmark_id);
+-- Replace oracle indexes:
+-- create index bm_bookmarks_idx1 on bm_bookmarks(bookmark_id, parent_id);
+-- create index bm_bookmarks_idx2 on bm_bookmarks(parent_id, bookmark_id);
+-- With index on tree_sortkey
+create index bm_bookmarks_idx1 on bm_bookmarks(tree_sortkey);
 
 create function bm_bookmarks_insert_tr () returns opaque as '
 declare
