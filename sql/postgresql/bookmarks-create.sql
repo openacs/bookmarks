@@ -420,13 +420,13 @@ DECLARE
 BEGIN
 
  	FOR c_bookmark_id_tree IN 
-	    select bookmark_id,
+	    select bm.bookmark_id,
 	    (select case when count(*)=0 then 1 else 0 end from 
 	    bm_bookmarks where parent_id = bm.bookmark_id) as is_leaf_p
 	    from bm_bookmarks bm, bm_bookmarks bm2
             where bm2.bookmark_id = p_bookmark_id
 	      and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
-            order by tree_level(tree_sortkey) desc, is_leaf_p desc, tree_sortkey
+            order by tree_level(bm.tree_sortkey) desc, is_leaf_p desc, bm.tree_sortkey
  	LOOP
 
             -- DRB: This query is insane in both its PG and Oracle versions but I do not
