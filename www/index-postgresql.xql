@@ -114,6 +114,7 @@
 	         acs_objects
         where    owner_id       = :user_id
 	and      acs_objects.object_id = b.bookmark_id
+	and	 b.bookmark_id != :root_folder_id
 	order by b.tree_sortkey
     
       </querytext>

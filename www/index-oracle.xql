@@ -123,6 +123,7 @@
         where    owner_id       = :user_id
 	and      acs_objects.object_id = b.bookmark_id
         and      b.url_id = bm_urls.url_id(+)
+	and      b.bookmark_id != :root_folder_id
 	order by ord_num
     
       </querytext>
