@@ -33,7 +33,7 @@ if { [empty_string_p $viewed_user_id] } {
 
 set page_title "Create Folder"
 
-set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 set user_id [ad_conn user_id]
 
 # get the next bookmark_id (used as primary key in bm_bookmarks)

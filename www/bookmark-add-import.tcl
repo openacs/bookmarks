@@ -49,7 +49,7 @@ if { [empty_string_p $viewed_user_id] || $viewed_user_id == 0 } {
 
 set page_title "Add/Import Bookmarks"
 
-set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 
 # get the next bookmark_id (used as primary key in bm_bookmarks)
 set bookmark_id [db_nextval acs_object_id_seq]

@@ -6,7 +6,7 @@
 <fullquery name="toggle_open_close">      
       <querytext>
 begin
-	perform bookmark__toggle_open_close (:bookmark_id,:browsing_user_id);
+	perform bookmark__toggle_open_close (:bookmark_id,:in_closed_p_id);
 	
 	return 0;
 end;
@@ -18,7 +18,7 @@ end;
 	<querytext>
 begin
 	perform bookmark__toggle_open_close_all(
-				:browsing_user_id,
+				:in_closed_p_id,
  				:closed_p,
    				bookmark__get_root_folder(:package_id,:viewed_user_id)
     				);

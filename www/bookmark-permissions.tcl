@@ -30,13 +30,7 @@ ad_require_permission $root_folder_id admin
 
 set page_title "Manage Permissions on all Bookmarks"
 
-set context [bm_context_bar_args "\"[ad_quotehtml $page_title]\"" $viewed_user_id]
-
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 
 ad_return_template
-
-
-
-
-
 

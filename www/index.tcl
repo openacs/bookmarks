@@ -38,6 +38,8 @@ ad_page_contract {
     return_url_urlenc:onevalue
 }
 
+set package_id [ad_conn package_id]
+
 set browsing_user_id [ad_conn user_id]
 
 # Is the user viewing his own bookmarks?
@@ -50,16 +52,16 @@ if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_us
 set this_url_urlenc [ad_urlencode [ad_conn url]]
 
 
-# To enable non-registered users to view registered users bookmarks (if they have
-# permission) we use the session_id of these users as the id in the bm_in_closed_p
-# table
-set in_closed_p_id [ad_decode $browsing_user_id "0" [ad_conn session_id] $browsing_user_id]
-
+# To enable non-registered users to view registered users bookmarks (if they
+# have permission) we use the session_id of these users as the id in the
+# bm_in_closed_p table. We make the session_id negative so it doesn't collide
+# with a valid user_id.
+set in_closed_p_id [ad_decode $browsing_user_id "0" -[ad_conn session_id] $browsing_user_id]
 
 # In case this is the first time the user views this bookmark tree
 # we need to populate the table keeping track of which bookmarks are in
 # closed folders
-bm_initialize_in_closed_p $viewed_user_id $in_closed_p_id
+bm_initialize_in_closed_p $viewed_user_id $in_closed_p_id $package_id
 
 # When we are adding a bookmark we need to know which url to return to
 # A bookmark can also be added via a Bookmarklet in which case return url
@@ -67,8 +69,6 @@ bm_initialize_in_closed_p $viewed_user_id $in_closed_p_id
 set return_url_urlenc [ad_urlencode [ad_conn url]?[export_url_vars viewed_user_id]]
 
 set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]
-
-set package_id [ad_conn package_id]
 
 set page_title [db_string bookmark_system_name "select acs_object.name(:package_id) from dual"]
 

@@ -25,7 +25,7 @@ ad_page_contract {
 
 set page_title "Checking Bookmarks"
 
-set context [bm_context_bar_args "\"$page_title\"" $viewed_user_id]
+set context [bm_context_bar_args [list $page_title] $viewed_user_id]
 
 set package_id [ad_conn package_id]
 
@@ -56,7 +56,7 @@ select url_id,
 # We want to give the user something to look at before we start contacting
 # the foreign hosts
 set cmd [list ad_context_bar --]
-foreach elem [bm_context_bar_args "\"$page_title\"" $viewed_user_id] {
+foreach elem [bm_context_bar_args [list $page_title] $viewed_user_id] {
     lappend cmd $elem
 }
 set context_bar [eval $cmd]

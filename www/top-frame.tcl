@@ -39,6 +39,8 @@ A:hover {text-decoration: underline}
 <table width=100% cellpadding=1 border=0 bgcolor=#f3f3f3>
 <input type=hidden name=return_url value=$return_url>
 <tr>
+<td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=main href=\"javascript: top.frames\['main'\].expand_all(); \">Expand</a></td>
+<td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=main href=\"javascript: top.frames\['main'\].collapse_all(); \">Collapse</a></td>
 <td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=main href=tree-frame?viewed_user_id=$viewed_user_id>Refresh</a></td>
 <td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=new href=index?viewed_user_id=$viewed_user_id>Main</a></td>
 <td bgcolor=#cccccc colspan=2 align=center valign=middle><font size=-1 face=arial, helvetica><b>Search <input size=10 name=search_text></td>
@@ -46,17 +48,4 @@ A:hover {text-decoration: underline}
 </form>
 </table>   
 </table>"
-
-
-
-
-
-
-
-
-
-
-
-
-
 

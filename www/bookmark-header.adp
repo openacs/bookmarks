@@ -22,10 +22,10 @@
    	    <div class="tab">
              <a href=bookmarks-check?return_url=index&viewed_user_id=@viewed_user_id@>Check Links</a>
 	    </div>
+	  </if>
    	    <div class="tab">
  	     <a href="javascript:launch_window('@tree_url@')">Javascript</a>
 	    </div>
-	  </if>
    	    <div class="tab">
 	     <a href=bookmarks-user-list>Other users</a> 
 	    </div>

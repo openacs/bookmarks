@@ -342,8 +342,9 @@ as
      );
 
      procedure initialize_in_closed_p (
- 	viewed_user_id      in users.user_id%TYPE,	
- 	in_closed_p_id    in users.user_id%TYPE	
+ 	viewed_user_id      in users.user_id%TYPE,
+ 	in_closed_p_id    in users.user_id%TYPE,
+ 	package_id	  in apm_packages.package_id%TYPE
      );
 
 end bookmark;
@@ -724,8 +725,9 @@ as
 
 
      procedure initialize_in_closed_p (
- 	viewed_user_id      in users.user_id%TYPE,	
- 	in_closed_p_id    in users.user_id%TYPE	
+ 	viewed_user_id      in users.user_id%TYPE,
+ 	in_closed_p_id    in users.user_id%TYPE,
+ 	package_id	  in apm_packages.package_id%TYPE
      )
      is
 	v_count_in_closed_p integer;

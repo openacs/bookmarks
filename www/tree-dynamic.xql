@@ -6,7 +6,7 @@
       
 select first_names||' '||last_name as name 
 from   cc_users 
-where  user_id = :user_id
+where  user_id = :viewed_user_id
       </querytext>
 </fullquery>
 

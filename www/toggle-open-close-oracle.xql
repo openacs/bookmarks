@@ -9,7 +9,7 @@
     begin
    bookmark.toggle_open_close(
    bookmark_id => :bookmark_id,
-   browsing_user_id => :browsing_user_id
+   browsing_user_id => :in_closed_p_id
     );
     end;
       </querytext>
@@ -21,7 +21,7 @@
       
     begin
    bookmark.toggle_open_close_all(
-   browsing_user_id => :browsing_user_id,
+   browsing_user_id => :in_closed_p_id,
    closed_p => :closed_p,
    root_id => bookmark.get_root_folder(
                 package_id => :package_id,

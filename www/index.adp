@@ -67,7 +67,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
     } 
 
     if {@bookmark.folder_p@ == "f"} {
-	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id@&url=[ad_urlencode @bookmark.complete_url@]"
+	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id@&url=[ad_urlencode @bookmark.complete_url;noquote@]"
 	set bgcolor $bookmark_bgcolor
 	set image_url "pics/ftv2doc.gif"
 	lappend action_bar "<a href=\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\"><font size=-1>Details</font></a>"

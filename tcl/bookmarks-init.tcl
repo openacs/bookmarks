@@ -27,7 +27,8 @@ The table bm_in_closed_p holds session data that needs to be removed
  to avoid the table growing to large (maximum size of the table would be
  number_of_bookmarks times number_of_users)
 } {
-    db_dml delete_old_in_closed_p "delete from bm_in_closed_p where creation_date < (sysdate - 1)"
+    set max_days 31
+    db_dml delete_old_in_closed_p "delete from bm_in_closed_p where creation_date < (sysdate - :max_days)"
 }
 
 
