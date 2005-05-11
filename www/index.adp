@@ -83,7 +83,8 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	}
     }
 
-    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif\" width=5 height=1> \[ [join $action_bar " | "] \]"]
+    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt=""  width=5 height=1> \[ [join $action_bar " | "] \]"]
+
 
     set private_text [ad_decode @bookmark.private_p@ "t" "<font size=-1 color=\"red\">private</font>" ""]
 
@@ -91,7 +92,8 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     <table bgcolor=@bgcolor@ cellpadding=0 cellspacing=0 border=0 width="100%">
     <tr>
-    <td valign=top><img src="pics/spacer.gif" width=<%=[expr [expr @bookmark.indentation@ - 1] * 24]%> height=1></td>
+    <td valign=top><img src="pics/spacer.gif" alt=""  width=<%=[expr [expr @bookmark.indentation@ - 1] * 24]%> height=1></td>
+
     <td><a href="@url@"><img width=24 height=22 border=0 src="<%= $image_url %>" align=top></a></td>
     <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>
     </tr>
