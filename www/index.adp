@@ -8,8 +8,8 @@
     </script>
   </property>
 
-<% set folder_bgcolor [ad_parameter FolderBGColor bookmarks "#f3f3f3"]
-set bookmark_bgcolor  [ad_parameter BookmarkBGColor bookmarks "#ffffff"]
+<% set folder_bgcolor [parameter::get -parameter FolderBGColor -default "#f3f3f3"]
+set bookmark_bgcolor  [parameter::get -parameter BookmarkBGColor -default "#ffffff"]
 set edit_anchor "<font size=-1>Edit</font>"
 set delete_anchor "<font size=-1>Delete</font>"
 %>
