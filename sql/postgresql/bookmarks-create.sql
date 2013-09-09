@@ -368,7 +368,7 @@ BEGIN
 
 	if v_n_complete_urls = 0 then
 
-	   select acs_object_id_seq.nextval into v_new_url_id from dual;
+	   select nextval(''t_acs_object_id_seq'') into v_new_url_id from dual;
 
 	   v_return_id := url__new(
 		       v_new_url_id,
@@ -692,7 +692,7 @@ DECLARE
 	v_local_title	bm_bookmarks.local_title%TYPE;
 
 BEGIN
-	SELECT acs_object_id_seq.nextval INTO v_bookmark_id FROM dual;
+	SELECT nextval(''t_acs_object_id_seq'') INTO v_bookmark_id FROM dual;
         
 	SELECT email INTO v_email 
 	FROM parties where party_id = p_user_id;
