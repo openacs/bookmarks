@@ -21,7 +21,7 @@ ad_page_contract {
     reset_all_individual_p:optional
 } 
 
-ad_require_permission $root_folder_id admin
+permission::require_permission -object_id $root_folder_id -privilege admin
 
 bm_update_bookmark_private_p $root_folder_id $private_p
 

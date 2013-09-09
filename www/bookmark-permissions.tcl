@@ -26,7 +26,7 @@ set root_folder_id [bm_get_root_folder_id [ad_conn package_id] [ad_conn user_id]
 
 set old_private_p [bm_bookmark_private_p $root_folder_id]
 
-ad_require_permission $root_folder_id admin
+permission::require_permission -object_id $root_folder_id -privilege admin
 
 set page_title "Manage Permissions on all Bookmarks"
 

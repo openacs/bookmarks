@@ -17,7 +17,7 @@ ad_page_contract {
     viewed_user_id:integer
 } 
 
-ad_require_permission $root_folder_id admin
+permission::require_permission -object_id $root_folder_id -privilege admin
 
 set user_id [ad_conn user_id]
 set package_id [ad_conn package_id]

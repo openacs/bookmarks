@@ -24,7 +24,7 @@ set page_title "View Bookmark"
 
 set context [list $page_title]
 
-ad_require_permission $bookmark_id read
+permission::require_permission -object_id $bookmark_id -privilege read
 
 
 template::query bookmark_view bookmark onerow "select local_title,

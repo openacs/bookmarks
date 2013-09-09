@@ -29,7 +29,7 @@ set package_id [ad_conn package_id]
 
 if { [empty_string_p $viewed_user_id] } {
     # Only admins can call this page for all users
-    ad_require_permission $package_id admin
+    permission::require_permission -object_id $package_id -privilege admin
     set root_folder_id $package_id
    
 } else {
@@ -66,7 +66,7 @@ foreach url_id $deleteable_link {
     }
 
     if { [empty_string_p $viewed_user_id] } {
-	ad_require_permission $package_id admin
+	permission::require_permission -object_id $package_id -privilege admin
 
 	# Delete the url it self
 	if [catch {db_exec_plsql delete_dead_link "

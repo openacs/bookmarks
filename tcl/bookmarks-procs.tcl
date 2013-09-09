@@ -194,7 +194,7 @@ ad_proc bm_get_html_title { html_code } {
     set title ""
     regexp -nocase {<title>([^<]*)</title>} $html_code match title
 
-    if {[string length $title]> [ad_parameter URLTitleMaxLength] || [string length $title] > 499 } {
+    if {[string length $title]> [parameter::get -parameter URLTitleMaxLength] || [string length $title] > 499 } {
 	set title "[string range $title 0 496]..."
     }
 
@@ -208,7 +208,7 @@ ad_proc bm_get_html_description { html_code } {
     set description ""
     regexp -nocase {<meta name="description" content="([^"]*)"} $html_code match description
 
-    if {[string length $description]> [ad_parameter URLDescriptionMaxLength] || [string length $description] > 3999 } {
+    if {[string length $description]> [parameter::get -parameter URLDescriptionMaxLength] || [string length $description] > 3999 } {
 	set description "[string range $description 0 3996]..."
     }
 
@@ -221,7 +221,7 @@ ad_proc bm_get_html_keywords { html_code } {
     set keywords ""
     regexp -nocase {<meta name="keywords" content="([^"]*)">} $html_code match keywords
 
-    if {[string length $keywords]> [ad_parameter URLKeywordsMaxLength] || [string length $keywords] > 3999 } {
+    if {[string length $keywords]> [parameter::get -parameter URLKeywordsMaxLength] || [string length $keywords] > 3999 } {
 	set keywords "[string range $keywords 0 3996]..."
     }
 

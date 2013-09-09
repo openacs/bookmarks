@@ -122,7 +122,7 @@ set context [bm_context_bar_args [list [list [export_vars -base bookmark-add-imp
 set meta_description [bm_get_html_description $url_content]
 set meta_keywords [bm_get_html_keywords $url_content]
 
-set export_form_vars_html [export_form_vars return_url local_title complete_url bookmark_id viewed_user_id meta_description meta_keywords url_title parent_id]
+set export_form_vars_html [export_vars -form return_url local_title complete_url bookmark_id viewed_user_id meta_description meta_keywords url_title parent_id]
 
 # If the user provided a title and the url is reachable we do not
 # ask for a confirmation

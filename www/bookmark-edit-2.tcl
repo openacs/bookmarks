@@ -39,7 +39,7 @@ if { [info exists error_list] } {
 }
 
 
-ad_require_permission $bookmark_id admin
+permission::require_permission -object_id $bookmark_id -privilege admin
 
 # We update or insert the url
 if { [string equal $folder_p "f"] } {

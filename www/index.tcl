@@ -81,8 +81,8 @@ if { ![string equal $viewed_user_id "0"] } {
 }
 
 
-set root_admin_p [ad_permission_p $root_folder_id admin]
-set bookmarks_admin_p [ad_permission_p $package_id admin]
+set root_admin_p [permission::permission_p -object_id $root_folder_id -privilege admin]
+set bookmarks_admin_p [permission::permission_p -object_id $package_id -privilege admin]
 set write_p [bm_user_can_write_in_some_folder_p $viewed_user_id]
 
 

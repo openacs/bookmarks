@@ -4,7 +4,7 @@
 # by pmarklun@arsdigita.com
 
 
-set maxrows [ad_parameter MostPopularHostsAndURLsMaxN]
+set maxrows [parameter::get -parameter MostPopularHostsAndURLsMaxN]
 
 multirow create popular_hosts n_bookmarks host_url host_name
 multirow create popular_urls n_bookmarks complete_url local_title

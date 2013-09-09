@@ -37,7 +37,7 @@ ad_page_contract {
 } -return_errors error_list
 
 # Read the file and check its size
-if [catch { set contents [read [open ${upload_file.tmpfile} r] [ad_parameter MaxNumberOfBytes bm 1000000]] } errmsg] {
+if [catch { set contents [read [open ${upload_file.tmpfile} r] [parameter::get -parameter MaxNumberOfBytes -default 1000000]] } errmsg] {
     lappend error_list "We had a problem processing your request:
 	    <p>$errmsg"
 }

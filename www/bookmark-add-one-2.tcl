@@ -30,7 +30,7 @@ ad_page_contract {
 
 set user_id [ad_conn user_id]
 
-ad_require_permission $parent_id write
+permission::require_permission -object_id $parent_id -privilege write
 
 # split the url to get the host_url
 set host_url [bm_host_url $complete_url]

@@ -33,7 +33,7 @@ set browsing_user_id [ad_conn user_id]
 
 if { [empty_string_p $viewed_user_id] } {
     # Only admins can call this page for all users
-    ad_require_permission $package_id admin
+    permission::require_permission -object_id $package_id -privilege admin
 
     set root_folder_id $package_id
 } else {

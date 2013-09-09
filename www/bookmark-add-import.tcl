@@ -66,7 +66,7 @@ if { $user_id == "0" } {
     ad_script_abort
 }
 
-set full_bookmark_add_url "[ad_parameter -package_id [ad_acs_kernel_id] SystemURL][ad_conn package_url]bookmark-add-import"
+set full_bookmark_add_url "[parameter::get -package_id [ad_acs_kernel_id] -parameter SystemURL][ad_conn package_url]bookmark-add-import"
 
 set bookmarklet "javascript:location.href='${full_bookmark_add_url}?return_url='+escape(location.href)+'&local_title='+escape(document.title)+'&complete_url='+escape(location.href)"
 

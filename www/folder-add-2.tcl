@@ -26,7 +26,7 @@ ad_page_contract {
 set creation_ip [ad_conn peeraddr]
 set user_id [ad_conn user_id]
 
-ad_require_permission $parent_id write
+permission::require_permission -object_id $parent_id -privilege write
 
 set folder_p "t"
 set closed_p "f"

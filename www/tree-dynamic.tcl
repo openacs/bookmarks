@@ -26,9 +26,9 @@ set user_id [ad_conn user_id]
 # will not try to cache this page.
 
 # get generic display parameters from the .ini file
-set folder_decoration [ad_parameter FolderDecoration bm]
-set hidden_decoration [ad_parameter HiddenDecoration bm]
-set dead_decoration   [ad_parameter DeadDecoration   bm]
+set folder_decoration [parameter::get -parameter FolderDecoration -default bm]
+set hidden_decoration [parameter::get -parameter HiddenDecoration -default bm]
+set dead_decoration   [parameter::get -parameter DeadDecoration -default bm]
 
 set name [db_string name_query "
 select first_names||' '||last_name as name 

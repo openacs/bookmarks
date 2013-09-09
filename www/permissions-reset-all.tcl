@@ -25,7 +25,7 @@ ad_page_contract {
     viewed_user_id:onevalue
 }
 
-ad_require_permission $root_folder_id admin
+permission::require_permission -object_id $root_folder_id -privilege admin
 
 set page_title "Removal of Access Permission Settings"
 

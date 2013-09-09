@@ -29,7 +29,7 @@ A:hover {text-decoration: underline}
 <body>
 <center><table width=100%cellpadding=0 border=0 cellspacing=0><tr><td>
 <form target=target_frame action=search><table width=100% cellpadding=1 border=0 bgcolor=#f3f3f3>
-[export_form_vars viewed_user_id]
+[export_vars -form viewed_user_id]
 <tr>
 [ad_decode $write_p "t" "<td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=main href=bookmark-add-import?viewed_user_id=$viewed_user_id&return_url=$return_url>Add/Import</a></td>" ""]
 [ad_decode $browsing_user_id $viewed_user_id "<td bgcolor=#cccccc align=center valign=middle><font size=-1 face=arial, helvetica><b><a target=new href=bookmarks-export?viewed_user_id=$viewed_user_id>Export</a></td>" ""]
