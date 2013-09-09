@@ -51,7 +51,7 @@ if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_us
 # When we are adding a bookmark we need to know which url to return to
 # A bookmark can also be added via a Bookmarklet in which case return url
 # will be the page that the user is browsing.
-set return_url_urlenc [ad_urlencode [ad_conn url]?[export_url_vars viewed_user_id]]
+set return_url_urlenc [ad_urlencode [ad_conn url]?[export_vars -url {viewed_user_id}]]
 
 set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]
 
