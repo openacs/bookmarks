@@ -83,7 +83,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	}
     }
 
-    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt=""  width=5 height=1> \[ [join $action_bar " | "] \]"]
+    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt=""  width=5 height=1> \[[join $action_bar " | "]\] ]
 
 
     set private_text [ad_decode @bookmark.private_p@ "t" "<font size=-1 color=\"red\">private</font>" ""]
