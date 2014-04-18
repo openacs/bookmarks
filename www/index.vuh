@@ -11,10 +11,10 @@
 # 26 September 2003
 # $Id$
 
-set user_id [ad_maybe_redirect_for_registration]
+auth::require_login
 
+set user_id [ad_conn user_id]
 set package_id [ad_conn package_id]
-
 set root_folder_id [bm_get_root_folder_id $package_id $user_id]
 
 set name [db_string name "
