@@ -152,7 +152,7 @@ ad_proc bm_require_delete_permission { bookmark_id } {
     contained bookmarks/folders.
 
 } {
-    if { [string equal [bm_delete_permission_p $bookmark_id] "f"] } {
+    if {[bm_delete_permission_p $bookmark_id] == "f"} {
 	set n_errors 1
 	set error_list [list "You either do not have delete permissions on this bookmark/folder, or you are trying to delete a folder that contains at least one bookmarks or folder that you may not delete"]
 	ad_return_template "complaint"
@@ -169,13 +169,13 @@ ad_proc bm_context_bar_args { arg_list viewed_user_id } {
 } {
     set browsing_user_id [ad_conn user_id]
     
-    if { ![string equal $browsing_user_id $viewed_user_id] && ![empty_string_p $viewed_user_id]} {
+    if { $browsing_user_id ne $viewed_user_id && $viewed_user_id ne ""} {
 	# The user is viewing someone elses bookmarks
 	# and we need the set the context bar so that 
 	# he can go back to viewing his own bookmarks
 	set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -default ""]
 
-	if { [empty_string_p $arg_list] } {
+	if { $arg_list eq "" } {
 	    # We are on the index page
 	    return [list "Bookmarks of $user_name"]
 	} else {
@@ -270,7 +270,7 @@ ad_proc -private bm_close_js_brackets {prev_folder_p prev_lev lev} {
 		append result "$i_str],\n"
 	}
 	while {$prev_lev > $lev} {
-		set i_str [string repeat "\t" [expr $prev_lev - 1]]
+		set i_str [string repeat "\t" [expr {$prev_lev - 1}]]
 		append result "$i_str],\n"
 		incr prev_lev -1
 	}

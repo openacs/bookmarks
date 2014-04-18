@@ -34,7 +34,7 @@ set browsing_user_id [ad_conn user_id]
 # in index.tcl to allow them to open/close folders.
 set in_closed_p_id [ad_decode $browsing_user_id "0" -[ad_conn session_id] $browsing_user_id]
 
-if { ![empty_string_p $bookmark_id] } {
+if { $bookmark_id ne "" } {
     # Toggle one folder
 
     db_exec_plsql toggle_open_close "
@@ -44,7 +44,7 @@ if { ![empty_string_p $bookmark_id] } {
    browsing_user_id => :in_closed_p_id
     );
     end;"
-} elseif { [string equal $action "open_all"] || [string equal $action "close_all"] } {
+} elseif { $action eq "open_all" || $action eq "close_all" } {
     # Toggle all folders
 
     set closed_p [ad_decode $action "open_all" "f" "t"]

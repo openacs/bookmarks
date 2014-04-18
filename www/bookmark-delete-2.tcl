@@ -21,12 +21,12 @@ ad_page_contract {
 bm_require_delete_permission $bookmark_id
 
 
-if [catch {db_exec_plsql bookmark_delete "
+if {[catch {db_exec_plsql bookmark_delete "
     begin
       bookmark.del (
        bookmark_id => :bookmark_id
 	);       
- end;"} errmsg] {
+ end;"} errmsg]} {
 
      set n_errors 1
      set error_list [list "We were not able to delete the bookmark from the database, this is the error message: <pre>$errmsg</pre>"]

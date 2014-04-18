@@ -25,7 +25,7 @@ ad_page_contract {
     old_private_p
 } -validate {
     valid_url {
-	if { [string equal $folder_p "f"] && [empty_string_p [string trim $complete_url]] } {
+	if { $folder_p == "f" && [empty_string_p [string trim $complete_url]] } {
 	    ad_complain "You must provide a non empty url"
 	}
     }
@@ -42,7 +42,7 @@ if { [info exists error_list] } {
 permission::require_permission -object_id $bookmark_id -privilege admin
 
 # We update or insert the url
-if { [string equal $folder_p "f"] } {
+if {$folder_p == "f"} {
 
     set host_url [bm_host_url $complete_url]
     set creation_ip [ad_conn peeraddr]
@@ -83,7 +83,7 @@ bookmark.update_in_closed_p_all_users (
 end;"
 
 # Update the private_p status of the bookmark
-if { ![string equal $old_private_p $private_p] } {
+if { $old_private_p ne $private_p } {
     bm_update_bookmark_private_p $bookmark_id $private_p
 }
 

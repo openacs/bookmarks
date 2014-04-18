@@ -84,7 +84,7 @@ set lines [split $contents "\n"]
 # connect to the default pool and start a transaction.
 foreach line $lines {
     
-    set depth [expr [llength $folder_list]-1]
+    set depth [expr {[llength $folder_list]-1}]
 
     # checks if the line represents a folder
     if {[regexp {<H3[^>]*>([^<]*)</H3>} $line match local_title]} {
@@ -111,7 +111,7 @@ foreach line $lines {
 
 	    } else {
 		# insert folder into bm_bookmarks
-		if [catch {db_exec_plsql folder_insert "
+		if {[catch {db_exec_plsql folder_insert "
 		declare
 		dummy_var integer;
 		begin
@@ -124,7 +124,7 @@ foreach line $lines {
 		   creation_user => :user_id,
 		   creation_ip => :creation_ip
 		);       
-		end;"} errmsg] {
+		end;"} errmsg]} {
 		    set n_errors 1
 		    set error_list [list "We were unable to create your user record in the database.  Here's what the error looked like:
 		    <blockquote>
@@ -148,7 +148,7 @@ foreach line $lines {
 	
     # check if the line ends the current folder
     if {[regexp {</DL>} $line match]} {
-	set folder_depth [expr [llength $folder_list]-2]
+	set folder_depth [expr {[llength $folder_list]-2}]
 	if {$folder_depth<0} {
 	    set folder_depth 0
 	}
@@ -162,7 +162,7 @@ foreach line $lines {
 
 	set host_url [bm_host_url $complete_url]
 
-	if { [empty_string_p $host_url] } {
+	if { $host_url eq "" } {
 	    continue
 	}
 	
@@ -179,11 +179,11 @@ foreach line $lines {
 	    set url_p 1 
 
 	    # if we don't have the url, then insert the url into the database
-	    if [empty_string_p $url_id] {
+	    if {$url_id eq ""} {
 
 		set url_id [db_nextval acs_object_id_seq]
 
-		if [catch {db_exec_plsql new_url "		
+		if {[catch {db_exec_plsql new_url "		
 		declare
 		   dummy_var integer;
 		begin
@@ -195,7 +195,7 @@ foreach line $lines {
 		   creation_user => :viewed_user_id,
 		   creation_ip => :creation_ip
 		);
-		end;"} errmsg] {
+		end;"} errmsg]} {
 		    lappend import_list "We were unable to insert the url $complete_url into the database due to the following
 		    database error: <pre>$errmsg</pre>"
 		    set url_p 0
@@ -217,7 +217,7 @@ foreach line $lines {
 	    } else {
 	    
 		# try to insert bookmark into user's list	
-		if [catch {db_exec_plsql bookmark_insert  "
+		if {[catch {db_exec_plsql bookmark_insert  "
 		
 		declare
 		   dummy_var integer;
@@ -231,7 +231,7 @@ foreach line $lines {
 		   creation_user => :user_id,
 		   creation_ip => :creation_ip
 		);       
-		end;" } errmsg] {
+		end;" } errmsg]} {
 
 		    # if it was not a double click, produce an error
 		    if { [db_string dbclick  {

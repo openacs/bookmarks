@@ -31,7 +31,7 @@ bm_update_bookmark_private_p $root_folder_id $private_p
 #  connect by prior bookmark_id = parent_id"]
 
 
-if { [info exists reset_all_individual_p] && [string equal $reset_all_individual_p "t"] && [string equal $non_default_permissions_p "t"] } {
+if { [info exists reset_all_individual_p] && $reset_all_individual_p == "t" && $non_default_permissions_p == "t" } {
     ad_returnredirect "permissions-reset-all?public_p=$public_p&viewed_user_id=$viewed_user_id&root_folder_id=$root_folder_id"
 } else {
     ad_returnredirect "index?viewed_user_id=$viewed_user_id"

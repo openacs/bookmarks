@@ -43,7 +43,7 @@ set package_id [ad_conn package_id]
 set browsing_user_id [ad_conn user_id]
 
 # Is the user viewing his own bookmarks?
-if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_user_id] } {
+if { ![info exists viewed_user_id] || $viewed_user_id eq $browsing_user_id } {
     # The user is viewing his own bookmarks
     set viewed_user_id $browsing_user_id
     set context {}
@@ -74,7 +74,7 @@ set page_title [db_string bookmark_system_name "select acs_object.name(:package_
 
 set context [bm_context_bar_args "" $viewed_user_id]
 
-if { ![string equal $viewed_user_id "0"] } {
+if { $viewed_user_id ne "0" } {
     set root_folder_id [bm_get_root_folder_id [ad_conn package_id] $viewed_user_id]
 } else {
     set root_folder_id 0
@@ -107,7 +107,7 @@ switch $sort_by {
 
 # We let the owner of the bookmarks see which bookmarks are private,
 # and use a MUCH less expensive query that doesn't hit permissions
-if { [string equal $browsing_user_id $viewed_user_id] } {
+if {$browsing_user_id eq $viewed_user_id} {
     set private_select [db_map private_select]
 db_multirow bookmark my_bookmarks_select ""
 

@@ -42,7 +42,7 @@ set package_id [ad_conn package_id]
 set browsing_user_id [ad_conn user_id]
 
 # Is the user viewing his own bookmarks?
-if { ![info exists viewed_user_id] || [string equal $viewed_user_id $browsing_user_id] } {
+if { ![info exists viewed_user_id] || $viewed_user_id eq $browsing_user_id } {
     # The user is viewing his own bookmarks
     set viewed_user_id $browsing_user_id
     set context {}
@@ -55,7 +55,7 @@ set return_url_urlenc [ad_urlencode [ad_conn url]?[export_vars -url {viewed_user
 
 set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]
 
-if { ![string equal $viewed_user_id "0"] } {
+if { $viewed_user_id ne "0" } {
     set root_folder_id [bm_get_root_folder_id [ad_conn package_id] $viewed_user_id]
 } else {
     set root_folder_id 0

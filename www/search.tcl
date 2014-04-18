@@ -19,7 +19,7 @@ ad_page_contract {
 } -validate {
 
     no_just_wildcard -requires {search_text:notnull} {
-	if [regexp {^%+$} $search_text] {
+	if {[regexp {^%+$} $search_text]} {
 	    ad_complain "Please search for more than just a wildcard."
 	}
     }
@@ -113,7 +113,7 @@ db_multirow others_list bookmark_search_other {*SQL*}
 # Take this "if" statement out once oracle has a bm_bookmarks_get_folder_names equivalent.
 # Until then we won't display the folder_names column when using oracle.
 set db_type [db_rdbms_get_type [db_current_rdbms]]
-if {$db_type != "postgresql"} {
+if {$db_type ne "postgresql"} {
 	template::list::element::set_property -list_name my_list \
 		-element_name folder_names -property hide_p -value 1
 	template::list::element::set_property -list_name others_list \

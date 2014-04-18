@@ -21,7 +21,7 @@ ad_page_contract {
 } 
 
 # We are currently only supporting export of the users own bookmarks
-if { ![string equal $viewed_user_id [ad_conn user_id]] } {
+if { $viewed_user_id ne [ad_conn user_id] } {
     set n_errors 1
     set error_list [list "We are sorry, but the bookmarks module does not currently support the exporting other users bookmarks."]
     ad_return_template "complaint"

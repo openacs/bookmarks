@@ -26,7 +26,7 @@ ad_page_contract {
 
 # If viewed_user_id was not provided the browsing user_id provides
 # a good default
-if { [empty_string_p $viewed_user_id] } {
+if { $viewed_user_id eq "" } {
     set viewed_user_id [ad_conn user_id]
 }
 

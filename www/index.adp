@@ -1,5 +1,5 @@
 <master>
-  <property name="title">@page_title;noquote@</property>
+  <property name="doc(title)">@page_title;noquote@</property>
   <property name="context">@context;noquote@</property>
   <property name="header_stuff">
     <script runat=client>
@@ -59,10 +59,10 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     set action_bar ""
 
-    if { ![string equal @bookmark.admin_p@ "0"] } {
+    if { "@bookmark.admin_p@" ne "0" } {
        lappend action_bar "<a href=bookmark-edit?viewed_user_id=@viewed_user_id@&bookmark_id=@bookmark.bookmark_id@&return_url=@return_url_urlenc@>$edit_anchor</a>"
     }
-    if { ![string equal @bookmark.delete_p@ "0"] } {
+    if { "@bookmark.delete_p@" ne "0" } {
        lappend action_bar "<a href=\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&return_url=@return_url_urlenc@&viewed_user_id=@viewed_user_id@\">$delete_anchor</a>"
     } 
 
@@ -92,7 +92,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     <table bgcolor=@bgcolor@ cellpadding=0 cellspacing=0 border=0 width="100%">
     <tr>
-    <td valign=top><img src="pics/spacer.gif" alt=""  width=<%=[expr [expr @bookmark.indentation@ - 1] * 24]%> height=1></td>
+    <td valign=top><img src="pics/spacer.gif" alt=""  width=<%=[expr {[expr @bookmark.indentation@ - 1] * 24}]%> height=1></td>
 
     <td><a href="@url@"><img width=24 height=22 border=0 src="<%= $image_url %>" align=top></a></td>
     <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>

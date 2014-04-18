@@ -27,7 +27,7 @@ if { [info exists error_list] } {
 
 set package_id [ad_conn package_id]
 
-if { [empty_string_p $viewed_user_id] } {
+if { $viewed_user_id eq "" } {
     # Only admins can call this page for all users
     permission::require_permission -object_id $package_id -privilege admin
     set root_folder_id $package_id
@@ -50,12 +50,12 @@ foreach url_id $deleteable_link {
     where acs_permission.permission_p(bm.bookmark_id, :browsing_user_id, 'delete') = 't'
     and bm.url_id = :url_id" {
 
-	if [catch {db_exec_plsql delete_dead_link "
+	if {[catch {db_exec_plsql delete_dead_link "
 	begin
 	bookmark.del (
 	bookmark_id => :bookmark_id
 	);       
-        end;"} errmsg] {
+        end;"} errmsg]} {
 
 	    set n_errors 1
 	    set error_list [list "We encountered an error while trying to process this DELETE:
@@ -65,16 +65,16 @@ foreach url_id $deleteable_link {
 	}
     }
 
-    if { [empty_string_p $viewed_user_id] } {
+    if { $viewed_user_id eq "" } {
 	permission::require_permission -object_id $package_id -privilege admin
 
 	# Delete the url it self
-	if [catch {db_exec_plsql delete_dead_link "
+	if {[catch {db_exec_plsql delete_dead_link "
 	begin
 	url.del (
 	url_id => :url_id
 	);       
-        end;"} errmsg] {
+        end;"} errmsg]} {
 
 	    set n_errors 1
 	    set error_list [list "We encountered an error while trying to process this DELETE:

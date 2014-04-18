@@ -31,7 +31,7 @@ set package_id [ad_conn package_id]
 
 set browsing_user_id [ad_conn user_id]
 
-if { [empty_string_p $viewed_user_id] } {
+if { $viewed_user_id eq "" } {
     # Only admins can call this page for all users
     permission::require_permission -object_id $package_id -privilege admin
 
@@ -70,7 +70,7 @@ $context_bar
 <hr>
 "
 
-if { ![empty_string_p $check_list] } {
+if { $check_list ne "" } {
     ns_write "URLs are being checked. This might take some time - so please have some patience...
 
 Links that aren't reachable will appear with a checkbox in front of
@@ -131,7 +131,7 @@ foreach check_set $check_list {
     if { $response != 200 && $response != 302 } {
 	ns_set put $checked_url last_live_date ""
 
-	if { [string equal $form_opened_p "f"] } {
+	if {$form_opened_p == "f"} {
 	    set form_opened_p "t"
 	    ns_write "<form action=delete-dead-links method=post>
 	    <input type=\"hidden\" name=\"return_url\" value=\"$return_url\">
@@ -159,7 +159,7 @@ foreach check_set $check_list {
 		set description [bm_get_html_description $url_content]
 		set keywords [bm_get_html_keywords $url_content]
 	    
-		if { ![empty_string_p $keywords] || ![empty_string_p $description] } {
+		if { $keywords ne "" || $description ne "" } {
 		    set keywords_or_description_p "t"
 		} else {
 		    set keywords_or_description_p "f"
@@ -191,7 +191,7 @@ foreach checked_url $checked_list {
     set keywords [ns_set get $checked_url keywords]
     set last_live_date [ns_set get $checked_url last_live_date]
 
-    if { ![empty_string_p $last_live_date] } {
+    if { $last_live_date ne "" } {
 	set last_live_clause ", last_live_date = $last_live_date"
     } else {
 	set last_live_clause ""

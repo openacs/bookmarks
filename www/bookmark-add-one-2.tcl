@@ -79,7 +79,7 @@ if {$n_complete_urls == "0"} {
 
 # Insert the bookmark
 #------------------------------------------------------------------------------------------
-    if [catch {db_exec_plsql bookmark_add "
+    if {[catch {db_exec_plsql bookmark_add "
     declare
       dummy_var integer;
     begin
@@ -92,7 +92,7 @@ if {$n_complete_urls == "0"} {
        creation_user => :user_id,
        creation_ip => :creation_ip
 	);       
-    end;"} errmsg] {
+    end;"} errmsg]} {
 	bm_handle_bookmark_double_click $bookmark_id $errmsg $return_url
     }
 #------------------------------------------------------------------------------------------

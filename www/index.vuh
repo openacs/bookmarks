@@ -30,7 +30,7 @@ set i_str [string repeat $indent_str $indent]
 
 db_foreach bm_info { } {
 
-    if { [string equal $folder_list 0] } {
+    if {$folder_list eq "0"} {
 	lappend folder_list $parent_id
     } else {
 	set previous_parent_id [lindex $folder_list end]	
@@ -43,7 +43,7 @@ db_foreach bm_info { } {
 		incr indent
 		set i_str [string repeat $indent_str $indent]
 	    } else {
-		set drop [expr [llength $folder_list]-$parent_location]
+		set drop [expr {[llength $folder_list]-$parent_location}]
 		set folder_list [lrange $folder_list 0 $parent_location]
 		for {set i 1} {$i<$drop} {incr i} {
 		    incr indent -1
@@ -51,7 +51,7 @@ db_foreach bm_info { } {
 		    append bookmark_html "$i_str</DL><p>\n\n"
 		}
 	    }
-	} elseif { [string equal $folder_p "t"] && [string equal $previous_folder_p "t"] } {
+	} elseif { $folder_p == "t" && $previous_folder_p == "t" } {
 	    # The previous folder was empty
 	    append bookmark_html "$i_str<DL><p>\n$i_str</DL><p>\n"
 	}

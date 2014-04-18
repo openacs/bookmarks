@@ -51,7 +51,7 @@ if { [info exists error_list] } {
     ad_return_template "complaint"
 }
 
-if { [empty_string_p $viewed_user_id] } {
+if { $viewed_user_id eq "" } {
     set viewed_user_id [ad_conn user_id]
 }
 
@@ -74,7 +74,7 @@ set old_private_p [bm_bookmark_private_p $bookmark_id]
 # be set directly for this bookmark
 set security_inherit_p [db_string inheritance_p "select security_inherit_p from acs_objects where object_id = :bookmark_id"]
 
-if { [string equal $old_private_p "t"] && [string equal $security_inherit_p "t"] } {
+if { $old_private_p == "t" && $security_inherit_p == "t" } {
     set public_possible_p "f"
 } else {
     set public_possible_p "t"

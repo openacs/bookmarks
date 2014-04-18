@@ -32,7 +32,7 @@ ad_page_contract {
 	# complete url will not be provided but the url to bookmark
 	# is in this case the return_url which is the page that the
 	# user is viewing
-	if { [empty_string_p $complete_url] } {
+	if { $complete_url eq "" } {
 	    set complete_url $return_url
 	}
 
@@ -55,11 +55,11 @@ ad_page_contract {
 	set url_title [bm_get_html_title $url_content]
 
 	# If user did not enter a title for the bookmark, we need to assign remote page title
-	if {[empty_string_p $local_title]} {
+	if {$local_title eq ""} {
 	    set user_provided_title_p "f"
 	    set local_title $url_title
 
-	    if {[empty_string_p $local_title]} {
+	    if {$local_title eq ""} {
 		ad_complain "We're sorry but we can not detect a title for this bookmark, 
 		the host does not provide one.  If you still want to add this bookmark 
 		now, press \[Back\] on your browser and check the URL or type in a title."
@@ -97,10 +97,10 @@ if { [info exists error_list] } {
 
 # If this page was called with a bookmarklet some form vars will not be
 # provided and we need to set them here. 
-if { [empty_string_p $viewed_user_id] } {
+if { $viewed_user_id eq "" } {
     set viewed_user_id $user_id
 }
-if { [empty_string_p $bookmark_id] } {
+if { $bookmark_id eq "" } {
     set bookmark_id [db_nextval acs_object_id_seq]
 }
 
