@@ -61,7 +61,7 @@ set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_vars -url {viewed_user_
 
 # Redirect the user to log in if he has not done so
 set user_id [ad_conn user_id]
-if { $user_id == "0" } {
+if { $user_id == 0 } {
     ad_returnredirect "/register/?return_url=$this_url_urlenc"
     ad_script_abort
 }

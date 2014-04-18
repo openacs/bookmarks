@@ -46,7 +46,7 @@ set n_complete_urls [db_string count_url "
 
 set creation_ip [ad_conn peeraddr]
 
-if {$n_complete_urls == "0"} {
+if {$n_complete_urls == 0} {
    
         set url_id [db_nextval acs_object_id_seq]
 

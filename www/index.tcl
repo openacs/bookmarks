@@ -18,7 +18,7 @@ ad_page_contract {
 
 } -validate {
     valid_user_id -requires {viewed_user_id:integerl} {
-	if { [empty_string_p [db_string user_exists "select 1 from parties where party_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]] } {
+	if { [db_string user_exists "select 1 from parties where party_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""] eq "" } {
 	    ad_complain "The user_id in the url is invalid"
 	}
     }

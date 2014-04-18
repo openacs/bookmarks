@@ -108,7 +108,7 @@ if { $bookmark_id eq "" } {
 set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_vars -url {viewed_user_id complete_url local_title return_url bookmark_id}]"]
 
 set user_id [ad_conn user_id]
-if { $user_id == "0" } {
+if { $user_id == 0 } {
     ad_returnredirect "/register/?return_url=$this_url_urlenc"
     ad_script_abort
 }

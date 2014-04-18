@@ -67,7 +67,7 @@ ad_proc bm_handle_bookmark_double_click { bookmark_id errmsg return_url } {
                                           from   bm_bookmarks 
 	                                  where  bookmark_id = :bookmark_id"]
 	
-	if {$dbclick_p == "1"} {   
+	if {$dbclick_p == 1} {   
 	    ad_returnredirect  -allow_complete_url $return_url
             ad_script_abort
 	} else {

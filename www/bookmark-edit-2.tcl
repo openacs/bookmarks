@@ -25,7 +25,7 @@ ad_page_contract {
     old_private_p
 } -validate {
     valid_url {
-	if { $folder_p == "f" && [empty_string_p [string trim $complete_url]] } {
+	if { $folder_p == "f" && [string trim $complete_url] eq "" } {
 	    ad_complain "You must provide a non empty url"
 	}
     }
