@@ -16,11 +16,11 @@ ad_page_contract {
 } {
     folder_p
     return_url
-    bookmark_id:integer
-    viewed_user_id:integer
+    bookmark_id:naturalnum,notnull
+    viewed_user_id:naturalnum,notnull
     {complete_url:trim ""}
     local_title
-    parent_id:integer
+    parent_id:naturalnum,notnull
     {private_p "f"}
     old_private_p
 } -validate {

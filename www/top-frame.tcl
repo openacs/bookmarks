@@ -11,7 +11,7 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } {
-    viewed_user_id:integer
+    viewed_user_id:naturalnum,notnull
     write_p
 }
 

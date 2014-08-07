@@ -13,7 +13,7 @@ ad_page_contract {
     @cvs-id $Id$
 } {
 
-    viewed_user_id:integer
+    viewed_user_id:naturalnum,notnull
 
 } -properties {
     page_title:onevalue

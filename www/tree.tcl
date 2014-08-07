@@ -1,7 +1,7 @@
 ad_page_contract {
 
 } {
-   viewed_user_id:integer
+   viewed_user_id:naturalnum,notnull
    user_name
    write_p
 }

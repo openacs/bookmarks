@@ -14,9 +14,9 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } { 
-    root_folder_id:integer
+    root_folder_id:naturalnum,notnull
     public_p
-    viewed_user_id:integer
+    viewed_user_id:naturalnum,notnull
 
 } -properties {
     page_title:onevalue

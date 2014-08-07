@@ -18,11 +18,11 @@ ad_page_contract {
     @cvs-id $Id$
 } { 
     return_url
-    viewed_user_id:integer
-    parent_id:integer
+    viewed_user_id:naturalnum,notnull
+    parent_id:naturalnum,notnull
     complete_url
     local_title
-    bookmark_id:integer
+    bookmark_id:naturalnum,notnull
     url_title
     meta_description
     meta_keywords

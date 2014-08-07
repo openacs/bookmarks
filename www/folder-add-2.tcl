@@ -14,9 +14,9 @@ ad_page_contract {
 } {
     return_url
     local_title:notnull
-    bookmark_id:integer
-    parent_id:integer
-    viewed_user_id:integer
+    bookmark_id:naturalnum,notnull
+    parent_id:naturalnum,notnull
+    viewed_user_id:naturalnum,notnull
 }
 
 

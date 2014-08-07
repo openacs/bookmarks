@@ -23,9 +23,9 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } {
-    {bookmark_id:integer ""}
+    {bookmark_id:naturalnum ""}
     {action ""}
-    viewed_user_id:integer
+    viewed_user_id:naturalnum,notnull
     sort_by
 }
 

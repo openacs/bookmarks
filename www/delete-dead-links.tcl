@@ -17,7 +17,7 @@ ad_page_contract {
 } {
     deleteable_link:integer,notnull,multiple
     {return_url:trim ""}
-    {viewed_user_id:integer ""}
+    {viewed_user_id:naturalnum ""}
 } -return_errors error_list
 
 if { [info exists error_list] } {

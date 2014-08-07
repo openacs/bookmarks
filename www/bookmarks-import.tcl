@@ -15,9 +15,9 @@ ad_page_contract {
     upload_file
     upload_file.tmpfile:tmpfile
 
-    bookmark_id:integer
+    bookmark_id:naturalnum,notnull
     return_url
-    viewed_user_id:integer
+    viewed_user_id:naturalnum,notnull
 } -validate {
 
     non_empty_file {

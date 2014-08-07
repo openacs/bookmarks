@@ -17,12 +17,12 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } {
-    {viewed_user_id:integer ""}
+    {viewed_user_id:naturalnum ""}
     {complete_url:trim ""}
     {local_title ""}
     return_url
-    {bookmark_id:integer ""}
-    parent_id:integer
+    {bookmark_id:naturalnum ""}
+    parent_id:naturalnum,notnull
 
 } -validate {
 

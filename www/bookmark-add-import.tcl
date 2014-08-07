@@ -23,7 +23,7 @@ ad_page_contract {
     @cvs-id $Id$
 } {
     return_url
-    {viewed_user_id:integer ""}
+    {viewed_user_id:naturalnum ""}
     {local_title ""}
     {complete_url ""}
 

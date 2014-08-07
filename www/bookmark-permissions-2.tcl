@@ -15,8 +15,8 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } { 
-    root_folder_id:integer
-    viewed_user_id:integer
+    root_folder_id:naturalnum,notnull
+    viewed_user_id:naturalnum,notnull
     {private_p "f"}
     reset_all_individual_p:optional
 } 
