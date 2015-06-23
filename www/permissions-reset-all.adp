@@ -12,9 +12,9 @@ on the following bookmarks to make your default (root) permissions apply?
 </ul>
 
 <form method=post action=permissions-reset-all-2.tcl>
-<input type=hidden name="root_folder_id" value="@root_folder_id@">
-<input type=hidden name="viewed_user_id" value="@viewed_user_id@">
+<input type="hidden" name="root_folder_id" value="@root_folder_id@">
+<input type="hidden" name="viewed_user_id" value="@viewed_user_id@">
 <center>
-<input type=submit value="Yes, Proceed">
+<input type="submit" value="Yes, Proceed">
 </center>
 </form>

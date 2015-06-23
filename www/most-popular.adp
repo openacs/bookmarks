@@ -12,7 +12,7 @@
 
 <multiple name="popular_urls">
 
-<li>@popular_urls.n_bookmarks@: <a href=@popular_urls.complete_url@>@popular_urls.local_title@</a></li>
+<li>@popular_urls.n_bookmarks@: <a href="@popular_urls.complete_url@">@popular_urls.local_title@</a></li>
 
 </multiple>
 

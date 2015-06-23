@@ -24,7 +24,7 @@
     <table>
     <tr>
     <td>
-    <input type=submit value="Ok, add the bookmark">
+    <input type="submit" value="Ok, add the bookmark">
     </td>
     </tr>
     </table>

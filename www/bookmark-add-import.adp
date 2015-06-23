@@ -2,9 +2,9 @@
 <property name="title">@page_title@</property>
 <property name="context">@context;noquote@</property>
 <include src="bookmark-header">
-<% set hidden_form_vars "<input type=hidden name=return_url value=@return_url@>
-<input type=hidden name=viewed_user_id value=@viewed_user_id@>
-<input type=hidden name=bookmark_id value=@bookmark_id@>" %>
+<% set hidden_form_vars "<input type="hidden" name="return_url" value="@return_url@">
+<input type="hidden" name="viewed_user_id" value="@viewed_user_id@">
+<input type="hidden" name="bookmark_id" value="@bookmark_id@">" %>
 
 <h3>Add one Bookmark</h3>
 Insert the URL below.  If you leave the title blank, we will 
@@ -15,12 +15,12 @@ attempt to get the title from the web site.
 
 <table>
 <tr>
-   <td valign=top align=right>URL:</td>
-   <td align=left><input name=complete_url size=70 maxlength=500 value="@complete_url@"></td>
+   <td valign="top" align="right">URL:</td>
+   <td align="left"><input name="complete_url" size="70" maxlength="500" value="@complete_url@"></td>
 </tr>
 <tr>
-   <td valign=top align=right>Title (Optional):</td>
-   <td align=left><input name=local_title size=70 maxlength=500 value="@local_title@"></td>
+   <td valign="top" align="right">Title (Optional):</td>
+   <td align="left"><input name="local_title" size="70" maxlength="500" value="@local_title@"></td>
 </tr>
 
 <tr>
@@ -32,8 +32,8 @@ attempt to get the title from the web site.
 <tr>
    <td>
    </td>
-   <td align=left>
-   <input type=submit value="Add">
+   <td align="left">
+   <input type="submit" value="Add">
    </td>
 </tr>
 </table>
@@ -66,8 +66,8 @@ Users of new versions of IE: Export your shortcuts to Netscape format, then
 <p>
 <table>
 <tr>
-<td>Bookmarks File: <input type=file name=upload_file size=10></td>
-<td><input type=submit value="Import file"></td>
+<td>Bookmarks File: <input type="file" name="upload_file" size="10"></td>
+<td><input type="submit" value="Import file"></td>
 </tr>
 </table>
 <p> 

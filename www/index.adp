@@ -17,9 +17,9 @@ set delete_anchor "<font size=-1>Delete</font>"
 <include src=bookmark-header>
 <if @viewed_user_id@ ne "0">
 <p>
-Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_user_id@&sort_by=name">name</a></if><else><b>name</b></else> | 
-<if @sort_by@ eq "name"><a href="index?viewed_user_id=@viewed_user_id@&sort_by=access_date">access date</a></if><else><b>access date</b></else> 
-<!-- | <a href="index?viewed_user_id=@viewed_user_id@&sort_by=creation_date">creation date</a> --> ]
+Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_user_id@&amp;sort_by=name">name</a></if><else><b>name</b></else> | 
+<if @sort_by@ eq "name"><a href="index?viewed_user_id=@viewed_user_id@&amp;sort_by=access_date">access date</a></if><else><b>access date</b></else> 
+<!-- | <a href="index?viewed_user_id=@viewed_user_id@&amp;sort_by=creation_date">creation date</a> --> ]
 
 </p>
 
@@ -27,16 +27,16 @@ Sort by: [ <if @sort_by@ eq "access_date"><a href="index?viewed_user_id=@viewed_
 <input type="hidden" name="return_url" value="index">
 <input type="hidden" name="viewed_user_id" value="@viewed_user_id@">
 
-Search bookmarks for: <input name=search_text type=text size=20><input type=submit value=Search>
+Search bookmarks for: <input name="search_text" type="text" size="20"><input type="submit" value="Search">
 </form>
 
 <p>
 
-<table bgcolor=$folder_bgcolor cellpadding=0 cellspacing=0 border=0 width="100%">
+<table bgcolor=$folder_bgcolor cellpadding="0" cellspacing="0" border="0" width="100%">
 <tr>
-<td width="100%"><img border=0 src=pics/ftv2folderopen.gif
+<td width="100%"><img border="0" src=pics/ftv2folderopen.gif
 align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
-<a href=toggle-open-close?action=close_all&viewed_user_id=@viewed_user_id@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id@>Close</a>/<a href=toggle-open-close?action=open_all&viewed_user_id=@viewed_user_id@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id@>Open</a> All Folders</td>
+<a href="toggle-open-close?action=close_all&amp;viewed_user_id=@viewed_user_id@&amp;sort_by=@sort_by@&amp;browsing_user_id=@browsing_user_id@">Close</a>/<a href="toggle-open-close?action=open_all&amp;viewed_user_id=@viewed_user_id@&amp;sort_by=@sort_by@&amp;browsing_user_id=@browsing_user_id@">Open</a> All Folders</td>
 </tr>
 </table>
 
@@ -60,20 +60,20 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
     set action_bar ""
 
     if { "@bookmark.admin_p@" ne "0" } {
-       lappend action_bar "<a href=bookmark-edit?viewed_user_id=@viewed_user_id@&bookmark_id=@bookmark.bookmark_id@&return_url=@return_url_urlenc@>$edit_anchor</a>"
+       lappend action_bar "<a href="bookmark-edit?viewed_user_id=@viewed_user_id@&amp;bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@">$edit_anchor</a>"
     }
     if { "@bookmark.delete_p@" ne "0" } {
-       lappend action_bar "<a href=\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&return_url=@return_url_urlenc@&viewed_user_id=@viewed_user_id@\">$delete_anchor</a>"
+       lappend action_bar "<a href="\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@&amp;viewed_user_id=@viewed_user_id@\"">$delete_anchor</a>"
     } 
 
     if {@bookmark.folder_p@ == "f"} {
 	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id@&url=[ad_urlencode @bookmark.complete_url;noquote@]"
 	set bgcolor $bookmark_bgcolor
 	set image_url "pics/ftv2doc.gif"
-	lappend action_bar "<a href=\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\"><font size=-1>Details</font></a>"
+	lappend action_bar "<a href="\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\""><font size=-1>Details</font></a>"
     } else {
 	set bgcolor $folder_bgcolor
-	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id@&viewed_user_id=@viewed_user_id@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id@"
+	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id@&amp;viewed_user_id=@viewed_user_id@&amp;sort_by=@sort_by@&amp;browsing_user_id=@browsing_user_id@"
 
 	# different image_urls for whether or not the folder is open
 	if {@bookmark.closed_p@ == "t"} {
@@ -90,11 +90,11 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     %>
 
-    <table bgcolor=@bgcolor@ cellpadding=0 cellspacing=0 border=0 width="100%">
+    <table bgcolor=@bgcolor@ cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr>
-    <td valign=top><img src="pics/spacer.gif" alt=""  width=<%=[expr {[expr @bookmark.indentation@ - 1] * 24}]%> height=1></td>
+    <td valign="top"><img src="pics/spacer.gif" alt=""  width=<%=[expr {[expr @bookmark.indentation@ - 1] * 24}]%> height=1></td>
 
-    <td><a href="@url@"><img width=24 height=22 border=0 src="<%= $image_url %>" align=top></a></td>
+    <td><a href="@url@"><img width=24 height=22 border="0" src="<%= $image_url %>" align=top></a></td>
     <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>
     </tr>
     </table>
