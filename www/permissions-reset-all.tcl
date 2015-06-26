@@ -15,7 +15,7 @@ ad_page_contract {
     @cvs-id $Id$
 } { 
     root_folder_id:naturalnum,notnull
-    public_p
+    public_p:boolean
     viewed_user_id:naturalnum,notnull
 
 } -properties {

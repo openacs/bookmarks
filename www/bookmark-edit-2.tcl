@@ -14,15 +14,15 @@ ad_page_contract {
     @creation-date December 2000
     @cvs-id $Id$
 } {
-    folder_p
+    folder_p:boolean
     return_url
     bookmark_id:naturalnum,notnull
     viewed_user_id:naturalnum,notnull
     {complete_url:trim ""}
     local_title
     parent_id:naturalnum,notnull
-    {private_p "f"}
-    old_private_p
+    {private_p:boolean "f"}
+    old_private_p:boolean
 } -validate {
     valid_url {
 	if { $folder_p == "f" && [string trim $complete_url] eq "" } {

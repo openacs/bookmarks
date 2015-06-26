@@ -17,8 +17,8 @@ ad_page_contract {
 } { 
     root_folder_id:naturalnum,notnull
     viewed_user_id:naturalnum,notnull
-    {private_p "f"}
-    reset_all_individual_p:optional
+    {private_p:boolean "f"}
+    reset_all_individual_p:boolean,optional
 } 
 
 permission::require_permission -object_id $root_folder_id -privilege admin

@@ -12,7 +12,7 @@ ad_page_contract {
     @cvs-id $Id$
 } {
     viewed_user_id:naturalnum,notnull
-    write_p
+    write_p:boolean
 }
 
 set browsing_user_id [ad_conn user_id]
