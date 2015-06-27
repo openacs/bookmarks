@@ -2,7 +2,7 @@
   <property name="doc(title)">@page_title;noquote@</property>
   <property name="context">@context;noquote@</property>
   <property name="header_stuff">
-    <script runat=client>
+    <script runat="client">
       function launch_window(file) {
           window.open(file,'bookmarks','toolbar=no,location=no,directories=no,status=no,scrollbars=auto,resizable=yes,copyhistory=no,width=350,height=480')}
     </script>
@@ -53,7 +53,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
     if {@bookmark.folder_p@ == "t"} {
 	append decoration_open "<b>"
 	append decoration_close "</b>"
-    } 
+    }
 
     regsub -all {'|"} @bookmark.bookmark_title;noquote@ {} javascript_title
 
@@ -63,14 +63,14 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
        lappend action_bar "<a href="bookmark-edit?viewed_user_id=@viewed_user_id@&amp;bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@">$edit_anchor</a>"
     }
     if { "@bookmark.delete_p@" ne "0" } {
-       lappend action_bar "<a href="\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@&amp;viewed_user_id=@viewed_user_id@\"">$delete_anchor</a>"
+       lappend action_bar "<a href=\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@&amp;viewed_user_id=@viewed_user_id@\">$delete_anchor</a>"
     } 
 
     if {@bookmark.folder_p@ == "f"} {
 	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id@&url=[ad_urlencode @bookmark.complete_url;noquote@]"
 	set bgcolor $bookmark_bgcolor
 	set image_url "pics/ftv2doc.gif"
-	lappend action_bar "<a href="\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\""><font size=-1>Details</font></a>"
+	lappend action_bar "<a href=\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\"><font size=-1>Details</font></a>"
     } else {
 	set bgcolor $folder_bgcolor
 	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id@&amp;viewed_user_id=@viewed_user_id@&amp;sort_by=@sort_by@&amp;browsing_user_id=@browsing_user_id@"
@@ -83,16 +83,16 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	}
     }
 
-    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt=""  width=5 height=1> \[[join $action_bar " | "]\] ]
+    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt='spacer'  width='5' height='1'> \[[join $action_bar " | "]\] ]
 
 
-    set private_text [ad_decode @bookmark.private_p@ "t" "<font size=-1 color=\"red\">private</font>" ""]
+    set private_text [ad_decode @bookmark.private_p@ "t" "<font size='-1' color='red'>private</font>" ""]
 
     %>
 
     <table bgcolor=@bgcolor@ cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr>
-    <td valign="top"><img src="pics/spacer.gif" alt=""  width=<%=[expr {[expr @bookmark.indentation@ - 1] * 24}]%> height=1></td>
+    <td valign="top"><img src="pics/spacer.gif" alt="spacer"  width=<%=[expr {[expr {@bookmark.indentation@ - 1}] * 24}]%> height="1"></td>
 
     <td><a href="@url@"><img width=24 height=22 border="0" src="<%= $image_url %>" align=top></a></td>
     <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>

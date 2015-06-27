@@ -18,7 +18,9 @@ ad_page_contract {
 
 } -validate {
     valid_user_id -requires {viewed_user_id:integerl} {
-	if { [db_string user_exists "select 1 from parties where party_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""] eq "" } {
+	if { [db_string user_exists {select 1 from parties where party_id = :viewed_user_id} \
+		  -bind "viewed_user_id $viewed_user_id" \
+		  -default ""] eq "" } {
 	    ad_complain "The user_id in the url is invalid"
 	}
     }
@@ -68,9 +70,10 @@ bm_initialize_in_closed_p $viewed_user_id $in_closed_p_id $package_id
 # will be the page that the user is browsing.
 set return_url_urlenc [ad_urlencode [ad_conn url]?[export_vars -url {viewed_user_id}]]
 
-set user_name [db_string user_name "select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id" -bind "viewed_user_id $viewed_user_id" -default ""]
+set user_name [db_string user_name {select first_names || ' ' || last_name from cc_users where object_id = :viewed_user_id} \
+		   -bind "viewed_user_id $viewed_user_id" -default ""]
 
-set page_title [db_string bookmark_system_name "select acs_object.name(:package_id) from dual"]
+set page_title [db_string bookmark_system_name {select acs_object.name(:package_id) from dual}]
 
 set context [bm_context_bar_args "" $viewed_user_id]
 
