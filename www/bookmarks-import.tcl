@@ -67,7 +67,7 @@ if { [db_string dbclick_check "
 
 set page_title "Import Statistics"
 
-set context [bm_context_bar_args [list [list "bookmark-add-import?[export_vars -url {viewed_user_id return_url}]" "Add/Import Bookmarks"] $page_title] $viewed_user_id]
+set context [bm_context_bar_args [list [list [export_vars -base bookmark-add-import {viewed_user_id return_url}] "Add/Import Bookmarks"] $page_title] $viewed_user_id]
 
 
 # set flags to be used parsing the input file.

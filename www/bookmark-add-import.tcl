@@ -57,7 +57,7 @@ set bookmark_id [db_nextval acs_object_id_seq]
 # If the user opts to create a new folder we need to provide this url
 # along with the whole url vars string to enable the user to come back
 # (also needed if the user needs to log in to the system first)
-set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_vars -url {viewed_user_id complete_url local_title return_url bookmark_id}]"]
+set this_url_urlenc [ad_urlencode [export_vars -base [ad_conn url] -url {viewed_user_id complete_url local_title return_url bookmark_id}]]
 
 # Redirect the user to log in if he has not done so
 set user_id [ad_conn user_id]

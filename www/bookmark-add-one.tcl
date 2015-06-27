@@ -105,7 +105,7 @@ if { $bookmark_id eq "" } {
 }
 
 # Redirect the user to log in if he has not done so
-set this_url_urlenc [ad_urlencode "[ad_conn url]?[export_vars -url {viewed_user_id complete_url local_title return_url bookmark_id}]"]
+set this_url_urlenc [ad_urlencode [export_vars -base [ad_conn url] -url {viewed_user_id complete_url local_title return_url bookmark_id}]]
 
 set user_id [ad_conn user_id]
 if { $user_id == 0 } {
@@ -127,7 +127,7 @@ set export_form_vars_html [export_vars -form return_url local_title complete_url
 # If the user provided a title and the url is reachable we do not
 # ask for a confirmation
 if { $url_unreachable_p == "f" && $user_provided_title_p == "t"} {
-    ad_returnredirect "bookmark-add-one-2?[export_vars -url {return_url local_title complete_url bookmark_id meta_description meta_keywords url_title viewed_user_id parent_id}]"
+    ad_returnredirect [export_vars -base bookmark-add-one-2 {return_url local_title complete_url bookmark_id meta_description meta_keywords url_title viewed_user_id parent_id}]
     ad_script_abort
 } 
 
