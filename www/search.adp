@@ -1,6 +1,6 @@
 <master>
-<property name="title">@page_title@</property>
-<property name="context">@context;noquote@</property>
+<property name="doc(title)">@page_title;literal@</property>
+<property name="context">@context;literal@</property>
 
 <if @viewed_user_id@ eq @browsing_user_id@>
 	<listtemplate name="my_list"></listtemplate>

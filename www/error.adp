@@ -1,5 +1,5 @@
 <master>
-<property name="title">Application Error</property>
+<property name="doc(title)">Application Error</property>
 
 We had
 <if @n_errors@ eq 1>
