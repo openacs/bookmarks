@@ -25,7 +25,7 @@ attempt to get the title from the web site.
 
 <tr>
     <td>Folder</td>
-    <td><include src=folder-selection bookmark_id=@bookmark_id;noquote@ folder_p="f" default_id="" viewed_user_id=@viewed_user_id;noquote@><br>
+    <td><include src=folder-selection bookmark_id="@bookmark_id;literal@" folder_p="f" default_id="" viewed_user_id="@viewed_user_id;literal@"><br>
     <a href="folder-add?return_url=@this_url_urlenc;noquote@">create a new folder</a></td>
 </tr>
 

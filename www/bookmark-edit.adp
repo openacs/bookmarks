@@ -21,7 +21,7 @@
 
 <tr>
   <td align="right" valign="top">Parent Folder:</td>
-  <td><include src=folder-selection bookmark_id=@bookmark.bookmark_id;noquote@ folder_p="@bookmark.folder_p;noquote@" default_id="@bookmark.parent_id;noquote@" viewed_user_id="@bookmark.owner_id;noquote@"></td>
+  <td><include src=folder-selection bookmark_id="@bookmark.bookmark_id;literal@" folder_p="@bookmark.folder_p;literal@" default_id="@bookmark.parent_id;literal@" viewed_user_id="@bookmark.owner_id;literal@"></td>
 </tr>
 
 <tr>

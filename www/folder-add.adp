@@ -17,7 +17,7 @@
 <tr>
   <td valign="top" align="right">Place in folder:  
   <img border="0" src=pics/ftv2folderopen align=top></td>
-  <td><include src="folder-selection" bookmark_id="@bookmark_id;noquote@" folder_p="t" default_id="" viewed_user_id=@viewed_user_id;noquote@></td>
+  <td><include src="folder-selection" bookmark_id="@bookmark_id;literal@" folder_p="t" default_id="" viewed_user_id="@viewed_user_id;literal@"></td>
 </tr>
 <tr>
   <td></td>
