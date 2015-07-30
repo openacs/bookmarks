@@ -62,7 +62,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     if { "@bookmark.admin_p@" ne "0" } {
        lappend action_bar [subst {
-	   <a href="bookmark-edit?viewed_user_id=@viewed_user_id;literal@amp;&bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@">$edit_anchor</a>
+	   <a href="bookmark-edit?viewed_user_id=@viewed_user_id;literal@&amp;bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@">$edit_anchor</a>
        }]
     }
     if { "@bookmark.delete_p@" ne "0" } {
