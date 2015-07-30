@@ -8,7 +8,8 @@
     </script>
   </property>
 
-<% set folder_bgcolor [parameter::get -parameter FolderBGColor -default "#f3f3f3"]
+<%
+set folder_bgcolor [parameter::get -parameter FolderBGColor -default "#f3f3f3"]
 set bookmark_bgcolor  [parameter::get -parameter BookmarkBGColor -default "#ffffff"]
 set edit_anchor "<font size=-1>Edit</font>"
 set delete_anchor "<font size=-1>Delete</font>"
@@ -55,25 +56,31 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	append decoration_close "</b>"
     }
 
-    regsub -all {'|"} @bookmark.bookmark_title;noquote@ {} javascript_title
+    regsub -all {'|\"} @bookmark.bookmark_title;literal@ {} javascript_title
 
     set action_bar ""
 
     if { "@bookmark.admin_p@" ne "0" } {
-       lappend action_bar "<a href="bookmark-edit?viewed_user_id=@viewed_user_id@&amp;bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@">$edit_anchor</a>"
+       lappend action_bar [subst {
+	   <a href="bookmark-edit?viewed_user_id=@viewed_user_id;literal@amp;&bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@">$edit_anchor</a>
+       }]
     }
     if { "@bookmark.delete_p@" ne "0" } {
-       lappend action_bar "<a href=\"bookmark-delete?bookmark_id=@bookmark.bookmark_id@&amp;return_url=@return_url_urlenc@&amp;viewed_user_id=@viewed_user_id@\">$delete_anchor</a>"
+	lappend action_bar [subst {
+	    <a href="bookmark-delete?bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@&amp;viewed_user_id=@viewed_user_id;literal@">$delete_anchor</a>
+	}]
     } 
 
     if {@bookmark.folder_p@ == "f"} {
-	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id@&url=[ad_urlencode @bookmark.complete_url;noquote@]"
+	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id;literal@&url=[ad_urlencode @bookmark.complete_url;literal@]"
 	set bgcolor $bookmark_bgcolor
 	set image_url "pics/ftv2doc.gif"
-	lappend action_bar "<a href=\"bookmark-view?bookmark_id=@bookmark.bookmark_id@\"><font size=-1>Details</font></a>"
+	lappend action_bar [subst {
+	    <a href="bookmark-view?bookmark_id=@bookmark.bookmark_id;literal@"><font size=-1>Details</font></a>
+	}]
     } else {
 	set bgcolor $folder_bgcolor
-	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id@&amp;viewed_user_id=@viewed_user_id@&amp;sort_by=@sort_by@&amp;browsing_user_id=@browsing_user_id@"
+	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id;literal@&viewed_user_id=@viewed_user_id;literal@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id;literal@"
 
 	# different image_urls for whether or not the folder is open
 	if {@bookmark.closed_p@ == "t"} {
@@ -83,19 +90,17 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	}
     }
 
-    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif" alt='spacer'  width='5' height='1'> \[[join $action_bar " | "]\] ]
-
-
-    set private_text [ad_decode @bookmark.private_p@ "t" "<font size='-1' color='red'>private</font>" ""]
+    set action_bar [ad_decode $action_bar "" "" "<img src=\"pics/spacer.gif\" alt='spacer' width='5' height='1'> \[[join $action_bar { | }]\]" ]
+    set private_text [ad_decode @bookmark.private_p;literal@ "t" "<font size='-1' color='red'>private</font>" ""]
 
     %>
 
-    <table bgcolor=@bgcolor@ cellpadding="0" cellspacing="0" border="0" width="100%">
+    <table bgcolor="@bgcolor@" cellpadding="0" cellspacing="0" border="0" width="100%">
     <tr>
     <td valign="top"><img src="pics/spacer.gif" alt="spacer"  width=<%=[expr {[expr {@bookmark.indentation@ - 1}] * 24}]%> height="1"></td>
 
-    <td><a href="@url@"><img width=24 height=22 border="0" src="<%= $image_url %>" align=top></a></td>
-    <td width="100%"><a href="@url@">@decoration_open;noquote@@bookmark.bookmark_title;noquote@@decoration_close;noquote@</a> @action_bar;noquote@ @private_text;noquote@</td>
+    <td><a href="@url@"><img width="24" height="22" border="0" src="<%= $image_url %>" align="top"></a></td>
+    <td width="100%"><a href="@url@">@decoration_open;literal@@bookmark.bookmark_title;literal@@decoration_close;literal@</a> @action_bar;noquote@ @private_text;literal@</td>
     </tr>
     </table>
 	  
