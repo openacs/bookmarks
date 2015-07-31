@@ -93,7 +93,7 @@ template::query bookmark_edit bookmark onerow "select local_title,
         and    bm_bookmarks.url_id = bm_urls.url_id(+)"
 
 
-set export_form_vars [export_vars -form viewed_user_id folder_p old_private_p return_url]
+set export_form_vars [export_vars -form {viewed_user_id folder_p old_private_p return_url}]
 
 set return_url_urlenc [ad_urlencode $return_url]
 

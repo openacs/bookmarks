@@ -4,7 +4,7 @@
 
 
 <form method=post action=bookmark-edit-2>
-@export_form_vars;noquote@
+@export_form_vars;literal@
 <input type="hidden" name="bookmark_id" value="@bookmark.bookmark_id@">
 <table>
  
