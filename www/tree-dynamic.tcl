@@ -74,9 +74,9 @@ db_foreach bookmark_items {} {
 
 
     if {$folder_p == "t"} {
-	append js "$i_str\['[ad_quotehtml [string trim $local_title]]', null,\n"
+	append js "$i_str\['[ns_quotehtml [string trim $local_title]]', null,\n"
     } else {
-	append js "$i_str\['[ad_quotehtml [string trim $local_title]]', '[string trim [ad_quotehtml $complete_url]]'],\n"
+	append js "$i_str\['[ns_quotehtml [string trim $local_title]]', '[string trim [ns_quotehtml $complete_url]]'],\n"
     }
     set prev_lev $lev
     set prev_folder_p $folder_p

@@ -25,7 +25,7 @@ ad_page_contract {
 
 set page_title "Bookmarks for $host_url"
 
-set context [list [list "most-popular" "Most Popular"] [ad_quotehtml $page_title]]
+set context [list [list "most-popular" "Most Popular"] [ns_quotehtml $page_title]]
 
 
 set old_name ""

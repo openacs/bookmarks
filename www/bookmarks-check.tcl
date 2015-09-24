@@ -105,7 +105,7 @@ foreach check_set $check_list {
 	ns_write "<p> <table border=0 cellpadding=0 cellspacing=0>
 	<tr>
 	<td colspan=2>
-	Skipping <a href=\"[ad_quotehtml $complete_url]\"> [ad_quotehtml $url_title] </a>....</td>
+	Skipping <a href=\"[ns_quotehtml $complete_url]\"> [ns_quotehtml $url_title] </a>....</td>
 	</tr>
 	</table>"
 
@@ -144,7 +144,7 @@ foreach check_set $check_list {
 	ns_write "<p> <table border=0 cellpadding=0 cellspacing=0>
 	<tr>
 	$delete_html
-	<a href=\"[ad_quotehtml $complete_url]\">[ad_quotehtml $url_title]</a>.... <font color=red>NOT FOUND</font> [ad_quotehtml $response] </td></tr></table>"
+	<a href=\"[ns_quotehtml $complete_url]\">[ns_quotehtml $url_title]</a>.... <font color=red>NOT FOUND</font> [ns_quotehtml $response] </td></tr></table>"
 
 	incr dead_count
 
@@ -171,7 +171,7 @@ foreach check_set $check_list {
 
 		ns_write "<p> <table border=0 cellpadding=0 cellspacing=0>
 	<tr>
-	<td><a href=\"[ad_quotehtml $complete_url]\">[ad_quotehtml $url_title]</a>.... FOUND &nbsp; [ad_decode $title "" "" "title: $title"]</td>
+	<td><a href=\"[ns_quotehtml $complete_url]\">[ns_quotehtml $url_title]</a>.... FOUND &nbsp; [ad_decode $title "" "" "title: $title"]</td>
 	</tr>
 	</table>"
 	  }
