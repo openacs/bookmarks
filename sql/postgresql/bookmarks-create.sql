@@ -285,7 +285,7 @@ create table bm_in_closed_p (
 			    not null
 			    constraint bm_in_closed_p_bookmark_id_fk
 			    references bm_bookmarks (bookmark_id),
-       in_closed_p_id	    integer 
+       in_closed_p_id	    bigint 
 			    constraint bm_in_closed_p_id_nn
 			    not null, 
        in_closed_p	    boolean default 't', 
@@ -550,8 +550,8 @@ BEGIN
 END;
 ' LANGUAGE 'plpgsql';
 
-CREATE FUNCTION bookmark__update_in_closed_p_one_user (integer, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__update_in_closed_p_one_user (integer, bigint)
+RETURNS integer AS $$
 DECLARE
        p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,	     
        p_browsing_user_id ALIAS FOR $2;	-- in bm_bookmarks.owner_id%TYPE
@@ -575,8 +575,8 @@ BEGIN
 	    select bm.bookmark_id from 
 	    bm_bookmarks bm, bm_in_closed_p bip
 	    where bm.bookmark_id = bip.bookmark_id
-	    and bm.folder_p = ''t'' 
-	    and bip.closed_p = ''t''
+	    and bm.folder_p = 't' 
+	    and bip.closed_p = 't'
 	    and bip.in_closed_p_id = p_browsing_user_id
 	LOOP
 		UPDATE bm_in_closed_p set in_closed_p = TRUE 
@@ -596,7 +596,7 @@ BEGIN
 	END LOOP;
 	RETURN 0;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
 CREATE FUNCTION bookmark__update_in_closed_p_all_users (integer, integer)
@@ -622,8 +622,8 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__toggle_open_close (integer, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__toggle_open_close (integer, bigint)
+RETURNS integer AS $$
 DECLARE
 	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE,	     
 	p_browsing_user_id ALIAS FOR $2;	-- in bm_bookmarks.owner_id%TYPE
@@ -645,7 +645,7 @@ BEGIN
 	perform bookmark__update_in_closed_p_one_user (p_bookmark_id, p_browsing_user_id);
 	RETURN 0;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 CREATE FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer)
 RETURNS integer AS '
@@ -823,16 +823,16 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__initialize_in_closed_p (integer, integer, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__initialize_in_closed_p (integer, bigint, integer)
+RETURNS integer AS $$
 DECLARE
- 	p_viewed_user_id	ALIAS FOR $1;	-- in users.user_id%TYPE,	
- 	p_in_closed_p_id	ALIAS FOR $2;	-- in users.user_id%TYPE	
-	p_package_id		ALIAS FOR $3;	-- in apm_packages.package_id%TYPE
-	v_root_id		bm_bookmarks.bookmark_id%TYPE;
-	c_bookmark		RECORD;
-	v_in_closed_p		bm_in_closed_p.in_closed_p%TYPE;
-	v_closed_p		bm_in_closed_p.closed_p%TYPE;
+ 	p_viewed_user_id ALIAS FOR $1;	-- in users.user_id%TYPE	
+ 	p_in_closed_p_id ALIAS FOR $2;	-- in users.user_id%TYPE	
+	p_package_id ALIAS FOR $3;	-- in apm_packages.package_id%TYPE
+	v_root_id bm_bookmarks.bookmark_id%TYPE;
+	c_bookmark RECORD;
+	v_in_closed_p bm_in_closed_p.in_closed_p%TYPE;
+	v_closed_p bm_in_closed_p.closed_p%TYPE;
 BEGIN
 	-- We want to initialize all bookmarks to the closed state, except for
 	-- the root folder. That means we need to have the following settings
@@ -885,5 +885,5 @@ BEGIN
 
 	   RETURN 0;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
