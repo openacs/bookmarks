@@ -647,8 +647,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION bookmark__toggle_open_close_all (integer, boolean, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__toggle_open_close_all (bigint, boolean, integer)
+RETURNS integer AS $$
 DECLARE
 	p_browsing_user_id ALIAS FOR $1;	-- in bm_bookmarks.owner_id%TYPE,
 	p_closed_p ALIAS FOR $2;		-- in bm_in_closed_p.closed_p%TYPE default f,
@@ -678,7 +678,7 @@ BEGIN
 
 	RETURN 0;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
 CREATE FUNCTION bookmark__new_root_folder (integer, integer)

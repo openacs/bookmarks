@@ -3,6 +3,7 @@ ALTER TABLE bm_in_closed_p ALTER COLUMN in_closed_p_id TYPE bigint;
 DROP FUNCTION IF EXISTS bookmark__toggle_open_close (integer, integer);
 DROP FUNCTION IF EXISTS bookmark__update_in_closed_p_one_user (integer, integer);
 DROP FUNCTION IF EXISTS bookmark__initialize_in_closed_p (integer, integer, integer);
+DROP FUNCTION IF EXISTS bookmark__toggle_open_close_all (integer, boolean, integer);
 
 CREATE OR REPLACE FUNCTION bookmark__toggle_open_close (integer, bigint)
 RETURNS integer AS $$
@@ -143,3 +144,35 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION bookmark__toggle_open_close_all (bigint, boolean, integer)
+RETURNS integer AS $$
+DECLARE
+	p_browsing_user_id ALIAS FOR $1;	-- in bm_bookmarks.owner_id%TYPE,
+	p_closed_p ALIAS FOR $2;		-- in bm_in_closed_p.closed_p%TYPE default f,
+	p_root_id ALIAS FOR $3;			-- in bm_bookmarks.parent_id%TYPE
+
+BEGIN
+	-- Change the value of closed_p for all folders belonging to the
+	-- user (except the root folder)
+	UPDATE bm_in_closed_p SET closed_p = p_closed_p
+	WHERE bookmark_id IN 
+	(
+		SELECT bm.bookmark_id FROM bm_bookmarks bm, bm_bookmarks bm2
+		WHERE tree_level(bm.tree_sortkey) > 1
+		  and bm2.bookmark_id = p_root_id
+                  and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+	); 
+
+	-- Update the value of in_closed_p for all bookmarks belonging to 
+	-- this user. We close/open all bookmarks except the top level ones.
+	UPDATE bm_in_closed_p SET in_closed_p = p_closed_p
+	WHERE bookmark_id IN 
+	(
+		SELECT bookmark_id FROM bm_bookmarks 
+		WHERE  tree_level(tree_sortkey) > 2
+	)
+	AND in_closed_p_id = p_browsing_user_id;	 	
+
+	RETURN 0;
+END;
+$$ LANGUAGE plpgsql;
