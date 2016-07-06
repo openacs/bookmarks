@@ -19,13 +19,9 @@ from
 	)
 	b left join bm_urls using (url_id)
 where
-	exists (select 1 from all_object_party_privilege_map p
-		where
-			p.object_id = b.bookmark_id
-			and p.privilege = 'read'
-			and p.party_id = :user_id
-	)
-	and b.bookmark_id <> :root_id
+	b.bookmark_id <> :root_id
+	and acs_permission__permission_p(b.bookmark_id, :user_id, 'read')
+
 order by b.tree_sortkey
 	</querytext>
 </fullquery>
