@@ -35,39 +35,28 @@
           u.complete_url, u.last_live_date, u.last_checked_date, 
           b.folder_p, 
           bm_in_closed_p.closed_p, 
-          coalesce(admin_view.object_id, 0) as admin_p,
-          coalesce(delete_view.object_id,0) as delete_p,
+          acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'admin') as admin_p,
+          acs_permission__permission_p(b.bookmark_id, :browsing_user_id, 'delete') as delete_p,
           b.lev as indentation
           $private_select
         from 
           bm_in_closed_p cross join
-          ((( bm_urls u right join (
-	    select $index_order bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, 
- 	      tree_level(bm.tree_sortkey) as lev, bm.parent_id, bm.tree_sortkey 
-	    from bm_bookmarks bm, bm_bookmarks bm2
-	    where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
-              and bm2.bookmark_id = :root_folder_id
-            ) b on (u.url_id=b.url_id)) left join (
-	    select distinct object_id
-            from all_object_party_privilege_map
- 	    where party_id = :browsing_user_id and privilege = 'admin'
-            ) admin_view on (admin_view.object_id=b.bookmark_id)) left join (
-	    select distinct object_id
-            from all_object_party_privilege_map
- 	    where party_id = :browsing_user_id and privilege = 'delete'
-            ) delete_view on (delete_view.object_id = b.bookmark_id))
-        where bm_in_closed_p.bookmark_id = b.bookmark_id
+          (bm_urls u right join (
+	         select $index_order bm.bookmark_id, bm.url_id, bm.local_title, bm.folder_p, 
+ 	                tree_level(bm.tree_sortkey) as lev, bm.parent_id, bm.tree_sortkey 
+	         from bm_bookmarks bm, bm_bookmarks bm2
+	         where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+                 and bm2.bookmark_id = :root_folder_id
+              ) b on (u.url_id = b.url_id) )
+          where bm_in_closed_p.bookmark_id = b.bookmark_id
           and bm_in_closed_p.in_closed_p = 'f'
           and bm_in_closed_p.in_closed_p_id = :in_closed_p_id
           and exists (select 1
                       from bm_bookmarks bm, bm_bookmarks bm2
-                      where exists (select 1
-                                    from all_object_party_privilege_map 
-		                    where object_id = bm.bookmark_id
-                                      and party_id = :browsing_user_id
-		                      and privilege = 'read')
-	              and bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
-                      and bm2.bookmark_id = b.bookmark_id)
+                      where bm.tree_sortkey between bm2.tree_sortkey and tree_right(bm2.tree_sortkey)
+                      and bm2.bookmark_id = b.bookmark_id
+  	              and acs_permission__permission_p(bm.bookmark_id, :browsing_user_id, 'read')
+		      )
           and b.bookmark_id <> :root_folder_id
         order by b.tree_sortkey
       </querytext>

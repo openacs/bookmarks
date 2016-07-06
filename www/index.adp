@@ -51,7 +51,7 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	append decoration_close "</i>"
     }
 
-    if {@bookmark.folder_p@ == "t"} {
+    if {@bookmark.folder_p@ true} {
 	append decoration_open "<b>"
 	append decoration_close "</b>"
     }
@@ -60,18 +60,18 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 
     set action_bar ""
 
-    if { "@bookmark.admin_p@" ne "0" } {
+    if { "@bookmark.admin_p@" true } {
        lappend action_bar [subst {
 	   <a href="bookmark-edit?viewed_user_id=@viewed_user_id;literal@&amp;bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@">$edit_anchor</a>
        }]
     }
-    if { "@bookmark.delete_p@" ne "0" } {
+    if { "@bookmark.delete_p@" true } {
 	lappend action_bar [subst {
 	    <a href="bookmark-delete?bookmark_id=@bookmark.bookmark_id;literal@&amp;return_url=@return_url_urlenc;literal@&amp;viewed_user_id=@viewed_user_id;literal@">$delete_anchor</a>
 	}]
     } 
 
-    if {@bookmark.folder_p@ == "f"} {
+    if {@bookmark.folder_p@ false} {
 	set url "bookmark-access?bookmark_id=@bookmark.bookmark_id;literal@&url=[ad_urlencode @bookmark.complete_url;literal@]"
 	set bgcolor $bookmark_bgcolor
 	set image_url "pics/ftv2doc.gif"
@@ -83,9 +83,9 @@ align=top><b> Bookmarks for @user_name;noquote@ </b> &nbsp; &nbsp;
 	set url "toggle-open-close?bookmark_id=@bookmark.bookmark_id;literal@&viewed_user_id=@viewed_user_id;literal@&sort_by=@sort_by@&browsing_user_id=@browsing_user_id;literal@"
 
 	# different image_urls for whether or not the folder is open
-	if {@bookmark.closed_p@ == "t"} {
+	if {@bookmark.closed_p@ true} {
 	    set image_url "pics/ftv2folderclosed.gif"
-	} elseif {@bookmark.closed_p@ == "f" } {
+	} elseif {@bookmark.closed_p@ false } {
 	    set image_url "pics/ftv2folderopen.gif"
 	}
     }
