@@ -306,7 +306,7 @@ as
 
 
 	-- To avoid violating referential constraints we need also (at least no smarter way to 
-	-- do this occured to me) to delete all bookmarks on the level of the outer cursor
+	-- do this occurred to me) to delete all bookmarks on the level of the outer cursor
 	-- that lie under the folder to be deleted. 
 	cursor c_bookmark_id_one_level (tree_id in integer)
 	is

@@ -40,7 +40,7 @@ if { $viewed_user_id eq "" } {
 
 set browsing_user_id [ad_conn user_id]
 
-# Loop throught the bookmark_ids to delete 
+# Loop through the bookmark_ids to delete 
 foreach url_id $deleteable_link {
 
     db_foreach bookmark_ids_for_url "select bookmark_id
