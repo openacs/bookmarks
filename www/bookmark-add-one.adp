@@ -3,7 +3,7 @@
 <property name="context">@context;literal@</property>
 
 <include src="bookmark-header">
-<if @url_unreachable_p@ eq "t">
+<if @url_unreachable_p;literal@ true>
 <strong>Warning: We are not able to reach the url (@complete_url@) that you specified. Please make sure that you did not misspell the url.</strong>
 </if>
 

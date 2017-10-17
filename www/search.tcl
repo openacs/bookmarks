@@ -98,7 +98,7 @@ template::list::create \
 			link_url_eval {[export_vars -base "bookmark-edit" {bookmark_id viewed_user_id return_url} ]}
 			link_html { title "Edit bookmark" }
 			display_template {
-				<if @others_list.admin_p@ eq "t">
+				<if @others_list.admin_p;literal@ true>
 				<img src="/resources/acs-subsite/Edit16.gif" width="16" height="16" border="0">
 				</if>
 			}

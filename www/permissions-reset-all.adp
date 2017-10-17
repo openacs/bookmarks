@@ -7,7 +7,7 @@ on the following bookmarks to make your default (root) permissions apply?
 
 <ul>
 <multiple name="direct_permissions">
-<li>@direct_permissions.local_title@ <if @public_p@ eq "t">private</if><else>public</else></li>
+<li>@direct_permissions.local_title@ <if @public_p;literal@ true>private</if><else>public</else></li>
 </multiple>
 </ul>
 

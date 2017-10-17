@@ -11,7 +11,7 @@
 	     <a href="bookmarks-export?viewed_user_id=@viewed_user_id@">Export</a>
 	   </div>
 
-	    <if @write_p@ eq "t">
+	    <if @write_p;literal@ true>
                 <div class="tab">
  		  <a href="bookmark-add-import?return_url=@return_url_urlenc@&amp;viewed_user_id=@viewed_user_id@">Add / Import</a>	
                 </div>
@@ -29,12 +29,12 @@
    	    <div class="tab">
 	     <a href="bookmarks-user-list">Other users</a> 
 	    </div>
-	    <if @root_admin_p@ eq "1">
+	    <if @root_admin_p;literal@ true>
    	     <div class="tab">
 	      <a href="@permissions_url@">Permissions</a> 
 	     </div>
 	    </if>
-	    <if @bookmarks_admin_p@ eq "1">
+	    <if @bookmarks_admin_p;literal@ true>
    	     <div class="tab">
 	      <a href="admin">Admin</a>
 	     </div>

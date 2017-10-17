@@ -10,7 +10,7 @@
 
 <tr>
   <th>Default (root) access permissions</th>
-  <td><input type="checkbox" name="private_p" value="t" <if @old_private_p@ eq "t"> checked</if>> Private (no other registered users have read access to any of your bookmarks)</td>
+  <td><input type="checkbox" name="private_p" value="t" <if @old_private_p;literal@ true> checked</if>> Private (no other registered users have read access to any of your bookmarks)</td>
 </tr>
 
 </table>
