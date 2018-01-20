@@ -89,4 +89,5 @@ append js [bm_close_js_brackets $prev_folder_p $prev_lev 1]
 append js "];\n"
 
 
-doc_return  200 text/plain "$js"
+doc_return  200 text/plain $js
+ad_script_abort

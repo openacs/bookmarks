@@ -21,4 +21,5 @@ doc_return 200 text/html "<html>
 <body bgcolor=white>
 
 </html>"
+ad_script_abort
 

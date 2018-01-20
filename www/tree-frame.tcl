@@ -34,5 +34,6 @@ set page_content "
 </html>
 "
 
-doc_return 200 text/html "$page_content"
+doc_return 200 text/html $page_content
+ad_script_abort
 
