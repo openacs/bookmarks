@@ -115,7 +115,7 @@ show errors
 -- are not to be displayed)
 -- This has to be done on a per user (or per session) basis so we can not store
 -- this information in the bm_bookmarks table (otherwise we would have problems when
--- two users view the same bookmarks concurently).
+-- two users view the same bookmarks concurrently).
 create table bm_in_closed_p (
        bookmark_id	    constraint bm_in_closed_p_bookmark_id_nn
 			    not null
