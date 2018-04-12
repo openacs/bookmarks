@@ -1,6 +1,6 @@
 #
 # Outputs an html file in the format used by netscape/mozilla
-# for it's bookmarks menu
+# for its bookmarks menu
 #
 
 # index.vuh created from the original registered proc
@@ -33,7 +33,7 @@ db_foreach bm_info { } {
     if {$folder_list eq "0"} {
 	lappend folder_list $parent_id
     } else {
-	set previous_parent_id [lindex $folder_list end]	
+	set previous_parent_id [lindex $folder_list end]
 	if {$parent_id != $previous_parent_id} {
 	    set parent_location [lsearch -exact $folder_list $parent_id]
 
@@ -82,5 +82,5 @@ $bookmark_html
 </DL><p>
 "
 
-    
+
 doc_return  200 text/html $html
