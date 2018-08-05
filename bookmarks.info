@@ -16,14 +16,14 @@
         <vendor url="http://openacs.org">OpenACS</vendor>
         <description format="text/html">User bookmark management package with the following functionality:
 &lt;ul&gt;
-&lt;li&gt;Adding bookmarks when browsing with the help of a Bookmarklet (a Bookmark in the browser that contains Javascript instead of a url).&lt;/li&gt;
+&lt;li&gt;Adding bookmarks when browsing with the help of a Bookmarklet (a Bookmark in the browser that contains Javascript instead of a URL).&lt;/li&gt;
 &lt;li&gt;Sorting by name and access date&lt;/li&gt;
 &lt;li&gt;Enhanced access permissions including toggling between private and public.&lt;/li&gt;
-&lt;li&gt;Display of keywords and descriptions of urls (fetched with ns_httpget)
+&lt;li&gt;Display of keywords and descriptions of URLs (fetched with ns_httpget)
 &lt;li&gt;Bookmarks are viewed in a tree structure with open/collapse functionality of folders. Alternatively the bookmarks can be viewed in a Javascript version.&lt;/li&gt;
 &lt;li&gt;Importing/exporting bookmarks from/to Netscape and IE browsers&lt;/li&gt;
 &lt;li&gt;Checking for broken or changed URLs&lt;/li&gt;
-&lt;li&gt;Display of the most popular hosts and urls in the community&lt;/li&gt;
+&lt;li&gt;Display of the most popular hosts and URLs in the community&lt;/li&gt;
 &lt;/ul&gt;
 </description>
 
@@ -33,7 +33,7 @@
         <callbacks>
         </callbacks>
         <parameters>
-            <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively urls that will be shown on the most popular bookmarks page"/>
+            <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="MostPopularHostsAndURLsMaxN"  default="10" description="Max number of hosts respectively URLs that will be shown on the most popular bookmarks page"/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="URLDescriptionMaxLength"  default="1000" description="Max length of the meta description that is fetched from the html code of a page and stored in the database"/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="URLKeywordsMaxLength"  default="1000" description="Max length of the keyword string that is fetched from an HTML page and stored in the database"/>
             <parameter scope="instance" datatype="number"  min_n_values="1"  max_n_values="1"  name="URLTitleMaxLength"  default="100" description="Max length of the title fetched from the title-tag of an html page and stored in the database"/>
