@@ -506,10 +506,10 @@ END;
 ' LANGUAGE 'plpgsql';
 
 
-CREATE FUNCTION bookmark__name (integer)
-RETURNS varchar AS '
+CREATE OR REPLACE FUNCTION bookmark__name (
+       p_object_id integer
+) RETURNS varchar AS $$
 DECLARE
-	p_object_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
 	v_name	bm_bookmarks.local_title%TYPE;
 BEGIN
 	select local_title into v_name
@@ -518,14 +518,14 @@ BEGIN
 
 	return v_name;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 -- Fix for bug 1491, 1653. This function did not always return the true value of closed_p.
-CREATE FUNCTION bookmark__get_in_closed_p (integer,integer)
-RETURNS boolean AS '
+CREATE OR REPLACE FUNCTION bookmark__get_in_closed_p (
+       p_new_parent_id integer,
+       p_user_id integer
+) RETURNS boolean AS $$
 DECLARE
-	p_new_parent_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
-	p_user_id	ALIAS FOR $2;	-- in users.user_id%TYPE	
 	v_return_value bm_in_closed_p.in_closed_p%TYPE;
 	v_count integer;
 BEGIN
@@ -548,13 +548,13 @@ BEGIN
 
 	return v_return_value;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION bookmark__update_in_closed_p_one_user (integer, bigint)
-RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION bookmark__update_in_closed_p_one_user (
+       p_bookmark_id integer,
+       p_browsing_user_id bigint
+) RETURNS integer AS $$
 DECLARE
-       p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,	     
-       p_browsing_user_id ALIAS FOR $2;	-- in bm_bookmarks.owner_id%TYPE
        v_parent_ids RECORD;
 
 BEGIN
@@ -599,11 +599,11 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION bookmark__update_in_closed_p_all_users (integer, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__update_in_closed_p_all_users (
+       p_bookmark_id integer,
+       p_new_parent_id integer
+) RETURNS integer AS $$
 DECLARE
-	p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,
-	p_new_parent_id ALIAS FOR $2;	-- in bm_bookmarks.bookmark_id%TYPE
 	c_viewing_in_closed_p_ids RECORD;
 
 BEGIN
@@ -619,15 +619,14 @@ BEGIN
 	END LOOP;
 	RETURN 0;
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION bookmark__toggle_open_close (integer, bigint)
+CREATE OR REPLACE FUNCTION bookmark__toggle_open_close (
+       p_bookmark_id integer,
+       p_browsing_user_id bigint)
 RETURNS integer AS $$
 DECLARE
-	p_bookmark_id ALIAS FOR $1;		-- in bm_bookmarks.bookmark_id%TYPE,	     
-	p_browsing_user_id ALIAS FOR $2;	-- in bm_bookmarks.owner_id%TYPE
-
 BEGIN
 	-- Toggle the closed_p flag
 	UPDATE bm_in_closed_p SET closed_p = 
@@ -647,13 +646,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION bookmark__toggle_open_close_all (bigint, boolean, integer)
-RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION bookmark__toggle_open_close_all (
+       p_browsing_user_id bigint,
+       p_closed_p boolean,
+       p_root_id integer
+) RETURNS integer AS $$
 DECLARE
-	p_browsing_user_id ALIAS FOR $1;	-- in bm_bookmarks.owner_id%TYPE,
-	p_closed_p ALIAS FOR $2;		-- in bm_in_closed_p.closed_p%TYPE default f,
-	p_root_id ALIAS FOR $3;			-- in bm_bookmarks.parent_id%TYPE
-
 BEGIN
 	-- Change the value of closed_p for all folders belonging to the
 	-- user (except the root folder)
@@ -681,29 +679,29 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION bookmark__new_root_folder (integer, integer)
-RETURNS integer AS '
+CREATE FUNCTION bookmark__new_root_folder (
+       p_package_id integer,
+       p_user_id integer
+) RETURNS integer AS $$
 DECLARE
-        p_package_id ALIAS FOR $1;	-- in apm_packages.package_id%TYPE,
- 	p_user_id ALIAS FOR $2;		-- in users.user_id%TYPE
 	v_folder_id	bm_bookmarks.bookmark_id%TYPE;
 	v_bookmark_id   bm_bookmarks.bookmark_id%TYPE;
 	v_email		parties.email%TYPE;
 	v_local_title	bm_bookmarks.local_title%TYPE;
 
 BEGIN
-	SELECT nextval(''t_acs_object_id_seq'') INTO v_bookmark_id FROM dual;
+	SELECT nextval('t_acs_object_id_seq') INTO v_bookmark_id FROM dual;
         
 	SELECT email INTO v_email 
 	FROM parties where party_id = p_user_id;
 
-	v_local_title := '' Bookmarks Root Folder of '' || v_email;
+	v_local_title := ' Bookmarks Root Folder of ' || v_email;
 	v_folder_id := bookmark__new (
 		    v_bookmark_id,
 		    p_user_id,
 		    null,
 		    v_local_title,
-		    ''t'',
+		    't',
 		    p_package_id,
 		    null,
 		    null,
@@ -723,7 +721,7 @@ BEGIN
 	PERFORM acs_permission__grant_permission (
 		v_folder_id,
 		p_user_id,
-		''admin'');
+		'admin');
 	
 		-- object_id => v_folder_id,
 		-- grantee_id => new_root_folder.user_id,
@@ -732,13 +730,13 @@ BEGIN
 	RETURN v_folder_id;
 
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
-CREATE FUNCTION bookmark__get_root_folder (integer, integer)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__get_root_folder (
+       p_package_id integer,
+       p_user_id integer
+) RETURNS integer AS $$
 DECLARE
-        p_package_id ALIAS FOR $1;	-- in apm_packages.package_id%TYPE,
- 	p_user_id ALIAS FOR $2;		-- in users.user_id%TYPE
 	v_folder_id	bm_bookmarks.bookmark_id%TYPE;
 	v_count		integer;    
 
@@ -762,18 +760,18 @@ BEGIN
 
 
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION bookmark__private_p (integer)
-RETURNS boolean AS '
+CREATE OR REPLACE FUNCTION bookmark__private_p (
+       p_bookmark_id integer
+) RETURNS boolean AS $$
 DECLARE
-	p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE	     
 	v_private_p  bm_in_closed_p.closed_p%TYPE;
 
 BEGIN
 
-	SELECT CASE WHEN count(*)=0 THEN ''f'' ELSE ''t'' END INTO v_private_p
+	SELECT CASE WHEN count(*)=0 THEN 'f' ELSE 't' END INTO v_private_p
 	FROM acs_objects, 
 	(
 		SELECT bm.bookmark_id FROM bm_bookmarks bm,
@@ -781,19 +779,19 @@ BEGIN
 		WHERE bm.tree_sortkey = parents.tree_sortkey
 	) b
 	WHERE b.bookmark_id = acs_objects.object_id
-	AND acs_objects.security_inherit_p = ''f'';
+	AND acs_objects.security_inherit_p = 'f';
 
 	RETURN v_private_p;
 
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
-CREATE FUNCTION bookmark__update_private_p (integer, boolean)
-RETURNS integer AS '
+CREATE OR REPLACE FUNCTION bookmark__update_private_p (
+       p_bookmark_id integer,
+       p_private_p boolean
+) RETURNS integer AS $$
 DECLARE
-	p_bookmark_id ALIAS FOR $1;	-- in bm_bookmarks.bookmark_id%TYPE,	     
-	p_private_p ALIAS FOR $2;	-- in bm_in_closed_p.closed_p%TYPE
 	v_owner_id  bm_bookmarks.owner_id%TYPE;
 	-- Not used... v_admin_p   bm_in_closed_p.closed_p%TYPE;
 
@@ -814,21 +812,21 @@ BEGIN
 		PERFORM acs_permission__grant_permission (
 		p_bookmark_id,
 		v_owner_id,
-		''admin'');
+		'admin');
 	    
 	END IF;
 	RETURN 0;
 
 END;
-' LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION bookmark__initialize_in_closed_p (integer, bigint, integer)
-RETURNS integer AS $$
+CREATE OR REPLACE FUNCTION bookmark__initialize_in_closed_p (
+       p_viewed_user_id integer,
+       p_in_closed_p_id bigint,
+       p_package_id integer
+) RETURNS integer AS $$
 DECLARE
- 	p_viewed_user_id ALIAS FOR $1;	-- in users.user_id%TYPE	
- 	p_in_closed_p_id ALIAS FOR $2;	-- in users.user_id%TYPE	
-	p_package_id ALIAS FOR $3;	-- in apm_packages.package_id%TYPE
 	v_root_id bm_bookmarks.bookmark_id%TYPE;
 	c_bookmark RECORD;
 	v_in_closed_p bm_in_closed_p.in_closed_p%TYPE;
