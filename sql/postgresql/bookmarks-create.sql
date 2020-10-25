@@ -158,7 +158,7 @@ begin
 	return trim(leading separator from folder_names);
 end;' language 'plpgsql';
 
-create function bm_bookmarks_insert_tr () returns opaque as '
+create function bm_bookmarks_insert_tr () returns trigger as '
 declare
         v_parent_sk     varbit default null;
         v_max_value     integer;
@@ -189,7 +189,7 @@ create trigger bm_bookmarks_insert_tr before insert
 on bm_bookmarks for each row 
 execute procedure bm_bookmarks_insert_tr ();
 
-create function bm_bookmarks_update_tr () returns opaque as '
+create function bm_bookmarks_update_tr () returns trigger as '
 declare
         v_parent_sk     varbit default null;
         v_max_value     integer;
