@@ -31,7 +31,10 @@ if {$complete_url ne $url} {
 
 if {$complete_url ne ""} {
     db_dml update_access_date {}
-    ad_returnredirect  -allow_complete_url $complete_url
+    # Legacy bookmarks can contain literal percent signs (for example, %s).
+    # Preserve existing percent escapes in the stored URL.
+    set redirect_url [regsub -all {%(?![0-9A-Fa-f]{2})} $complete_url {%25}]
+    ad_returnredirect -allow_complete_url $redirect_url
 } else {
     ad_return_error "Invalid bookmark_id" "No bookmark URL available for this bookmark_id"
 }
